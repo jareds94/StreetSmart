@@ -8,6 +8,7 @@
         <ui:composition template="template/siteTemplate.xhtml">
             <!-- Page title -->
             <title><ui:define name="title">StreetSmart</ui:define></title>
+            <h:outputStylesheet name="css/jsfcrud.css"/>
             <!-- Additional CSS styles needed -->
             <ui:define name="css">
                 <link rel="stylesheet" type="text/css" href="resources/css/index.css"/>
@@ -16,7 +17,7 @@
             <ui:define name="js">
                 <script type="text/javascript" src="resources/js/index.js"></script>
             </ui:define>
-            
+
             <!-- Page content -->
             <ui:define name="editableContent">
                 <!-- Map menu -->
@@ -31,7 +32,7 @@
                         <div id="map-menu-pin-message"></div>
                     </div>
                 </div>
-                
+
                 <!-- Map overlays (ordered from highest z-index to lowest) -->
                 <div id="map-loading"></div>
                 <img id="show-menu" src="resources/images/menu-show.png" alt="Show Menu"/>
@@ -49,5 +50,11 @@
                 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUFqUfsRLDfd4kVe4wYkACPu9Aswm0AT0&amp;callback=initialize" async="async" defer="defer"></script>
             </ui:define>
         </ui:composition>
+        <br />
+        <h:link outcome="/pin/List" value="Show All Pin Items"/>
+        <br />
+        <h:link outcome="/user/List" value="Show All User Items"/>
     </h:body>
+
+
 </html>
