@@ -1,0 +1,5 @@
+/dist/
+/build/
+build/web/index.xhtml
+nbproject/private/private.properties
+web/index.xhtml
