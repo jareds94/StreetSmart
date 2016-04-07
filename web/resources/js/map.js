@@ -51,11 +51,11 @@ function initialize() {
             }
         });
     }
-    
+
     //#region CustomMarker
-    
+
     // TODO: put this in it's own class (file)
-    
+
     // CustomMarker constructor
     function CustomMarker(latlng, map, args, imgsrc, text) {
         this.latlng = latlng;
@@ -83,7 +83,7 @@ function initialize() {
             pic.className = "pin-pic";
             pic.src = this.imgsrc;
             div.appendChild(pic);
-            
+
             // Pin text arrow
             var textArrow = document.createElement("div");
             textArrow.className = "pin-text-arrow";
@@ -103,13 +103,13 @@ function initialize() {
                 $("#map-menu-pin-pic").attr("src", self.imgsrc);
                 $("#map-menu-pin-message").text(self.text);
                 selectedPinLoc = self.latlng;
-                
+
                 // Show pin details
                 if (!$("#map-menu-pin").hasClass("open")) {
                     $("#map-menu-pin").addClass("open");
                     $("#map-menu-pin").show();
                 }
-                
+
                 // Pop out menu
                 if (!$("#map-menu").hasClass("open")) {
                     $("#map-menu").addClass("open");
@@ -151,34 +151,34 @@ function initialize() {
             this.div = null;
         }
     };
-    
+
     //#endregion
 
     // Add pins
     overlay = new CustomMarker(
-        new google.maps.LatLng(37.2277411, -80.422268),
-        map,
-        {marker_id: '1'},
-        "resources/images/profile-picture.png",
-        "This is an example pin. Something is going on " +
-        "at this location!"
-    );
+            new google.maps.LatLng(37.2277411, -80.422268),
+            map,
+            {marker_id: '1'},
+            "resources/images/profile-picture.png",
+            "This is an example pin. Something is going on " +
+            "at this location!"
+            );
     overlay = new CustomMarker(
-        new google.maps.LatLng(37.2237411, -80.429268),
-        map,
-        {marker_id: '2'},
-        "resources/images/profile-picture-2.png",
-        "This is also an example pin. Something else is going " +
-        "on at this location!"
-    );
+            new google.maps.LatLng(37.2237411, -80.429268),
+            map,
+            {marker_id: '2'},
+            "resources/images/profile-picture-2.png",
+            "This is also an example pin. Something else is going " +
+            "on at this location!"
+            );
     overlay = new CustomMarker(
-        new google.maps.LatLng(37.2270411, -80.436268),
-        map,
-        {marker_id: '3'},
-        "resources/images/profile-picture-3.png",
-        "This is another example pin. I'm running out of " +
-        "example text to write."
-    );
+            new google.maps.LatLng(37.2270411, -80.436268),
+            map,
+            {marker_id: '3'},
+            "resources/images/profile-picture-3.png",
+            "This is another example pin. I'm running out of " +
+            "example text to write."
+            );
 }
 
 // Display a message at the top of the map
@@ -216,4 +216,16 @@ function offsetCenter(latlng, offsetx, offsety) {
 
     var newCenter = map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
     map.panTo(newCenter);
+}
+
+function setMapCenterFromAddress(address) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({'address': address}, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            map.setCenter(results[0].geometry.location);
+        } else {
+            alert("error: " + status);
+            // Handle error
+        }
+    });
 }

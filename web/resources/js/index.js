@@ -48,6 +48,14 @@ $(document).ready(function () {
         $("#map-menu-pin").removeClass("open");
         $("#map-menu-pin").hide();
     });
+    
+    // Change location button
+    $("#map-menu-change-loc-btn").bind("click", function (e) {
+        var address = $("#map-menu-change-loc").val();
+        if (address !== null && address !== "") {
+            setMapCenterFromAddress(address);
+        }
+    });
 });
 
 // Fired when window is resized by the user
