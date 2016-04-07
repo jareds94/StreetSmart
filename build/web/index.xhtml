@@ -3,7 +3,8 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:body>
         <ui:composition template="template/siteTemplate.xhtml">
             <!-- Page title -->
@@ -15,6 +16,7 @@
             <!-- Additional JS files needed -->
             <ui:define name="js">
                 <script type="text/javascript" src="resources/js/index.js"></script>
+                <script type="text/javascript" src="resources/js/pins.js"></script>
             </ui:define>
             
             <!-- Page content -->
@@ -40,6 +42,14 @@
                     <div id="map-message"></div> <!-- Gets centered inside parent -->
                 </div>
                 <img id="hidden-add-pin-hover" src="resources/images/add-pin-hover.png" alt=""/> <!-- preload hover img -->
+                
+                <!-- Pin code 
+                <h:inputHidden id="pinValuesHiddenContainer" value="#{pinFacade.valuePin}" /> 
+                <h:commandLink value="Send data to server" action="#{yourBean.processPin}" >
+                    <f:ajax execute="pinValuesHiddenContainer" />
+                </h:commandLink>-->
+                
+                
 
                 <!-- Map -->
                 <div id="map"></div>
