@@ -1,3 +1,6 @@
-/nbproject/private/
-/dist/
-/build/
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
