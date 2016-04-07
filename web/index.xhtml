@@ -3,11 +3,13 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:body>
         <ui:composition template="template/siteTemplate.xhtml">
             <!-- Page title -->
             <title><ui:define name="title">StreetSmart</ui:define></title>
+            <h:outputStylesheet name="css/jsfcrud.css"/>
             <!-- Additional CSS styles needed -->
             <ui:define name="css">
                 <link rel="stylesheet" type="text/css" href="resources/css/index.css"/>
@@ -15,15 +17,47 @@
             <!-- Additional JS files needed -->
             <ui:define name="js">
                 <script type="text/javascript" src="resources/js/index.js"></script>
+                <script type="text/javascript" src="resources/js/pins.js"></script>
             </ui:define>
-            
+
             <!-- Page content -->
             <ui:define name="editableContent">
                 <!-- Map menu -->
                 <div id="map-menu">
+                    <!-- Very top -->
                     <div id="map-menu-title">Search and filters</div>
                     <img id="map-menu-close" src="resources/images/menu-hide.png" alt="Close Menu" />
-                    <input id="map-menu-search" class="input-text" type="text"/>
+                    <!-- Change location -->
+                    <input id="map-menu-change-loc" class="input" type="text" placeholder="Change your location"/>
+                    <button id="map-menu-change-loc-btn">
+                        <img src="resources/images/change-loc.png" />
+                    </button>
+                    <!-- Clear + divider -->
+                    <div style="clear: both"></div>
+                    <hr class="map-menu-divider" />
+                    <!-- Filter by keyword -->
+                    <input id="map-menu-filter-keyword" class="input" type="text" placeholder="Filter pins by keyword"/>
+                    <!-- Sort drop down -->
+                    <div id="map-menu-sort-filter">
+                        Sort pins by: 
+                        <select id="map-menu-sort-select" class="input">
+                            <option value="distance">Distance</option>
+                            <option value="newest">Newest</option>
+                            <option value="popular">Popular</option>
+                        </select>
+                    </div>
+                    <!-- Distance check box -->
+                    <div id="map-menu-distance-filter">
+                        <input id="map-menu-distance-checkbox" type="checkbox" />
+                        Only show pins within 
+                        <input id="map-menu-distance-input" class="input" type="text" value="5" /> 
+                        miles
+                    </div>
+                    <!-- Listed pins -->
+                    <div id="map-menu-pins-list">
+                        
+                    </div>
+                    
                     <!-- Pin details goes over the other menu items when displayed -->
                     <div id="map-menu-pin">
                         <img id="map-menu-pin-close" src="resources/images/close.png" alt="Close Menu"/>
@@ -31,7 +65,7 @@
                         <div id="map-menu-pin-message"></div>
                     </div>
                 </div>
-                
+
                 <!-- Map overlays (ordered from highest z-index to lowest) -->
                 <div id="map-loading"></div>
                 <img id="show-menu" src="resources/images/menu-show.png" alt="Show Menu"/>
@@ -40,6 +74,14 @@
                     <div id="map-message"></div> <!-- Gets centered inside parent -->
                 </div>
                 <img id="hidden-add-pin-hover" src="resources/images/add-pin-hover.png" alt=""/> <!-- preload hover img -->
+                
+                <!-- Pin code 
+                <h:inputHidden id="pinValuesHiddenContainer" value="#{pinFacade.valuePin}" /> 
+                <h:commandLink value="Send data to server" action="#{yourBean.processPin}" >
+                    <f:ajax execute="pinValuesHiddenContainer" />
+                </h:commandLink>-->
+                
+                
 
                 <!-- Map -->
                 <div id="map"></div>
@@ -49,5 +91,11 @@
                 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUFqUfsRLDfd4kVe4wYkACPu9Aswm0AT0&amp;callback=initialize" async="async" defer="defer"></script>
             </ui:define>
         </ui:composition>
+        <br />
+        <h:link outcome="/pin/List" value="Show All Pin Items"/>
+        <br />
+        <h:link outcome="/user/List" value="Show All User Items"/>
     </h:body>
+
+
 </html>

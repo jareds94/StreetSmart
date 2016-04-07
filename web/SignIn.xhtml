@@ -16,7 +16,28 @@
             
             <!-- Page content -->
             <ui:define name="editableContent">
-                Sign In page.
+                <div align="center">
+            <h:form class="form-signin">
+                <div align="center">
+                <h:panelGrid columns="2" columnClasses="rightAlign, leftAlign">
+
+                    <h:outputLabel styleClass="outputLabel" for="loginname" value="Username: " />
+                    <h:inputText class="form-control" id="loginname" value="#{loginManager.username}"/>
+                    
+                    <h:outputLabel styleClass="outputLabel" for="password" value="Password: " />
+                    <h:inputSecret class="form-control"  id="password" value="#{loginManager.password}"/>
+                
+                </h:panelGrid>
+                <br/>
+                <fieldset style="width:40%; margin:0 auto;">
+                    <h:commandButton id="login"  action="#{loginManager.loginUser()}" value="Login" styleClass="buttonText"/>
+                    <h:commandButton id="retrieve"  action="#{loginManager.resetPassword()}" value="Forgot Password" styleClass="buttonText"/>                
+                </fieldset>  
+                </div>
+                <br/>
+                <h:outputLabel value ="#{loginManager.errorMessage}" />  
+            </h:form>
+        </div>
             </ui:define>
         </ui:composition>
     </h:body>

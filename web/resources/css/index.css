@@ -27,6 +27,10 @@
     z-index: 2;
 }
 
+/* -----------------
+   START MENU REGION 
+   ----------------- */
+
 #map-menu {
     width: 260px; /* Total width will be 305px after padding and shadow */
     min-height: 100px;
@@ -53,9 +57,61 @@
     cursor: pointer;
 }
 
-#map-menu-search {
-    margin-top: 22px;
+#map-menu-change-loc {
+    float: left;
+    width: 198px;
+    margin-top: 25px;
+    border-radius: 3px 0 0 3px;
+}
+
+#map-menu-change-loc-btn {
+    width: 40px;
+    height: 39px;       /* Height and margin-top off 1px from matching text box... why? */
+    margin-top: 24px;
+    float: left;
+    background-color: #79aceb;
+    border: 1px #5090e0 solid;
+    border-radius: 0 3px 3px 0;
+}
+
+#map-menu-change-loc-btn img {
+    width: 20px;
+}
+
+.map-menu-divider {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin: 13px 0 13px 0;
+    border: 0;
+    border-top: 1px solid #dddddd;
+}
+
+#map-menu-filter-keyword {
+    margin-top: 10px;
     width: 238px;
+    float: left;
+    border-radius: 3px;
+}
+
+#map-menu-sort-filter {
+    font-size: 15px;
+}
+
+#map-menu-sort-select {
+    margin-left: 10px;
+    width: 167px;
+    padding: 5px;
+}
+
+#map-menu-distance-filter {
+    float: left;
+    font-size: 15px;
+}
+
+#map-menu-distance-input {
+    width: 35px;
+    padding: 5px;
 }
 
 #map-menu-pin {
@@ -86,6 +142,10 @@
     padding: 5px;
     font-size: 16px;
 }
+
+/* -----------------
+   END MENU REGION 
+   ----------------- */
 
 #map-message-wrapper {
     display: none;
@@ -176,4 +236,16 @@
     float: left;
     margin-left: -10px;
     margin-top: 15px;
+}
+
+.input {
+    margin: 0 0 10px 0;
+    font-family: 'Franklin Gothic Book';
+    font-size: 15px;
+    appearance: none;
+    box-shadow: none;
+    border-radius: 3px;
+    padding: 10px;
+    border: solid 1px #dcdcdc;
+    transition: box-shadow 0.3s, border 0.3s;
 }
