@@ -54,6 +54,15 @@ $(document).ready(function () {
         var address = $("#map-menu-change-loc").val();
         if (address !== null && address !== "") {
             setMapCenterFromAddress(address);
+        } else {
+            setMapCenterCurrLoc();
+        }
+    });
+    
+    // Trigger change location on enter
+    $("#map-menu-change-loc").keyup(function(event){
+        if (event.keyCode == 13){
+            $("#map-menu-change-loc-btn").click();
         }
     });
 });

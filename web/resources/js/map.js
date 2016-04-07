@@ -30,27 +30,13 @@ function initialize() {
 
         // Show location error message
         if (showLocationError) {
-            showMapMessage("Couldn't get current location.", 5000);
+            showMapMessage("Couldn't get current location. Try entering an address in the menu.", 5000);
             showLocationError = false;
         }
     });
 
-    // Try HTML5 geolocation
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            var pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-            map.setCenter(pos);
-        }, function () {
-            // Error getting geolocation
-            showLocationError = true;
-            if ($("#map-loading").css("display") === "none") {
-                showMapMessage("Couldn't get current location.", 5000);
-            }
-        });
-    }
+    // Initially set map center to their current location
+    setMapCenterCurrLoc();
 
     //#region CustomMarker
 
@@ -218,14 +204,37 @@ function offsetCenter(latlng, offsetx, offsety) {
     map.panTo(newCenter);
 }
 
+function setMapCenterCurrLoc() {
+    // Try HTML5 geolocation
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+            map.setCenter(pos);
+        }, function () {
+            // Error getting geolocation
+            showLocationError = true;
+            if ($("#map-loading").css("display") === "none") {
+                showMapMessage("Couldn't get current location. Try entering an address in the menu.", 5000);
+            }
+        });
+    }
+}
+
 function setMapCenterFromAddress(address) {
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({'address': address}, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             map.setCenter(results[0].geometry.location);
+            // Clear style changes made from error
+            $("#map-menu-change-loc").css("background-color", "#ffffff");
+            $("#map-menu-change-loc").css("border-color", "#dcdcdc");
         } else {
-            alert("error: " + status);
-            // Handle error
+            // Change text box color indicating error
+            $("#map-menu-change-loc").css("background-color", "#fad8d8");
+            $("#map-menu-change-loc").css("border-color", "#de9191");
         }
     });
 }
