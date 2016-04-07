@@ -215,7 +215,7 @@ public class AccountManager implements Serializable {
                 return "";
             }
             initializeSessionMap();
-            return "Profile";
+            return "MyAccount";
         }
         return "";
     }
@@ -235,7 +235,7 @@ public class AccountManager implements Serializable {
                 statusMessage = "Something went wrong while editing your profile!";
                 return "";
             }
-            return "Profile";
+            return "MyAccount";
         }
         return "";
     }

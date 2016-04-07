@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created by Hung Vu on 2016.04.07 
+Copyright Â© 2016 Hung Vu. All rights reserved.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:body>
+        <ui:composition template="template/siteTemplate.xhtml">
+            <!-- Page title -->
+            <title><ui:define name="title">StreetSmart - Enter Username</ui:define></title>
+            <!-- Additional CSS styles needed -->
+            <ui:define name="css">
+                <link rel="stylesheet" type="text/css" href="resources/css/createAccount.css"/>
+            </ui:define>
+            <!-- Additional JS files needed -->
+            
+            <!-- Page content -->
+            <ui:define name="editableContent">
+                <div align="center" style="width:50%; margin:0 auto;">
+            <h:form class="form-signin">
+                <h2 class="form-signin-heading">Please Enter Your Username</h2>
+                <fieldset>
+                    <div class="form-group" style="margin-bottom: 5px">
+                        <h:inputText id="username" value="#{passwordResetManager.username}" required="true"/>
+                    </div>
+                    <br/>
+                    <h:commandButton id="submit" action="#{passwordResetManager.usernameSubmit()}" value="Submit" /> 
+                    <h:button class="btn btn-lg btn-danger" id="cancel" outcome="index" value="Cancel" />
+                </fieldset>  
+                <br/>
+                <h:outputLabel value ="#{passwordResetManager.message}" />                
+            </h:form>
+        </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
