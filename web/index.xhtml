@@ -24,9 +24,40 @@
             <ui:define name="editableContent">
                 <!-- Map menu -->
                 <div id="map-menu">
+                    <!-- Very top -->
                     <div id="map-menu-title">Search and filters</div>
                     <img id="map-menu-close" src="resources/images/menu-hide.png" alt="Close Menu" />
-                    <input id="map-menu-search" class="input-text" type="text"/>
+                    <!-- Change location -->
+                    <input id="map-menu-change-loc" class="input" type="text" placeholder="Change your location"/>
+                    <button id="map-menu-change-loc-btn">
+                        <img src="resources/images/change-loc.png" />
+                    </button>
+                    <!-- Clear + divider -->
+                    <div style="clear: both"></div>
+                    <hr class="map-menu-divider" />
+                    <!-- Filter by keyword -->
+                    <input id="map-menu-filter-keyword" class="input" type="text" placeholder="Filter pins by keyword"/>
+                    <!-- Sort drop down -->
+                    <div id="map-menu-sort-filter">
+                        Sort pins by: 
+                        <select id="map-menu-sort-select" class="input">
+                            <option value="distance">Distance</option>
+                            <option value="newest">Newest</option>
+                            <option value="popular">Popular</option>
+                        </select>
+                    </div>
+                    <!-- Distance check box -->
+                    <div id="map-menu-distance-filter">
+                        <input id="map-menu-distance-checkbox" type="checkbox" />
+                        Only show pins within 
+                        <input id="map-menu-distance-input" class="input" type="text" value="5" /> 
+                        miles
+                    </div>
+                    <!-- Listed pins -->
+                    <div id="map-menu-pins-list">
+                        
+                    </div>
+                    
                     <!-- Pin details goes over the other menu items when displayed -->
                     <div id="map-menu-pin">
                         <img id="map-menu-pin-close" src="resources/images/close.png" alt="Close Menu"/>
