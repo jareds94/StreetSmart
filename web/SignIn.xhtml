@@ -3,7 +3,8 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
     <h:body>
         <ui:composition template="template/siteTemplate.xhtml">
             <!-- Page title -->
@@ -16,28 +17,52 @@
             
             <!-- Page content -->
             <ui:define name="editableContent">
-                <div align="center">
-            <h:form class="form-signin">
-                <div align="center">
-                <h:panelGrid columns="2" columnClasses="rightAlign, leftAlign">
-
-                    <h:outputLabel styleClass="outputLabel" for="loginname" value="Username: " />
-                    <h:inputText class="form-control" id="loginname" value="#{loginManager.username}"/>
-                    
-                    <h:outputLabel styleClass="outputLabel" for="password" value="Password: " />
-                    <h:inputSecret class="form-control"  id="password" value="#{loginManager.password}"/>
-                
-                </h:panelGrid>
-                <br/>
-                <fieldset style="width:40%; margin:0 auto;">
-                    <h:commandButton id="login"  action="#{loginManager.loginUser()}" value="Login" styleClass="buttonText"/>
-                    <h:commandButton id="retrieve"  action="#{loginManager.resetPassword()}" value="Forgot Password" styleClass="buttonText"/>                
-                </fieldset>  
+                <div id="signin-wrapper">
+                    <h:form id="signin">
+                        <h:inputText id="signin-username" class="input" value="#{loginManager.username}"
+                                     a:placeholder="Username" />
+                        <h:inputSecret id="signin-password" class="input" value="#{loginManager.password}"
+                                       a:placeholder="Password" />
+                        <h:outputLabel id="signin-error-message" class="error-message"
+                                       value="#{loginManager.errorMessage}" />
+                        <h:commandButton id="signin-btn" class="btn" value="Sign In" 
+                                         action="#{loginManager.loginUser()}" />
+                        <div id="signin-links">
+                            <h:commandLink action="#{loginManager.createUser()}">
+                                Create Account
+                            </h:commandLink>
+                            <h:commandLink action="#{loginManager.resetPassword()}">
+                                Create Account
+                            </h:commandLink>
+                        </div>
+                    </h:form>
                 </div>
-                <br/>
-                <h:outputLabel value ="#{loginManager.errorMessage}" />  
-            </h:form>
-        </div>
+                
+                
+                <!--
+                <div align="center">
+                    <h:form class="form-signin">
+                        <div align="center">
+                        <h:panelGrid columns="2" columnClasses="rightAlign, leftAlign">
+
+                            <h:outputLabel styleClass="outputLabel" for="loginname" value="Username: " />
+                            
+
+                            <h:outputLabel styleClass="outputLabel" for="password" value="Password: " />
+                            <h:inputSecret class="form-control"  id="password" value="#{loginManager.password}"/>
+
+                        </h:panelGrid>
+                        <br/>
+                        <fieldset style="width:40%; margin:0 auto;">
+                            <h:commandButton id="login"  action="#{loginManager.loginUser()}" value="Login" styleClass="buttonText"/>
+                            <h:commandButton id="retrieve"  action="#{loginManager.resetPassword()}" value="Forgot Password" styleClass="buttonText"/>                
+                        </fieldset>  
+                        </div>
+                        <br/>
+                        <h:outputLabel value ="#{loginManager.errorMessage}" />  
+                    </h:form>
+                </div>
+                    -->
             </ui:define>
         </ui:composition>
     </h:body>
