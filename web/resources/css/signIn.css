@@ -1,0 +1,48 @@
+#signin-wrapper {
+    width: 240px;
+    margin: 0 auto;
+    margin-top: 80px;
+}
+
+#page-title {
+    font-size: 24px;
+    color: #555555;
+    margin-bottom: 15px;
+}
+
+#form\:signin-username {
+    width: 220px;
+    font-size: 16px;
+}
+
+#form\:signin-password {
+    width: 220px;
+    font-size: 16px;
+}
+
+#form\:signin-btn {
+    width: 240px;
+    margin-bottom: 10px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#form\:signin-error-message {
+    width: 220px;
+    margin-bottom: 10px;
+}
+
+#signin-links {
+    font-size: 15px;
+    line-height: 23px;
+}
+
+#signin-links a {
+    color: #d44646;
+    text-decoration: none;
+    border-bottom: 1px #d44646 dotted;
+}
+
+#signin-links a:hover {
+    text-decoration: none;
+}

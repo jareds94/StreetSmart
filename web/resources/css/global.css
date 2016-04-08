@@ -6,6 +6,7 @@
 html, body {
     margin: 0;
     font-family: "Franklin Gothic Book";
+    background-color: #f8f8f8;
 }
 
 #header-wrapper {
@@ -63,8 +64,6 @@ html, body {
     left: 0;
     bottom: 0;
     background-color: #3a3a3a;
-    z-index: -1; /* Prevents footer from moving up when the keyboard is
-                    out on mobile (Android, maybe iPhone too) */
 }
 
 #social-media-icons {
@@ -93,4 +92,34 @@ html, body {
     color: #cdcdcd;
     text-decoration: none;
     border-bottom: 1px #cdcdcd dotted;
+}
+
+.input {
+    margin: 0 0 10px 0;
+    font-family: 'Franklin Gothic Book';
+    font-size: 15px;
+    appearance: none;
+    box-shadow: none;
+    border-radius: 3px;
+    padding: 10px;
+    border: solid 1px #dcdcdc;
+    transition: box-shadow 0.3s, border 0.3s;
+}
+
+.btn {
+    font-family: "Franklin Gothic Book";
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #e35353;
+    border: 1px #c83434 solid;
+    border-radius: 3px;
+}
+
+.error-message {
+    display: inline-block;
+    font-size: 15px;
+    color: #ba2a2a;
+    background-color: #f7d0d0;
+    padding: 10px;
+    border-radius: 3px;
 }
