@@ -5,7 +5,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
     <h:body>
          <h:outputStylesheet name="css/jsfcrud.css"/>
         <h:outputStylesheet library="css" name="globalStyles.css"/>
@@ -20,79 +21,66 @@
             
             <!-- Page content -->
             <ui:define name="editableContent">
-                 <div align="center" style="width:50%; margin:0 auto;">
-            <h:form class="form-signin">
-                <h2 class="form-signin-heading">New Account</h2>
-                <br/>
-                <f:event listener="#{accountManager.validateInformation}" type="postValidate"/>
-                <p:panel id="panel" 
-                         style="width: 400px; border: 0px solid white">
-                <p:messages id="msgs" />
-
-                <h:panelGrid columns="3" cellpadding="5">
-                    <p:outputLabel for="firstName" value="First Name" />
-                    <h:inputText id="firstName" value="#{accountManager.firstName}" 
-                                 required="true" label="First Name">
-                        <f:validateLength minimum="2" />
-                    </h:inputText>
-                    <p:message for="firstName" display="icon" />
-                    
-                    <p:outputLabel for="lastName" value="Last Name" />
-                    <h:inputText id="lastName" value="#{accountManager.lastName}" 
-                                 required="true" label="Last Name">
-                        <f:validateLength minimum="2" />
-                    </h:inputText>
-                    <p:message for="lastName" display="icon" />
-
-                    <p:outputLabel for="security_ques" value="Security Question" />
-                    <h:selectOneMenu id="security_ques" value="#{accountManager.security_question}" required="true">
-                        <f:selectItems value="#{accountManager.security_questions}"/>
-                    </h:selectOneMenu>
-                    <p:message for="security_ques" display="icon" />                    
-                  
-                    <p:outputLabel for="security_ans" value="Answer" />
-                    <h:inputText id="security_ans" value="#{accountManager.security_answer}" 
-                                 required="true" label="city">
-                        <f:validateLength minimum="4" />
-                    </h:inputText>
-                    <p:message for="security_ans" display="icon" />                    
-                    
-                    <p:outputLabel for="email" value="Email:" />
-                    <h:inputText id="email" value="#{accountManager.email}" 
-                                 label="Email" required="true">
-                        <f:validateLength minimum="2" />
-                        <f:validator validatorId="emailValidator" /> 
-                    </h:inputText>
-                    <p:message for="email" display="icon" />
-
-                    <p:outputLabel for="username" value="Username:" />
-                    <h:inputText id="username" value="#{accountManager.username}" 
-                                 required="true" label="Username">
-                        <f:validateLength minimum="4" />
-                    </h:inputText>
-                    <p:message for="username" display="icon" />
-
-                    <p:outputLabel for="password" value="Password:" />
-                    <h:inputSecret id="password" value="#{accountManager.password}" 
-                                required="true" label="Password">
-                        <f:validator validatorId="passwordValidator" /> 
-                    </h:inputSecret>
-                    <p:message for="password" display="icon" />
-
-                    <p:outputLabel for="confirmPassword" value="Confirm Password:" />
-                    <h:inputSecret id="confirmPassword" 
-                                required="true" label="Confirm Password">
-                    </h:inputSecret>
-                    <p:message for="confirmPassword" display="icon"/>
-                </h:panelGrid>
-            </p:panel>
-            <h:outputLabel id="error" value="#{accountManager.statusMessage}"  />
-            <br/>
-            <h:commandButton class="btn btn-lg btn-success btn-block" id="submit" 
-                             action="#{accountManager.createAccount()}" value="Submit" />   
-            <h:button class="btn btn-lg btn-danger" id="cancel" outcome="index" value="Cancel" />
-            </h:form>
-                 </div>
+                <div id="create-account-wrapper">
+                    <!-- Page title -->
+                    <div id="page-title">Create Account</div>
+                    <h:form id="form">
+                        <!-- Validator -->
+                        <f:event listener="#{accountManager.validateInformation}" type="postValidate"/>
+                        <!-- Input fields -->
+                        <h:inputText id="first-name" label="First Name" 
+                                     styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                     value="#{accountManager.firstName}" a:placeholder="First Name*"
+                                     required="true" requiredMessage="First Name is required." />
+                        <h:inputText id="last-name" label="Last Name" 
+                                     styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                     value="#{accountManager.lastName}" a:placeholder="Last Name*"
+                                     required="true" requiredMessage="Last Name is required." />
+                        <h:inputText id="username" label="Username" 
+                                     styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                     value="#{accountManager.username}" a:placeholder="Username*"
+                                     required="true" requiredMessage="Username is required.">
+                            <f:validator validatorId="usernameValidator" />
+                        </h:inputText>
+                        <h:inputText id="email" label="Email" 
+                                     styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                     value="#{accountManager.email}" a:placeholder="Email*"
+                                     required="true" requiredMessage="Email is required.">
+                            <f:validator validatorId="emailValidator" />
+                        </h:inputText>
+                        <h:selectOneMenu id="security-question" label="Security Questions" styleClass="input-control"
+                                         value="#{accountManager.security_question}" required="true">
+                            <f:selectItems value="#{accountManager.security_questions}" />
+                        </h:selectOneMenu>
+                        <h:inputText id="security-answer" label="Security Answer" 
+                                     styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                     value="#{accountManager.password}" a:placeholder="Security Answer*"
+                                     required="true" requiredMessage="Security Answer is required." />
+                        <h:inputSecret id="password" label="Password" 
+                                     styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                     value="#{accountManager.security_answer}" a:placeholder="Password*"
+                                     required="true" requiredMessage="Password is required.">
+                            <f:validator validatorId="passwordValidator" />
+                        </h:inputSecret>
+                        <h:inputSecret id="confirm-password" label="Confirm Password" 
+                                     styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                     value="#{accountManager.password}" a:placeholder="Confirm Password*"
+                                     required="true" requiredMessage="Confirm Password is required." />
+                        <!-- Error messages output -->
+                        <div id="messages-wrapper">
+                            <p:messages id="msgs" showIcon="false" />
+                            <h:outputLabel id="form-error-message" class="error-message"
+                                           value="#{accountManager.statusMessage}" />
+                        </div>
+                        <!-- Create account / cancel buttons -->
+                        <h:commandButton id="create-account-btn" class="btn" value="Create Account"
+                                         action="#{accountManager.createAccount()}" />
+                        <h:button id="cancel-btn" class="btn" value="Cancel" outcome="index" />
+                        
+                        <!-- Page bottom fix -->
+                        <div id="page-bottom-padding">&nbsp;</div>
+                    </h:form>
+                </div>
             </ui:define>
         </ui:composition>
     </h:body>

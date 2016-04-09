@@ -12,29 +12,28 @@ import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
-@FacesValidator("emailValidator")
+@FacesValidator("usernameValidator")
 /**
  *
  * @author Kevin
  */
-public class EmailValidator implements Validator {
+public class UsernameValidator implements Validator {
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         
         // Typecast the password "value" entered by the user to String.
-        String email = (String) value;
+        String username = (String) value;
 
-        if (email == null || email.isEmpty()) {
+        if (username == null || username.isEmpty()) {
             // Do not take any action. 
             // The required="true" in the XHTML file will catch this and produce an error message.
             return;
         }
-        
-        // Validate if the email address entered by the user is in the right format.
-        String regex = "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)";
-        if (!email.matches(regex)) {
-            throw new ValidatorException(new FacesMessage("Email is not a valid address."));
+       
+        // Make sure the length isn't less than 4 characters
+        if (username.length() < 4) {
+            throw new ValidatorException(new FacesMessage("Username must be at least 4 characters."));
         }        
     } 
     
