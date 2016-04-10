@@ -66,7 +66,7 @@
                     </div>
                 </div>
 
-                <!-- Map overlays (ordered from highest z-index to lowest) -->
+                <!-- Map overlays (ordered from highest z-index to lowest)-->
                 <div id="map-loading"></div>
                 <img id="show-menu" src="resources/images/menu-show.png" alt="Show Menu"/>
                 <div class="add-pin-button"></div>
@@ -74,15 +74,13 @@
                     <div id="map-message"></div> <!-- Gets centered inside parent -->
                 </div>
                 <img id="hidden-add-pin-hover" src="resources/images/add-pin-hover.png" alt=""/> <!-- preload hover img -->
-                
-                <!-- Pin code 
-                <h:inputHidden id="pinValuesHiddenContainer" value="#{pinFacade.valuePin}" /> 
-                <h:commandLink value="Send data to server" action="#{yourBean.processPin}" >
-                    <f:ajax execute="pinValuesHiddenContainer" />
-                </h:commandLink>-->
-                
-                
 
+                <!-- Opens pin creation menu -->
+                <h:form id="pinDialogueForm">
+                    <h:commandButton id="createPin" action="CreatePin?faces-redirect=true" value="Open create pin menu">
+                    </h:commandButton>                                                        
+                </h:form>
+                             
                 <!-- Map -->
                 <div id="map"></div>
 
@@ -96,6 +94,4 @@
         <br />
         <h:link outcome="/user/List" value="Show All User Items"/>
     </h:body>
-
-
 </html>

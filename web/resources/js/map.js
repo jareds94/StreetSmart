@@ -1,6 +1,7 @@
 // Global variables
 var map;
 var selectedPinLoc;
+var pos;
 
 // Called when map loads
 function initialize() {
@@ -210,9 +211,16 @@ function setMapCenterCurrLoc() {
         navigator.geolocation.getCurrentPosition(function (position) {
             var pos = {
                 lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-            map.setCenter(pos);
+                lng: position.coords.longitude,
+                coordinates: function () {
+                           return this.lat + " " + this.lng;
+                       }
+                   };
+            // Set the hidden element that holds current coordinates if it exists
+            // on the current xhtml page
+            if(document.getElementById('pinForm:pinDataHiddenContainer') !== null) {
+                document.getElementById('pinForm:pinDataHiddenContainer').value = pos.coordinates();
+            }
         }, function () {
             // Error getting geolocation
             showLocationError = true;
@@ -237,4 +245,11 @@ function setMapCenterFromAddress(address) {
             $("#map-menu-change-loc").css("border-color", "#de9191");
         }
     });
+}
+
+window.onload = function() {
+    // Set center if map is visible
+    if(map !== null) {
+        setMapCenterCurrLoc();
+    }
 }

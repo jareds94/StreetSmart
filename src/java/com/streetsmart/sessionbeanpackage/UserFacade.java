@@ -28,7 +28,7 @@ public class UserFacade extends AbstractFacade<User> {
         super(User.class);
     }
     
-        //-----------------------------------------------------
+    //-----------------------------------------------------
     //The following methods are added to the generated code
     //-----------------------------------------------------
     

@@ -28,4 +28,7 @@ public class PinFacade extends AbstractFacade<Pin> {
         super(Pin.class);
     }
     
+    //-----------------------------------------------------
+    //The following methods are added to the generated code
+    //-----------------------------------------------------
 }
