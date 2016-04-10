@@ -24,7 +24,9 @@
             <!-- Page content -->
             <ui:define name="editableContent">
                 <!-- Pin creation form-->
-                <h:form id="pinForm">                  
+                <h:form id="pinForm">
+                    <p:outputLabel value="Create Pin" />
+                    <br/>
                     <h:panelGrid columns="3" cellpadding="5">
                         <p:outputLabel for="title" value="Title" />
                         <h:inputText id="title" value="#{accountManager.pinTitle}" 
@@ -45,8 +47,9 @@
                         
                     </h:panelGrid>
                     <br/>                   
-                    <h:commandButton id="createPin" onclick="#{accountManager.createPin()}" value="Create Pin At Current Location">                        
+                    <h:commandButton id="createPin" action="#{accountManager.createPin()}" value="Create Pin At Current Location">                        
                     </h:commandButton>
+                    <h:button id="cancel" outcome="index" value="Cancel" />
                     <!-- Contains the browser's current location as "[lat] [long]". 
                          Populated on window load. See window.onload() in map.js.-->
                     <h:inputHidden id="pinDataHiddenContainer" value="#{accountManager.locationData}" />

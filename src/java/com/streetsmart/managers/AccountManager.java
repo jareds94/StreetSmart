@@ -338,9 +338,7 @@ public class AccountManager implements Serializable {
 //        return photoList.get(0).getThumbnailName();
 //    }
 
-
     /* Added methods */
-
     public String getLocationData() {
         return locationData;
     }
@@ -377,17 +375,14 @@ public class AccountManager implements Serializable {
         
         locationData = FacesContext.getCurrentInstance().
 		getExternalContext().getRequestParameterMap().get("pinForm:pinDataHiddenContainer");
-        if(locationData != null)
+        if(locationData != null && locationData.length() > 7)
         {
             // Parse out latitiude and longitude from container
             String[] latAndLong = locationData.split(" ");
             
             // Generate timestamp for pin posting time
             int timestamp = (int) (new Date().getTime()/1000);
-            
-            // Determine whether the pin posting is anonymous
-            
-
+                    
             try {
                 Pin pin;
                 pin = new Pin();
@@ -397,11 +392,11 @@ public class AccountManager implements Serializable {
                 // in, set the associated User id.
                 if(!pinAnonymous && selected != null) {
                     pin.setUserId(selected.getId());
-                }
-                // Otherwise, set the id to a row in the User table associated
-                // with all anonymous users (i.e. users are anonymous with id
-                // = 1)
+                }               
                 else { 
+                    // Otherwise, set the id to a row in the User table associated
+                    // with all anonymous users (i.e. users are anonymous with id
+                    // = 1)
                     pin.setUserId(1);
                 }
                         
