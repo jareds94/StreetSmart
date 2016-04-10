@@ -1,0 +1,37 @@
+#enter-username-wrapper {
+    width: 240px;
+    margin: 0 auto;
+    margin-top: 80px;
+}
+
+#page-title {
+    font-size: 24px;
+    color: #555555;
+    margin-bottom: 15px;
+}
+
+#form\:username {
+    width: 220px;
+    font-size: 16px;
+}
+
+#form\:submit-btn {
+    width: 115px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#form\:cancel-btn {
+    width: 115px;
+    background-color: #999999;
+    cursor: pointer;
+}
+
+#form\:form-error-message {
+    width: 220px;
+    margin-bottom: 10px;
+}
+
+#form\:form-error-message:empty {
+    display: none;
+}
