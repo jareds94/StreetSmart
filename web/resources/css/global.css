@@ -5,8 +5,14 @@
 
 html, body {
     margin: 0;
+    height: 100%;
     font-family: "Franklin Gothic Book";
     background-color: #f0f0f0;
+}
+
+#body-wrapper {
+    min-height: 100%;
+    position: relative;
 }
 
 #header-wrapper {
@@ -60,6 +66,8 @@ html, body {
     width: 100%;
     min-width: 600px;
     height: 60px;
+    position: absolute;
+    bottom: 0;
     background-color: #3a3a3a;
 }
 
@@ -89,6 +97,10 @@ html, body {
     color: #cdcdcd;
     text-decoration: none;
     border-bottom: 1px #cdcdcd dotted;
+}
+
+#page-bottom-padding {
+    height: 140px;
 }
 
 .input-control {
