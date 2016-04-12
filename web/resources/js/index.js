@@ -8,6 +8,12 @@ $(document).ready(function () {
         $(this).toggleClass("add-pin-button-hover");
     });
     
+    // Add pin hover mobile fix
+    $(".add-pin-button").bind("click", function (e) {
+        e.preventDefault();
+        window.location.replace("CreatePin.xhtml");
+    });
+    
     // Map menu is open on load
     $("#map-menu").addClass("open");
     
