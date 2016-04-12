@@ -418,4 +418,9 @@ public class AccountManager implements Serializable {
         }
         return "";
     }
+      
+    /* Check session map for username to see if anyone is logged in */
+    public boolean isLoggedIn() {
+        return FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username") != null;
+    }
 }
