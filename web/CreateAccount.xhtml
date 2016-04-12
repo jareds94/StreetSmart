@@ -54,11 +54,11 @@
                         </h:selectOneMenu>
                         <h:inputText id="security-answer" label="Security Answer" 
                                      styleClass="input-control #{component.valid?'':'validation-failed'}"
-                                     value="#{accountManager.password}" a:placeholder="Security Answer*"
+                                     value="#{accountManager.security_answer}" a:placeholder="Security Answer*"
                                      required="true" requiredMessage="Security Answer is required." />
                         <h:inputSecret id="password" label="Password" 
                                      styleClass="input-control #{component.valid?'':'validation-failed'}"
-                                     value="#{accountManager.security_answer}" a:placeholder="Password*"
+                                     value="#{accountManager.password}" a:placeholder="Password*"
                                      required="true" requiredMessage="Password is required.">
                             <f:validator validatorId="passwordValidator" />
                         </h:inputSecret>

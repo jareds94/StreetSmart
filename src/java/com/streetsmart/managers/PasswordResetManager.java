@@ -108,6 +108,7 @@ public class PasswordResetManager implements Serializable{
         if (pwd.isEmpty() || confirmPassword.isEmpty()) {
             // Do not take any action. 
             // The required="true" in the XHTML file will catch this and produce an error message.
+            message = "Please enter a new password!";
             return;
         }
 
