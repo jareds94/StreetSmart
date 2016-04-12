@@ -17,14 +17,12 @@
 
 #form\:submit-btn {
     width: 115px;
-    cursor: pointer;
     margin-right: 10px;
 }
 
 #form\:cancel-btn {
     width: 115px;
     background-color: #999999;
-    cursor: pointer;
 }
 
 #form\:form-error-message {
