@@ -26,21 +26,21 @@
                     <h:commandButton value="Log Out" action="#{accountManager.logout()}" />
                 <br/>
                 <br/>
-                <p:tabView  >
-                  <p:tab title="Basic Info">
-                    <!-- Basic Info goes here -->
-                    <h:panelGrid columns="2" cellpadding="6">
-                      <h:outputText value="First Name: " />
-                      <h:outputText value="#{profileViewManager.loggedInUser.firstName}" />
-                      
-                      <h:outputText value="Last Name: " />
-                      <h:outputText value="#{profileViewManager.loggedInUser.lastName}" />
+                <!-- Basic Info goes here -->
+                <h:panelGrid columns="2" cellpadding="6">
+                    <h:outputText value="First Name: " />
+                    <h:outputText value="#{profileViewManager.loggedInUser.firstName}" />
+                     
 
-                      <h:outputText value="Email " />
-                      <h:outputText value="#{profileViewManager.loggedInUser.email}" />
-                    </h:panelGrid>
-                  </p:tab>           
-                </p:tabView>
+                    <h:outputText value="Last Name: " />
+                    <h:outputText value="#{profileViewManager.loggedInUser.lastName}" />     
+
+                    <h:outputText value="Email: " />
+                    <h:outputText value="#{profileViewManager.loggedInUser.email}" />
+                    
+                    <h:outputText value="Posted Pins: " />
+                    <h:outputText value="#{accountManager.getPostedPins()}" />
+                </h:panelGrid>
                 <br/>
                 <br/>
             </h:form>

@@ -373,8 +373,8 @@ public class AccountManager implements Serializable {
          
     public String createPin() {
         
-        locationData = FacesContext.getCurrentInstance().
-		getExternalContext().getRequestParameterMap().get("pinForm:pinDataHiddenContainer");
+        //locationData = FacesContext.getCurrentInstance().
+	//	getExternalContext().getRequestParameterMap().get("pinForm:pinDataHiddenContainer");
         if(locationData != null && locationData.length() > 7)
         {
             // Parse out latitiude and longitude from container
@@ -422,5 +422,25 @@ public class AccountManager implements Serializable {
     /* Check session map for username to see if anyone is logged in */
     public boolean isLoggedIn() {
         return FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username") != null;
+    } 
+      
+    /**
+     * 
+     * @return 
+     */
+    public String getPostedPins() {
+        String pins = "";
+        if(this.isLoggedIn()) {
+            List<Pin> postedPins = pinFacade.findAllPinsWithUserId(this.getSelected().getId());
+            
+            if(postedPins == null || postedPins.isEmpty()) {
+                pins = "No pins posted yet.";
+            }
+            
+            for(Pin pin: postedPins) {
+                pins += pin.getTitle();
+            }
+        }
+        return pins;
     }
 }
