@@ -14,18 +14,6 @@
                 <link rel="stylesheet" type="text/css" href="resources/css/signIn.css"/>
             </ui:define>
             <!-- Additional JS files needed -->
-            <ui:define name="js">
-                <script type="text/javascript">
-                    $(document).ready(function () {
-                        // Hide error messages when there isn't an error
-                        $(".error-message").each(function (i, val) {
-                            if ($(this).text() === "") {
-                                $(this).hide();
-                            }
-                        });
-                    });
-                </script>
-            </ui:define>
             
             <!-- Page content -->
             <ui:define name="editableContent">
@@ -34,17 +22,16 @@
                     <div id="page-title">Sign In</div>
                     <h:form id="form">
                         <!-- Input fields -->
-                        <h:inputText id="signin-username" class="input" value="#{loginManager.username}"
+                        <h:inputText id="username" class="input-control" value="#{loginManager.username}"
                                      a:placeholder="Username" />
-                        <h:inputSecret id="signin-password" class="input" value="#{loginManager.password}"
+                        <h:inputSecret id="password" class="input-control" value="#{loginManager.password}"
                                        a:placeholder="Password" />
                         <!-- Error message -->
-                        <h:outputLabel id="signin-error-message" class="error-message"
+                        <h:outputLabel id="form-error-message" class="error-message"
                                        value="#{loginManager.errorMessage}" />
                         <!-- Sign in message -->
                         <h:commandButton id="signin-btn" class="btn" value="Sign In" 
                                          action="#{loginManager.loginUser()}" />
-                        
                         <!-- Create account / forgot password links -->
                         <div id="signin-links">
                             <h:commandLink action="#{loginManager.createUser()}">

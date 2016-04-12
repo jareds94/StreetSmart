@@ -275,7 +275,7 @@ public class AccountManager implements Serializable {
                 : uiInputPassword.getLocalValue().toString();
 
         // Get confirm password
-        UIInput uiInputConfirmPassword = (UIInput) components.findComponent("confirmPassword");
+        UIInput uiInputConfirmPassword = (UIInput) components.findComponent("confirm-password");
         String confirmPassword = uiInputConfirmPassword.getLocalValue() == null ? ""
                 : uiInputConfirmPassword.getLocalValue().toString();
 

@@ -101,7 +101,7 @@ public class PasswordResetManager implements Serializable{
                 : uiInputPassword.getLocalValue().toString();
 
         // get confirm password
-        UIInput uiInputConfirmPassword = (UIInput) components.findComponent("confirmPassword");
+        UIInput uiInputConfirmPassword = (UIInput) components.findComponent("confirm-password");
         String confirmPassword = uiInputConfirmPassword.getLocalValue() == null ? ""
                 : uiInputConfirmPassword.getLocalValue().toString();
 
@@ -115,7 +115,11 @@ public class PasswordResetManager implements Serializable{
             message = "Passwords must match!";
         } else {
             message = "";
-        }   
+        }
+        
+        if (pwd.length() < 4) {
+            message = "Password must be at least 4 characters.";
+        }
     }   
 
     public String getPassword() {

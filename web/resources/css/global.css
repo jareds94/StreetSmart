@@ -60,9 +60,6 @@ html, body {
     width: 100%;
     min-width: 600px;
     height: 60px;
-    position: absolute;
-    left: 0;
-    bottom: 0;
     background-color: #3a3a3a;
 }
 
@@ -94,7 +91,7 @@ html, body {
     border-bottom: 1px #cdcdcd dotted;
 }
 
-.input {
+.input-control {
     margin: 0 0 10px 0;
     font-family: 'Franklin Gothic Book';
     font-size: 15px;
@@ -110,16 +107,54 @@ html, body {
     font-family: "Franklin Gothic Book";
     font-size: 16px;
     color: #ffffff;
+    padding: 10px;
     background-color: #e35353;
-    border: 1px #c83434 solid;
+    border: none;
     border-radius: 3px;
 }
 
 .error-message {
     display: inline-block;
-    font-size: 15px;
+    font-family: 'Franklin Gothic Book';
+    font-size: 11pt;
     color: #ba2a2a;
     background-color: #f7d0d0;
     padding: 10px;
     border-radius: 3px;
+    font-weight: normal;
+}
+
+.error-message:empty {
+    display: none;
+}
+
+.validation-failed {
+    background-color: #f7e2e2;
+}
+
+.ui-messages-info, 
+.ui-messages-warn, 
+.ui-messages-error, 
+.ui-messages-fatal {
+    display: inline-block;
+    margin: 10px 0 0 0;
+    font-family: 'Franklin Gothic Book';
+    font-size: 11pt;
+    font-weight: normal;
+    color: #ba2a2a;
+    background-color: #f7d0d0;
+    padding: 10px;
+    border-radius: 3px;
+    border: none;
+    width: 440px;
+}
+
+.ui-messages-info-summary, 
+.ui-messages-warn-summary, 
+.ui-messages-error-summary, 
+.ui-messages-fatal-summary {
+    display: block;
+    margin: 0;
+    padding: 1px;
+    font-weight: normal;
 }

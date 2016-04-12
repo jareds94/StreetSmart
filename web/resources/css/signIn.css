@@ -10,12 +10,12 @@
     margin-bottom: 15px;
 }
 
-#form\:signin-username {
+#form\:username {
     width: 220px;
     font-size: 16px;
 }
 
-#form\:signin-password {
+#form\:password {
     width: 220px;
     font-size: 16px;
 }
@@ -23,11 +23,10 @@
 #form\:signin-btn {
     width: 240px;
     margin-bottom: 10px;
-    padding: 10px;
     cursor: pointer;
 }
 
-#form\:signin-error-message {
+#form\:form-error-message {
     width: 220px;
     margin-bottom: 10px;
 }

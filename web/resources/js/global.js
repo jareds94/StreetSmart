@@ -19,10 +19,10 @@ function positionFooter() {
     if ($("body").height() < $(window).height()) {
         $("#footer-wrapper").css("position", "absolute");
         $("#footer-wrapper").css("bottom", "0px");
-        $("#page-bottom-padding").css("height", "120px");
+        $("#page-bottom-padding").css("height", "140px");
     } else {
         $("#footer-wrapper").css("position", "relative");
         $("#footer-wrapper").css("bottom", "");
-        $("#page-bottom-padding").css("height", "60px");
+        $("#page-bottom-padding").css("height", "80px");
     }
 }
