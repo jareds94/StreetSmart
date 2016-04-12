@@ -10,13 +10,15 @@
             <a style="border: none" href="index.xhtml"><img id="ss-logo" src="resources/images/logo.png" alt="StreetSmart Logo"/></a>
             <img id="ss-name" src="resources/images/streetsmart.png" alt="StreetSmart"/>
             <div id="header-buttons">
-                <h:form>
+                <h:form id="header-links-form">
                     <c:if test="#{accountManager.isLoggedIn() == true}">
-                        <h:link outcome="MyAccount" class="header-btn">My Account</h:link>
+                        <h:link id="home-btn" outcome="index" class="header-btn">Home</h:link>&nbsp;
+                        <h:link outcome="MyAccount" class="header-btn">My Account</h:link>&nbsp;
                         <h:commandLink action="#{accountManager.logout()}" class="header-btn">Sign Out</h:commandLink>
                     </c:if>
                     <c:if test="#{accountManager.isLoggedIn() == false}">
-                        <h:link outcome="SignIn" class="header-btn">Sign In</h:link>
+                        <h:link id="home-btn" outcome="index" class="header-btn">Home</h:link>&nbsp;
+                        <h:link outcome="SignIn" class="header-btn">Sign In</h:link>&nbsp;
                         <h:link outcome="CreateAccount" class="header-btn">Create Account</h:link>
                     </c:if>
                 </h:form>
