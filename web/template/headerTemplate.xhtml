@@ -3,15 +3,24 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <body>
         <ui:composition>
             <a style="border: none" href="index.xhtml"><img id="ss-logo" src="resources/images/logo.png" alt="StreetSmart Logo"/></a>
             <img id="ss-name" src="resources/images/streetsmart.png" alt="StreetSmart"/>
             <div id="header-buttons">
-                <a class="header-btn" href="SignIn.xhtml">Sign In</a>
-                <a class="header-btn" href="CreateAccount.xhtml">Create Account</a>
-            </div>
+                <h:form>
+                    <c:if test="#{accountManager.isLoggedIn() == true}">
+                        <h:link outcome="MyAccount" class="header-btn">My Account</h:link>
+                        <h:commandLink action="#{accountManager.logout()}" class="header-btn">Sign Out</h:commandLink>
+                    </c:if>
+                    <c:if test="#{accountManager.isLoggedIn() == false}">
+                        <h:link outcome="SignIn" class="header-btn">Sign In</h:link>
+                        <h:link outcome="CreateAccount" class="header-btn">Create Account</h:link>
+                    </c:if>
+                </h:form>
+            </div>          
         </ui:composition>
     </body>
 </html>
