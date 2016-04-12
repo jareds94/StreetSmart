@@ -14,9 +14,6 @@ $(document).ready(function () {
         window.location.replace("CreatePin.xhtml");
     });
     
-    // Map menu is open on load
-    $("#map-menu").addClass("open");
-    
     // Open menu
     $("#show-menu").bind("click", function (e) {
         $("#map-menu").addClass("open");
