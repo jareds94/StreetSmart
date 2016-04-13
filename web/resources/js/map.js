@@ -238,14 +238,15 @@ function setMapCenterCurrLoc() {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
                 coordinates: function () {
-                           return this.lat + " " + this.lng;
-                       }
-                   };
+                    return this.lat + " " + this.lng;
+                }
+            };
             // Set the hidden element that holds current coordinates if it exists
             // on the current xhtml page
-            if(document.getElementById('pinForm:pinDataHiddenContainer') !== null) {
-                document.getElementById('pinForm:pinDataHiddenContainer').value = pos.coordinates();
+            if(document.getElementById('create-pin-form:pinDataHiddenContainer') !== null) {
+                document.getElementById('create-pin-form:pinDataHiddenContainer').value = pos.coordinates();
             }
+            map.setCenter(pos);
         }, function () {
             // Error getting geolocation
             showLocationError = true;
@@ -277,4 +278,4 @@ window.onload = function() {
     if(map !== null) {
         setMapCenterCurrLoc();
     }
-}
+};

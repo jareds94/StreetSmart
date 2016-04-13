@@ -5,6 +5,7 @@
 package com.streetsmart.sessionbeanpackage;
 
 import com.streetsmart.entitypackage.Pin;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,4 +32,22 @@ public class PinFacade extends AbstractFacade<Pin> {
     //-----------------------------------------------------
     //The following methods are added to the generated code
     //-----------------------------------------------------
+    
+    /**
+     * Finds all pins under an associated user id in the Pin table.
+     * @param userId
+     * @return 
+     */
+    public List<Pin> findAllPinsWithUserId(int userId) {
+        if (em.createQuery("SELECT p FROM Pin p WHERE p.userId = :uid")
+                .setParameter("uid", userId)
+                .getResultList().isEmpty()) {
+            return null;
+        }
+        else {
+            return (List<Pin>) (em.createQuery("SELECT p FROM Pin p WHERE p.userId = :uid")
+                .setParameter("uid", userId)
+                .getResultList());        
+        }
+    }
 }

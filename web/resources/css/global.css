@@ -5,8 +5,14 @@
 
 html, body {
     margin: 0;
+    height: 100%;
     font-family: "Franklin Gothic Book";
-    background-color: #f8f8f8;
+    background-color: #f0f0f0;
+}
+
+#body-wrapper {
+    min-height: 100%;
+    position: relative;
 }
 
 #header-wrapper {
@@ -36,7 +42,7 @@ html, body {
 }
 
 .header-btn {
-    margin: 0 0 0 15px;
+    margin: 0 0 0 10px;
     padding: 6px 15px 8px 15px;
     color: #ffffff;
     text-decoration: none;
@@ -60,6 +66,8 @@ html, body {
     width: 100%;
     min-width: 600px;
     height: 60px;
+    position: absolute;
+    bottom: 0;
     background-color: #3a3a3a;
 }
 
@@ -91,6 +99,10 @@ html, body {
     border-bottom: 1px #cdcdcd dotted;
 }
 
+#page-bottom-padding {
+    height: 140px;
+}
+
 .input-control {
     margin: 0 0 10px 0;
     font-family: 'Franklin Gothic Book';
@@ -111,6 +123,7 @@ html, body {
     background-color: #e35353;
     border: none;
     border-radius: 3px;
+    cursor: pointer;
 }
 
 .error-message {

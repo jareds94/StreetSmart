@@ -195,6 +195,44 @@
     background-size: 100%;
 }
 
+#create-pin-dialog {
+    display: none;
+    background-color: #f0f0f0;
+}
+
+#create-pin-form\:title {
+    font-family: "Franklin Gothic Book" !important;
+    margin-top: 7px;
+    width: 246px;
+}
+
+#create-pin-form\:description {
+    font-family: "Franklin Gothic Book" !important;
+    width: 246px;
+    height: 60px;
+    resize:vertical;
+}
+
+#create-pin-form\:browse-btn {
+    width: 266px;
+    margin: 5px 0 12px 0;
+    font-family: "Franklin Gothic Book" !important;
+    font-size: 14px;
+}
+
+#create-pin-form\:create-btn {
+    float: right;
+    font-family: "Franklin Gothic Book" !important;
+    margin: 0 0 10px 0;
+}
+
+#create-pin-form\:cancel-btn {
+    float: right;
+    font-family: "Franklin Gothic Book" !important;
+    background-color: #999999;
+    margin: 0 0 10px 10px;
+}
+
 .pin-wrapper {
     position: absolute;
     height: 50px;
