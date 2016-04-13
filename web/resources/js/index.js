@@ -2,6 +2,9 @@
 $(document).ready(function () {
     resizeMapComponents($(window).width(), $(window).height() - 130, 0);
     
+    // Hide home button
+    $("#header-links-form\\:home-btn").hide();
+    
     // Add pin hover mobile fix
     $(".add-pin-button").bind("touchstart touchend mouseover mouseout", function (e) {
         e.preventDefault();

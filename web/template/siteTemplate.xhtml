@@ -15,20 +15,22 @@
         <ui:insert name="js" />
     </h:head>
     <h:body>
-        <div id="header-wrapper">
-            <ui:insert name="header">
-                <ui:include src="headerTemplate.xhtml" />
-            </ui:insert>
-        </div>
-        <div id="content-container">
-            <ui:insert name="editableContent" >
-                <ui:include src="contentTemplate.xhtml" />
-            </ui:insert>
-        </div>
-        <div id="footer-wrapper">
-            <ui:insert name="footer">
-                <ui:include src="footerTemplate.xhtml" />
-            </ui:insert>
+        <div id="body-wrapper">
+            <div id="header-wrapper">
+                <ui:insert name="header">
+                    <ui:include src="headerTemplate.xhtml" />
+                </ui:insert>
+            </div>
+            <div id="content-container">
+                <ui:insert name="editableContent" >
+                    <ui:include src="contentTemplate.xhtml" />
+                </ui:insert>
+            </div>
+            <div id="footer-wrapper">
+                <ui:insert name="footer">
+                    <ui:include src="footerTemplate.xhtml" />
+                </ui:insert>
+            </div>
         </div>
     </h:body>
 </html>
