@@ -140,32 +140,57 @@ function initialize() {
     };
 
     //#endregion
+    
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            var data = xhr.responseText;
+            var jsonResult = JSON.parse(data);
+            for (var i = 0; i < jsonResult.length; i++){
+                var curPin = jsonResult[i];
+                overlay = new CustomMarker(
+                    new google.maps.LatLng(curPin.latitude, curPin.longitude),
+                    map,
+                    {marker_id: curPin.id},
+                    "resources/images/profile-picture.png",
+                    curPin.description
+                    );
+            }
+        }
+    };
+    // Change endpoint to venus when venus works.
+    xhr.open('GET', 'http://jupiter.cs.vt.edu/StreetSmartREST-1.0/webresources/com.mycompany.streetsmartrest.pin', true);
+    xhr.send(null);
 
-    // Add pins
-    overlay = new CustomMarker(
-            new google.maps.LatLng(37.2277411, -80.422268),
-            map,
-            {marker_id: '1'},
-            "resources/images/profile-picture.png",
-            "This is an example pin. Something is going on " +
-            "at this location!"
-            );
-    overlay = new CustomMarker(
-            new google.maps.LatLng(37.2237411, -80.429268),
-            map,
-            {marker_id: '2'},
-            "resources/images/profile-picture-2.png",
-            "This is also an example pin. Something else is going " +
-            "on at this location!"
-            );
-    overlay = new CustomMarker(
-            new google.maps.LatLng(37.2270411, -80.436268),
-            map,
-            {marker_id: '3'},
-            "resources/images/profile-picture-3.png",
-            "This is another example pin. I'm running out of " +
-            "example text to write."
-            );
+    
+    
+    
+    
+//    // Add pins
+//    overlay = new CustomMarker(
+//            new google.maps.LatLng(37.2277411, -80.422268),
+//            map,
+//            {marker_id: '1'},
+//            "resources/images/profile-picture.png",
+//            "This is an example pin. Something is going on " +
+//            "at this location!"
+//            );
+//    overlay = new CustomMarker(
+//            new google.maps.LatLng(37.2237411, -80.429268),
+//            map,
+//            {marker_id: '2'},
+//            "resources/images/profile-picture-2.png",
+//            "This is also an example pin. Something else is going " +
+//            "on at this location!"
+//            );
+//    overlay = new CustomMarker(
+//            new google.maps.LatLng(37.2270411, -80.436268),
+//            map,
+//            {marker_id: '3'},
+//            "resources/images/profile-picture-3.png",
+//            "This is another example pin. I'm running out of " +
+//            "example text to write."
+//            );
 }
 
 // Display a message at the top of the map
