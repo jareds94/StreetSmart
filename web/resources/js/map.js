@@ -162,7 +162,22 @@ function initialize() {
     xhr.open('GET', 'http://jupiter.cs.vt.edu/StreetSmartREST-1.0/webresources/com.mycompany.streetsmartrest.pin', true);
     xhr.send(null);
 
-    
+//My current location marker
+    var myLocMarker = "resources/images/currlocmarker.png";
+    var myloc = new google.maps.Marker({
+    clickable: false,
+    icon:myLocMarker,
+    shadow: null,
+    zIndex: 999,
+    map: map// your google.maps.Map object
+    });
+
+if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {
+    var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+    myloc.setPosition(me);
+}, function(error) {
+    // ...
+});
     
     
     
