@@ -218,8 +218,8 @@ function setMapCenterCurrLoc() {
             };
             // Set the hidden element that holds current coordinates if it exists
             // on the current xhtml page
-            if(document.getElementById('pinForm:pinDataHiddenContainer') !== null) {
-                document.getElementById('pinForm:pinDataHiddenContainer').value = pos.coordinates();
+            if(document.getElementById('create-pin-form:pinDataHiddenContainer') !== null) {
+                document.getElementById('create-pin-form:pinDataHiddenContainer').value = pos.coordinates();
             }
             map.setCenter(pos);
         }, function () {
@@ -253,4 +253,4 @@ window.onload = function() {
     if(map !== null) {
         setMapCenterCurrLoc();
     }
-}
+};

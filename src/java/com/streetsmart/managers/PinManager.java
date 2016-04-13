@@ -4,18 +4,22 @@
  */
 package com.streetsmart.managers;
 
+import com.streetsmart.entitypackage.Pin;
+import com.streetsmart.entitypackage.User;
 import com.streetsmart.sessionbeanpackage.PinFacade;
 import java.io.Serializable;
+import java.util.Date;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+@Named(value = "pinManager")
+@SessionScoped
 /**
  *
  * @author Tim
  */
-@Named(value = "accountManager")
-@SessionScoped
 public class PinManager implements Serializable {
     
     // Instance Variables (Properties) for Pins 
@@ -33,7 +37,92 @@ public class PinManager implements Serializable {
     private PinFacade pinFacade;
     
     public PinManager() {
-        locationData = "0.0 0.0";      
+        locationData = "No location data yet.";      
     }
+
+    public PinFacade getPinFacade() {
+        return pinFacade;
+    }
+
+    public void setPinFacade(PinFacade pinFacade) {
+        this.pinFacade = pinFacade;
+    }  
     
+    public String getLocationData() {
+        return locationData;
+    }
+
+    public void setLocationData(String locationData) {
+        this.locationData = locationData;
+    }
+
+    public String getPinTitle() {
+        return pinTitle;
+    }
+
+    public void setPinTitle(String pinTitle) {
+        this.pinTitle = pinTitle;
+    }
+
+    public String getPinDescription() {
+        return pinDescription;
+    }
+
+    public void setPinDescription(String pinDescription) {
+        this.pinDescription = pinDescription;
+    }
+
+    public boolean isPinAnonymous() {
+        return pinAnonymous;
+    }
+
+    public void setPinAnonymous(boolean pinAnonymous) {
+        this.pinAnonymous = pinAnonymous;
+    }
+         
+    public String createPin(User u) {
+        
+        if(!locationData.equals("No location data yet."))
+        {
+            // Parse out latitiude and longitude from container
+            String[] latAndLong = locationData.split(" ");
+            
+            // Generate timestamp for pin posting time
+            int timestamp = (int) (new Date().getTime()/1000);
+                    
+            try {
+                Pin pin;
+                pin = new Pin();
+                pin.setAnonymous(this.pinAnonymous);
+                
+                // If the pin is not anonymous and a User is currently logged
+                // in, set the associated User id.
+                if(!pinAnonymous) {
+                    pin.setUserId(u.getId());
+                }               
+                else { 
+                    // Otherwise, set the id to a row in the User table associated
+                    // with all anonymous users (i.e. users are anonymous with id
+                    // = 1)
+                    pin.setUserId(1);
+                }
+                        
+                pin.setDescription(this.pinDescription);
+                pin.setDownvotes(0);
+                pin.setUpvotes(0);
+                //pin.setId(1); // no need for this if pin id is auto increment
+                pin.setTitle(this.pinTitle);
+                pin.setLatitude(Float.parseFloat(latAndLong[0]));
+                pin.setLongitude(Float.parseFloat(latAndLong[1]));
+                pin.setTimePosted(timestamp);
+                pin.setType("Do we need this?");
+                pin.setReports(0);
+                pinFacade.create(pin);
+                return "index?faces-redirect=true";
+            } catch (EJBException e) {
+                    //statusMessage = "Something went wrong while creating your pin!";
+            }
+        }
+        return "";
+    }  
 }
