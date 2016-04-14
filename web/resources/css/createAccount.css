@@ -35,6 +35,7 @@
 #form\:security-question {
     float: left;
     width: 459px;
+    height: 39px;
 }
 
 #form\:security-answer {
