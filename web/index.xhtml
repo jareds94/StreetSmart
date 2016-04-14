@@ -104,8 +104,7 @@
                                              required="true" />
                             Upload a photo (optional):
                             <p:fileUpload id="browse-btn" mode="simple" />
-                            <p:selectBooleanCheckbox value="#{pinManager.pinAnonymous}"> Make anonymous
-                            </p:selectBooleanCheckbox>
+                            <h:selectBooleanCheckbox value="#{pinManager.pinAnonymous}" /> Make anonymous
                             <!-- Contains the browser's current location as "[lat] [long]". 
                             Populated on window load. See window.onload() in map.js.-->
                             <h:inputHidden id="pinDataHiddenContainer" value="#{pinManager.locationData}" />
