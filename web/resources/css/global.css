@@ -18,7 +18,7 @@ html, body {
 #header-wrapper {
     display: block;
     width: 100%;
-    min-width: 600px;
+    min-width: 650px;
     height: 70px;
     margin: 0;
     background-color: #e35353;
@@ -50,7 +50,7 @@ html, body {
     border-radius: 3px;
 }
 
-.header-btn-hover {
+.header-btn:hover {
     transition: background-color 0.3s ease;
     transition: border 0.2s ease;
     background-color: #c83434;
@@ -59,7 +59,7 @@ html, body {
 
 #content-container {
     position: relative;
-    min-width: 600px;
+    min-width: 650px;
 }
 
 #footer-wrapper {

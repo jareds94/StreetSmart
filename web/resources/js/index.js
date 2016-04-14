@@ -5,12 +5,6 @@ $(document).ready(function () {
     // Hide home button
     $("#header-links-form\\:home-btn").hide();
     
-    // Add pin hover mobile fix
-    $(".add-pin-button").bind("touchstart touchend mouseover mouseout", function (e) {
-        e.preventDefault();
-        $(this).toggleClass("add-pin-button-hover");
-    });
-    
     // Open menu
     $("#show-menu").bind("click", function (e) {
         $("#map-menu").addClass("open");
