@@ -1,0 +1,36 @@
+#welcome-map {
+    width: 100%;
+    min-width: 600px;
+    min-height: 100px;
+    margin: 0;
+    position: absolute;
+}
+
+#welcome-wrapper {
+    width: 100%;
+    min-width: 600px;
+    min-height: 100px;
+    margin: 0;
+    position: absolute;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    z-index: 1;
+}
+
+#welcome-title {
+    display: inline-block;
+    height: 60px;
+}
+
+#welcome-message {
+    display: inline-block;
+    font-size: 20px;
+}
+
+#get-started {
+    padding: 10px 20px 10px 20px;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #e35353;
+    border-radius: 3px;
+}
