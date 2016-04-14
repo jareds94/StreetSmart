@@ -343,7 +343,7 @@ public class AccountManager implements Serializable {
      */
     public String getPostedPins() {
         String pins = "";
-        if(this.isLoggedIn()) {
+        /**if(this.isLoggedIn()) {
             List<Pin> postedPins = pinFacade.findAllPinsWithUserId(this.getSelected().getId());
             
             if(postedPins == null || postedPins.isEmpty()) {
@@ -353,7 +353,7 @@ public class AccountManager implements Serializable {
             for(Pin pin: postedPins) {
                 pins += pin.getTitle();
             }
-        }
+        }*/
         return pins;
     }
 }
