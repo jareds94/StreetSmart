@@ -80,6 +80,10 @@
                     <div id="map-message"></div> <!-- Gets centered inside parent -->
                 </div>
                 <img id="hidden-add-pin-hover" src="resources/images/add-pin-hover.png" alt=""/> <!-- preload hover img -->
+                
+                <!-- Contains the browser's current location as "[lat] [long]". 
+                Populated on window load. See window.onload() in map.js.-->
+                <h:inputHidden id="pinDataHiddenContainer" value="#{pinManager.locationData}" />
                              
                 <!-- Map -->
                 <div id="map"></div>
@@ -93,8 +97,8 @@
                     <h:form id="create-pin-form" enctype="multipart/form-data">
                         <!-- Create pin form -->
                         <div id="create-pin-fields-wrapper">
-                            <!--<f:event listener="accountManager.validateInformation()}" type="postValidate"/>-->
-
+                            <!-- Validator -->
+                            <f:event listener="accountManager.validateInformation()}" type="postValidate"/>
                             <!-- Fields -->
                             <h:inputText id="title" class="input-control #{component.valid?'':'validation-failed'}" 
                                          value="#{pinManager.pinTitle}" a:placeholder="Pin Title*"
@@ -102,12 +106,9 @@
                             <h:inputTextarea id="description" class="input-control #{component.valid?'':'validation-failed'}"
                                              value="#{pinManager.pinDescription}" a:placeholder="Pin Description*"
                                              required="true" />
-                            Upload a photo (optional):
-                            <p:fileUpload id="browse-btn" mode="simple" />
-                            <h:selectBooleanCheckbox value="#{pinManager.pinAnonymous}" /> Make anonymous
-                            <!-- Contains the browser's current location as "[lat] [long]". 
-                            Populated on window load. See window.onload() in map.js.-->
-                            <h:inputHidden id="pinDataHiddenContainer" value="#{pinManager.locationData}" />
+                            Upload photo (optional):
+                            <p:fileUpload id="browse-btn" mode="simple" fileLimit="1" />
+                            <h:selectBooleanCheckbox id="anonymous" value="#{pinManager.pinAnonymous}" /> Make anonymous
                         </div>
                         <!-- Divider -->
                         <hr style="margin: 15px 0 15px 0" />
@@ -117,7 +118,7 @@
                             <f:ajax execute="@form" render="@form"/>
                         </h:commandButton>
                         <h:commandButton id="create-btn" class="btn" value="Create Pin" 
-                                         action="#{pinManager.createPin()}" onclick="closeDialog()">
+                                         action="#{pinManager.createPin()}">
                             <f:ajax execute="@form" render="@form"/>
                         </h:commandButton>
                     </h:form>

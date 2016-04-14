@@ -101,5 +101,8 @@ function resizeMapComponents(width, height, delay) {
                 $("#map-message-wrapper").css("width", width + "px");
             }
         }
+        
+        // Reposition dialog
+        $("#create-pin-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
     }, delay);
 }

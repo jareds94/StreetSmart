@@ -229,11 +229,6 @@ function setMapCenterCurrLoc() {
                     return this.lat + " " + this.lng;
                 }
             };
-            // Set the hidden element that holds current coordinates if it exists
-            // on the current xhtml page
-            if(document.getElementById('create-pin-form:pinDataHiddenContainer') !== null) {
-                document.getElementById('create-pin-form:pinDataHiddenContainer').value = pos.coordinates();
-            }
             map.setCenter(pos);
         }, function () {
             // Error getting geolocation
