@@ -126,7 +126,7 @@ public class PinManager implements Serializable {
                 pin.setLatitude(Float.parseFloat(latAndLong[0]));
                 pin.setLongitude(Float.parseFloat(latAndLong[1]));
                 pin.setTimePosted(timestamp);
-                pin.setType("Do we need this?");
+                pin.setType("Some_pin_type");
                 pin.setReports(0);
                 pinFacade.create(pin);
                 return "index?faces-redirect=true";
