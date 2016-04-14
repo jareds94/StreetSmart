@@ -15,6 +15,7 @@ import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import java.text.SimpleDateFormat;
 
 @Named(value = "pinManager")
 @SessionScoped
@@ -144,5 +145,15 @@ public class PinManager implements Serializable {
         }
         
         return selected;
+    }
+    
+    /**
+     * 
+     * @param pin
+     * @return 
+     */
+    public String getFormattedDate(Pin pin) {
+        SimpleDateFormat format = new SimpleDateFormat();
+        return format.format(new Date(((long)pin.getTimePosted())*1000L));       
     }
 }
