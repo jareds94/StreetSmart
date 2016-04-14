@@ -70,3 +70,15 @@
 #messages-wrapper {
     margin-bottom: 13px;
 }
+
+.error-message {
+    margin-top: 10px;
+    width: 440px;
+}
+
+.ui-messages-info, 
+.ui-messages-warn, 
+.ui-messages-error, 
+.ui-messages-fatal {
+    width: 440px;
+}

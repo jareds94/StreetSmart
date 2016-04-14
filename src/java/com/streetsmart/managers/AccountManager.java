@@ -215,7 +215,7 @@ public class AccountManager implements Serializable {
                 return "";
             }
             initializeSessionMap();
-            return "MyAccount";
+            return "index";
         }
         return "";
     }
