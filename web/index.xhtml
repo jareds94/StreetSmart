@@ -93,8 +93,8 @@
                     <h:form id="create-pin-form" enctype="multipart/form-data">
                         <!-- Create pin form -->
                         <div id="create-pin-fields-wrapper">
-                            <!-- Validator -->
-                            <f:event listener="#{accountManager.validateInformation}" type="postValidate"/>
+                            <!--<f:event listener="accountManager.validateInformation()}" type="postValidate"/>-->
+
                             <!-- Fields -->
                             <h:inputText id="title" class="input-control #{component.valid?'':'validation-failed'}" 
                                          value="#{pinManager.pinTitle}" a:placeholder="Pin Title*"
@@ -118,7 +118,7 @@
                             <f:ajax execute="@form" render="@form"/>
                         </h:commandButton>
                         <h:commandButton id="create-btn" class="btn" value="Create Pin" 
-                                         action="#{pinManager.createPin(accountManager.selected)}" onclick="closeDialog()">
+                                         action="#{pinManager.createPin()}" onclick="closeDialog()">
                             <f:ajax execute="@form" render="@form"/>
                         </h:commandButton>
                     </h:form>

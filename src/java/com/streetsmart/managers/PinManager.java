@@ -7,11 +7,13 @@ package com.streetsmart.managers;
 import com.streetsmart.entitypackage.Pin;
 import com.streetsmart.entitypackage.User;
 import com.streetsmart.sessionbeanpackage.PinFacade;
+import com.streetsmart.sessionbeanpackage.UserFacade;
 import java.io.Serializable;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 @Named(value = "pinManager")
@@ -27,6 +29,15 @@ public class PinManager implements Serializable {
     private String pinTitle;
     private String pinDescription;
     private boolean pinAnonymous;
+    private User selected;
+    
+    /**
+     * The instance variable 'userFacade' is annotated with the @EJB annotation.
+     * This means that the GlassFish application server, at runtime, will inject in
+     * this instance variable a reference to the @Stateless session bean PhotoFacade.
+     */
+    @EJB
+    private UserFacade userFacade;
     
     /**
      * The instance variable 'pinFacade' is annotated with the @EJB annotation.
@@ -80,7 +91,7 @@ public class PinManager implements Serializable {
         this.pinAnonymous = pinAnonymous;
     }
          
-    public String createPin(User u) {
+    public String createPin() {
         
         if(!locationData.equals("No location data yet."))
         {
@@ -98,7 +109,7 @@ public class PinManager implements Serializable {
                 // If the pin is not anonymous and a User is currently logged
                 // in, set the associated User id.
                 if(!pinAnonymous) {
-                    pin.setUserId(u.getId());
+                    pin.setUserId(this.getSelected().getId());
                 }               
                 else { 
                     // Otherwise, set the id to a row in the User table associated
@@ -125,4 +136,13 @@ public class PinManager implements Serializable {
         }
         return "";
     }  
+    
+    public User getSelected() {
+        if (selected == null) {
+            selected = userFacade.find(FacesContext.getCurrentInstance().
+                getExternalContext().getSessionMap().get("user_id"));
+        }
+        
+        return selected;
+    }
 }

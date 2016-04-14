@@ -9,7 +9,12 @@ $(function () {
 
     // Open the dialog when the "choose photo" button is clicked
     $(".add-pin-button").on("click", function () {
-        $("#create-pin-dialog").dialog("open");
+        
+        if($("#header-links-form").text().indexOf("Sign In") >= 0) {
+            showMapMessage("You must sign in to create a pin.", 5000);
+        } else {
+            $("#create-pin-dialog").dialog("open");
+        }
     });
 
     // Disable dragging

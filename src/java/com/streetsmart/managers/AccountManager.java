@@ -52,14 +52,6 @@ public class AccountManager implements Serializable {
     private UserFacade userFacade;
 
     /**
-     * The instance variable 'photoFacade' is annotated with the @EJB annotation.
-     * This means that the GlassFish application server, at runtime, will inject in
-     * this instance variable a reference to the @Stateless session bean PhotoFacade.
-     */
-    @EJB
-    private PinFacade pinFacade;
-
-    /**
      * Creates a new instance of AccountManager
      */
     public AccountManager() {
@@ -180,6 +172,7 @@ public class AccountManager implements Serializable {
             selected = userFacade.find(FacesContext.getCurrentInstance().
                 getExternalContext().getSessionMap().get("user_id"));
         }
+        
         return selected;
     }
 
