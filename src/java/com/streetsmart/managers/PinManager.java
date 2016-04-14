@@ -15,6 +15,7 @@ import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import java.text.SimpleDateFormat;
 
 @Named(value = "pinManager")
 @SessionScoped
@@ -126,7 +127,7 @@ public class PinManager implements Serializable {
                 pin.setLatitude(Float.parseFloat(latAndLong[0]));
                 pin.setLongitude(Float.parseFloat(latAndLong[1]));
                 pin.setTimePosted(timestamp);
-                pin.setType("Do we need this?");
+                pin.setType("Some_pin_type");
                 pin.setReports(0);
                 pinFacade.create(pin);
                 return "index?faces-redirect=true";
@@ -144,5 +145,15 @@ public class PinManager implements Serializable {
         }
         
         return selected;
+    }
+    
+    /**
+     * 
+     * @param pin
+     * @return 
+     */
+    public String getFormattedDate(Pin pin) {
+        SimpleDateFormat format = new SimpleDateFormat();
+        return format.format(new Date(((long)pin.getTimePosted())*1000L));       
     }
 }

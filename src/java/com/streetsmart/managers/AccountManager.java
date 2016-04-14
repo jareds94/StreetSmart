@@ -43,6 +43,8 @@ public class AccountManager implements Serializable {
     
     private User selected;
     
+    private List<Pin> postedPins;
+    
     /**
      * The instance variable 'userFacade' is annotated with the @EJB annotation.
      * This means that the GlassFish application server, at runtime, will inject in
@@ -50,6 +52,14 @@ public class AccountManager implements Serializable {
      */
     @EJB
     private UserFacade userFacade;
+    
+    /**
+     * The instance variable 'pinFacade' is annotated with the @EJB annotation.
+     * This means that the GlassFish application server, at runtime, will inject in
+     * this instance variable a reference to the @Stateless session bean UserFacade.
+     */
+    @EJB
+    private PinFacade pinFacade;
 
     /**
      * Creates a new instance of AccountManager
@@ -283,6 +293,8 @@ public class AccountManager implements Serializable {
                 getSessionMap().put("username", username);
         FacesContext.getCurrentInstance().getExternalContext().
                 getSessionMap().put("user_id", user.getId());
+        // Retrieve all pins postings associated with this user
+        postedPins = this.getPostedPins();
     }
 
     private boolean correctPasswordEntered(UIComponent components) {
@@ -334,19 +346,10 @@ public class AccountManager implements Serializable {
      * 
      * @return 
      */
-    public String getPostedPins() {
-        String pins = "";
-        /**if(this.isLoggedIn()) {
-            List<Pin> postedPins = pinFacade.findAllPinsWithUserId(this.getSelected().getId());
-            
-            if(postedPins == null || postedPins.isEmpty()) {
-                pins = "No pins posted yet.";
-            }
-            
-            for(Pin pin: postedPins) {
-                pins += pin.getTitle();
-            }
-        }*/
-        return pins;
+    public List<Pin> getPostedPins() {
+        if(this.isLoggedIn()) {
+            return pinFacade.findAllPinsWithUserId(this.getSelected().getId());
+        }
+        return null;
     }
 }

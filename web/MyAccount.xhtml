@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-       xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:body>
         <ui:composition template="template/siteTemplate.xhtml">
             <!-- Page title -->
@@ -38,13 +39,36 @@
                     <h:outputText value="Email: " />
                     <h:outputText value="#{profileViewManager.loggedInUser.email}" />
                     
-                    <h:outputText value="Posted Pins: " />
-                    <h:outputText value="#{accountManager.getPostedPins()}" />
                 </h:panelGrid>
                 <br/>
+                Posted Pins
                 <br/>
+                <!-- Output all posted pins for a user. -->
+                <h:dataTable value="#{accountManager.postedPins}" var="pin" cellpadding="10">
+                    <h:column>
+                        <h:outputText value="Title: #{pin.title} " />                       
+                    </h:column>
+                    <h:column>
+                        <h:outputText value="Pin Type: #{pin.type}" />
+                    </h:column>
+                    <h:column>
+                        <h:outputText value="Description: #{pin.description}" />                                                                                          
+                    </h:column>                   
+                    <h:column>
+                        <h:outputText value="Upvotes: #{pin.upvotes}" />                 
+                    </h:column>
+                    <h:column>
+                        <h:outputText value="Downvotes: #{pin.downvotes}" />
+                    </h:column>
+                    <h:column>
+                        <h:outputText value="Time Posted: #{pinManager.getFormattedDate(pin)}" />
+                    </h:column>
+                </h:dataTable>
             </h:form>
         </div>
+                
+                        <!-- Page bottom fix -->
+                        <div id="page-bottom-padding">&nbsp;</div>
             </ui:define>
         </ui:composition>
     </h:body>
