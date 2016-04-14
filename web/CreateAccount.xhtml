@@ -18,6 +18,27 @@
                 <link rel="stylesheet" type="text/css" href="resources/css/createAccount.css"/>
             </ui:define>
             <!-- Additional JS files needed -->
+            <ui:define name="js">
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        setTimeout(function() {
+                            $("#form\\:password_panel").removeClass();
+                            $("#form\\:password_panel").addClass("ui-password-panel");
+                            $("#form\\:password").removeClass();
+                            $("#form\\:password").addClass("input-control");
+                            $("#form\\:password_panel").detach().appendTo("#password_panel-wrapper");
+                        }, 500);
+                        
+                        $("#form\\:password").bind("blur", function() {
+                            $("#password_panel-wrapper").css("display", "none");
+                        });
+
+                        $("#form\\:password").bind("focus", function() {
+                            $("#password_panel-wrapper").css("display", "inline-block");
+                        });
+                    });
+                </script>
+            </ui:define>
             
             <!-- Page content -->
             <ui:define name="editableContent">
@@ -56,16 +77,18 @@
                                      styleClass="input-control #{component.valid?'':'validation-failed'}"
                                      value="#{accountManager.security_answer}" a:placeholder="Security Answer*"
                                      required="true" requiredMessage="Security Answer is required." />
-                        <h:inputSecret id="password" label="Password" 
+                        <p:password id="password" label="Password" 
                                      styleClass="input-control #{component.valid?'':'validation-failed'}"
                                      value="#{accountManager.password}" a:placeholder="Password*"
-                                     required="true" requiredMessage="Password is required.">
+                                     required="true" requiredMessage="Password is required."
+                                     feedback="true" promptLabel=" ">
                             <f:validator validatorId="passwordValidator" />
-                        </h:inputSecret>
+                        </p:password>
                         <h:inputSecret id="confirm-password" label="Confirm Password" 
                                      styleClass="input-control #{component.valid?'':'validation-failed'}"
                                      value="#{accountManager.password}" a:placeholder="Confirm Password*"
                                      required="true" requiredMessage="Confirm Password is required." />
+                        <div id="password_panel-wrapper"></div>
                         <!-- Error messages output -->
                         <div id="messages-wrapper">
                             <p:messages id="msgs" showIcon="false" />

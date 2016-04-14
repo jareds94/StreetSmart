@@ -83,3 +83,13 @@
 .ui-messages-fatal {
     width: 440px;
 }
+
+.ui-state-hover,
+.ui-state-focus {
+    font-weight: normal !important;
+    background-color: #ffffff !important;
+}
+
+#password_panel-wrapper {
+    display: none;
+}
