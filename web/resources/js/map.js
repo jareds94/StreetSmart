@@ -141,6 +141,7 @@ function initialize() {
 
     //#endregion
     
+    // Grab pins from rest api
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -152,9 +153,9 @@ function initialize() {
                     new google.maps.LatLng(curPin.latitude, curPin.longitude),
                     map,
                     {marker_id: curPin.id},
-                    "resources/images/profile-picture.png",
+                    "resources/images/profile-picture-" + (curPin.id % 4) + ".png",
                     curPin.description
-                    );
+                );
             }
         }
     };
@@ -162,50 +163,22 @@ function initialize() {
     xhr.open('GET', 'http://jupiter.cs.vt.edu/StreetSmartREST-1.0/webresources/com.mycompany.streetsmartrest.pin', true);
     xhr.send(null);
 
-//My current location marker
+    // Current location marker
     var myLocMarker = "resources/images/currlocmarker.png";
     var myloc = new google.maps.Marker({
-    clickable: false,
-    icon:myLocMarker,
-    shadow: null,
-    zIndex: 999,
-    map: map// your google.maps.Map object
+        clickable: false,
+        icon:myLocMarker,
+        shadow: null,
+        zIndex: 999,
+        map: map
     });
 
-if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {
-    var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-    myloc.setPosition(me);
-}, function(error) {
-    // ...
-});
-    
-    
-    
-//    // Add pins
-//    overlay = new CustomMarker(
-//            new google.maps.LatLng(37.2277411, -80.422268),
-//            map,
-//            {marker_id: '1'},
-//            "resources/images/profile-picture.png",
-//            "This is an example pin. Something is going on " +
-//            "at this location!"
-//            );
-//    overlay = new CustomMarker(
-//            new google.maps.LatLng(37.2237411, -80.429268),
-//            map,
-//            {marker_id: '2'},
-//            "resources/images/profile-picture-2.png",
-//            "This is also an example pin. Something else is going " +
-//            "on at this location!"
-//            );
-//    overlay = new CustomMarker(
-//            new google.maps.LatLng(37.2270411, -80.436268),
-//            map,
-//            {marker_id: '3'},
-//            "resources/images/profile-picture-3.png",
-//            "This is another example pin. I'm running out of " +
-//            "example text to write."
-//            );
+    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {
+        var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+        myloc.setPosition(me);
+    }, function() {
+        // error function
+    });
 }
 
 // Display a message at the top of the map
@@ -287,10 +260,3 @@ function setMapCenterFromAddress(address) {
         }
     });
 }
-
-window.onload = function() {
-    // Set center if map is visible
-    if(map !== null) {
-        setMapCenterCurrLoc();
-    }
-};
