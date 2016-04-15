@@ -22,6 +22,7 @@ $(function () {
         width: 300,
         resizable: false,
         draggable: false,
+        closeOnEscape: false,
         modal: true
     });
     
@@ -31,6 +32,7 @@ $(function () {
         width: 400,
         resizable: false,
         draggable: false,
+        closeOnEscape: false,
         modal: true
     });
 });
