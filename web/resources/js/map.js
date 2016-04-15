@@ -245,14 +245,3 @@ function setMapCenter(latlng, offsetx, offsety, pan) {
         map.setCenter(center);
     }
 }
-
-function convertAddressToLoc(address) {
-    var geocoder = new google.maps.Geocoder();
-    geocoder.geocode({'address': address}, function (results, status) {
-        if (status === google.maps.GeocoderStatus.OK) {
-            return results[0].geometry.location;
-        } else {
-            return null;
-        }
-    });
-}

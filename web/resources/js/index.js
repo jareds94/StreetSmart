@@ -47,25 +47,27 @@ $(document).ready(function () {
     $("#map-menu-change-loc-btn").bind("click", function (e) {
         var address = $("#map-menu-change-loc").val();
         if (address !== null && address !== "") {
-            var addressLoc = convertAddressToLoc(address);
-            if (addressLoc === null) {
-                // Change text box color indicating error
-                $("#map-menu-change-loc").css("background-color", "#fad8d8");
-                $("#map-menu-change-loc").css("border-color", "#de9191");
-            } else {
-                setMapCenter(addressLoc, 0, 0, false);
-                // Clear style changes made from error
-                $("#map-menu-change-loc").css("background-color", "#ffffff");
-                $("#map-menu-change-loc").css("border-color", "#dcdcdc");
-            }
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({'address': address}, function (results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    setMapCenter(results[0].geometry.location, 0, 0, false);
+                    // Clear style changes made from error
+                    $("#map-menu-change-loc").css("background-color", "#ffffff");
+                    $("#map-menu-change-loc").css("border-color", "#dcdcdc");
+                } else {
+                    // Change text box color indicating error
+                    $("#map-menu-change-loc").css("background-color", "#fad8d8");
+                    $("#map-menu-change-loc").css("border-color", "#de9191");
+                }
+            });
         } else {
-            setMapCenter(currLoc, 0, 0, false);
+            setMapCenter(userLoc, 0, 0, false);
         }
     });
     
     // Trigger change location on enter
     $("#map-menu-change-loc").keyup(function(event){
-        if (event.keyCode == 13){
+        if (event.keyCode === 13){
             $("#map-menu-change-loc-btn").click();
         }
     });
