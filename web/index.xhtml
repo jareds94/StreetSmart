@@ -82,7 +82,12 @@
                 <img id="hidden-add-pin-hover" src="resources/images/add-pin-hover.png" alt=""/> <!-- preload hover img -->
                 
                 <!-- Contains the user's current location as "[lat] [long]" -->
-                <h:inputHidden id="userLocationHidden" value="#{pinManager.locationData}" />
+                <h:form id="hidden">
+                    <h:inputHidden id="userLocationHidden" value="#{accountManager.userLoc}" />
+                    <h:commandButton id="hiddenSubmit" style="display: none">
+                        <f:ajax execute="@form" render="@form"/>
+                    </h:commandButton>
+                </h:form>
                              
                 <!-- Map -->
                 <div id="map"></div>

@@ -38,6 +38,8 @@ public class AccountManager implements Serializable {
     private int security_question;
     private String security_answer;
     private String statusMessage;
+    
+    private String userLoc;
         
     private Map<String, Object> security_questions;
     
@@ -188,6 +190,17 @@ public class AccountManager implements Serializable {
 
     public void setSelected(User selected) {
         this.selected = selected;
+    }
+    
+    public String getUserLoc() {
+        return this.userLoc;
+    }
+    
+    public void setUserLoc(String userLoc) {
+        this.userLoc = userLoc;
+        FacesContext.getCurrentInstance().getExternalContext().
+                getSessionMap().put("userLoc", this.userLoc);
+        
     }
 
     public String createAccount() {
