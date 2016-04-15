@@ -1,6 +1,7 @@
 // Global variables
 var map;
 var userLoc;
+var selectedPin;
 var selectedPinLoc;
 
 // Called when map loads
@@ -116,7 +117,13 @@ function initialize() {
                 div.dataset.marker_id = self.args.marker_id;
             }
 
-            google.maps.event.addDomListener(div, "click", function (event) {
+            google.maps.event.addDomListener(div.firstChild, "click", function (event) {
+                if (selectedPin !== null && selectedPin !== undefined) {
+                    selectedPin.siblings().hide();
+                }
+                selectedPin = $(this);
+                selectedPin.siblings().show();
+                
                 $("#map-menu-pin-pic").attr("src", self.imgsrc);
                 $("#map-menu-pin-message").text(self.text);
                 selectedPinLoc = self.latlng;
@@ -193,6 +200,33 @@ function initialize() {
     // Change endpoint to venus when venus works.
     xhr.open('GET', 'http://jupiter.cs.vt.edu/StreetSmartREST-1.0/webresources/com.mycompany.streetsmartrest.pin', true);
     xhr.send(null);
+   
+   /*
+   // Pins for testing
+   overlay = new CustomMarker(
+        new google.maps.LatLng(37.2277411, -80.422268),
+        map,
+        {marker_id: 1},
+        "resources/images/profile-picture-0.png",
+        "Ultimate frisbee on the drillfield"
+    );
+        
+    overlay = new CustomMarker(
+        new google.maps.LatLng(37.2327411, -80.420268),
+        map,
+        {marker_id: 2},
+        "resources/images/profile-picture-1.png",
+        "Studying all night"
+    );
+    
+    overlay = new CustomMarker(
+        new google.maps.LatLng(37.2157411, -80.421268),
+        map,
+        {marker_id: 3},
+        "resources/images/profile-picture-2.png",
+        "Free ice cream"
+    );
+    */
 }
 
 function drawUserLocMarker() {
