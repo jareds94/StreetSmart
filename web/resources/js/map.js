@@ -134,9 +134,9 @@ function initialize() {
                         width: ($("#map-message-wrapper").width() - 305) + "px"
                     }, 200);
 
-                    offsetCenter(self.latlng, 150, 0);
+                    setMapCenter(self.latlng, 150, 0, true);
                 } else {
-                    offsetCenter(self.latlng, 150, 0);
+                    setMapCenter(self.latlng, 150, 0, true);
                 }
             });
 
