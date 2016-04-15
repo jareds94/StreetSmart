@@ -4,9 +4,6 @@ $(document).ready(function () {
     $("#header-links-form\\:home-btn").hide();
     
     resizeWelcomeMap($(window).width(), $(window).height() - 130, 0);
-    
-    // Adjust welcome
-    $("#welcome-wrapper").height();
 });
 
 // Fired when window is resized by the user

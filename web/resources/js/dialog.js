@@ -7,10 +7,9 @@ $(function () {
     // Disable focus
     $.ui.dialog.prototype._focusTabbable = function () {};
 
-    // Open the dialog when the "choose photo" button is clicked
+    // Open the create pin dialog
     $(".add-pin-button").on("click", function () {
-        
-        if($("#header-links-form").text().indexOf("Sign In") >= 0) {
+        if ($("#header-links-form").text().indexOf("Sign In") >= 0) {
             showMapMessage("You must sign in to create a pin.", 5000);
         } else {
             $("#create-pin-dialog").dialog("open");
@@ -25,10 +24,20 @@ $(function () {
         draggable: false,
         modal: true
     });
+    
+    // Dialog properties
+    $("#enter-loc-dialog").dialog({
+        autoOpen: false,
+        width: 400,
+        resizable: false,
+        draggable: false,
+        modal: true
+    });
 });
 
-function closeDialog() {
+function closeDialogs() {
     $("#create-pin-dialog").dialog("close");
+    $("#enter-loc-dialog").dialog("close");
     
     setTimeout(function() {
         // Reset fields
@@ -38,5 +47,22 @@ function closeDialog() {
         $("#create-pin-form\\:description").css("background-color", "#ffffff");
         $("#create-pin-form\\:browse-btn").attr("value", "");
         $("#create-pin-form\\:anonymous").attr('checked', false);
+        $("#enter-loc-form\\:loc").val("");
+        $("#enter-loc-form\\:loc").css("background-color", "#ffffff");
     }, 500);
+}
+
+function enterLocSubmit() {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({'address': $("#enter-loc-form\\:loc").val()}, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            userLoc = results[0].geometry.location;
+            closeDialogs();
+            $("#userLocationHidden").val(userLoc.lat + " " + userLoc.lng);
+            map.setCenter(userLoc);
+            drawUserLocMarker();
+        } else {
+            $("#enter-loc-form\\:loc").css("background-color", "#f7e2e2");
+        }
+    });
 }

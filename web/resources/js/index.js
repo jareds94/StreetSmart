@@ -47,9 +47,19 @@ $(document).ready(function () {
     $("#map-menu-change-loc-btn").bind("click", function (e) {
         var address = $("#map-menu-change-loc").val();
         if (address !== null && address !== "") {
-            setMapCenterFromAddress(address);
+            var addressLoc = convertAddressToLoc(address);
+            if (addressLoc === null) {
+                // Change text box color indicating error
+                $("#map-menu-change-loc").css("background-color", "#fad8d8");
+                $("#map-menu-change-loc").css("border-color", "#de9191");
+            } else {
+                setMapCenter(addressLoc, 0, 0, false);
+                // Clear style changes made from error
+                $("#map-menu-change-loc").css("background-color", "#ffffff");
+                $("#map-menu-change-loc").css("border-color", "#dcdcdc");
+            }
         } else {
-            setMapCenterCurrLoc();
+            setMapCenter(currLoc, 0, 0, false);
         }
     });
     
@@ -96,7 +106,8 @@ function resizeMapComponents(width, height, delay) {
             }
         }
         
-        // Reposition dialog
+        // Reposition dialogs
+        $("#enter-loc-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
         $("#create-pin-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
     }, delay);
 }

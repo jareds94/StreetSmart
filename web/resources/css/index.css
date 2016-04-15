@@ -15,7 +15,7 @@
     background: url(../images/loading.gif) no-repeat;
     background-size: 64px 22px;
     background-color: #ffffff;
-    z-index: 5;
+    z-index: 6;
 }
 
 #show-menu {
@@ -196,6 +196,10 @@
     background-size: 100%;
 }
 
+/* -----------------
+   START DIALOG REGION 
+   ----------------- */
+
 #create-pin-dialog {
     display: none;
     background-color: #f0f0f0;
@@ -233,6 +237,33 @@
     background-color: #999999;
     margin: 0 0 10px 10px;
 }
+
+#enter-loc-dialog {
+    display: none;
+    background-color: #f0f0f0;
+}
+
+#enter-loc-message {
+    font-family: "Franklin Gothic Book" !important;
+    margin-top: 8px;
+    width: 346px;
+}
+
+#enter-loc-form\:loc {
+    font-family: "Franklin Gothic Book" !important;
+    margin-top: 15px;
+    width: 346px;
+}
+
+#enter-loc-form\:continue-btn {
+    float: right;
+    font-family: "Franklin Gothic Book" !important;
+    margin: 0 0 10px 0;
+}
+
+/* -----------------
+   END DIALOG REGION 
+   ----------------- */
 
 .pin-wrapper {
     position: absolute;

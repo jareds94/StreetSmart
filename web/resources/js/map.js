@@ -1,11 +1,15 @@
 // Global variables
 var map;
+var userLoc;
 var selectedPinLoc;
-var pos;
 
 // Called when map loads
 function initialize() {
-    var showLocationError = false;
+    map = null;
+    userLoc = null;
+    selectedPinLoc = null;
+    var locationError = false;
+    var locationDialogOpen = false;
 
     // Turn off points of interest
     var myStyles = [
@@ -28,20 +32,38 @@ function initialize() {
     google.maps.event.addListenerOnce(map, 'tilesloaded', function () {
         // Hide loading overlay
         $("#map-loading").hide();
-
-        // Show location error message
-        if (showLocationError) {
-            showMapMessage("Couldn't get current location. Try entering an address in the menu.", 5000);
-            showLocationError = false;
+        
+        if (locationError && !locationDialogOpen) {
+            $("#enter-loc-dialog").dialog("open");
         }
     });
-
-    // Initially set map center to their current location
-    setMapCenterCurrLoc();
-
+    
+    // Initialize map by centering on current location and showing location dot
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            userLoc = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+                coordinates: function () {
+                    return this.lat + " " + this.lng;
+                }
+            };
+            $("#userLocationHidden").val(userLoc.coordinates());
+            map.setCenter(userLoc);
+            drawUserLocMarker();
+        }, function() {
+            locationError = true;
+            if ($("#map-loading").css("display") === "none") {
+                $("#enter-loc-dialog").dialog("open");
+                locationDialogOpen = true;
+            }
+        });
+    }
+    
+    
     //#region CustomMarker
 
-    // TODO: put this in it's own class (file)
+    // TODO: put this in it's own file
 
     // CustomMarker constructor
     function CustomMarker(latlng, map, args, imgsrc, text) {
@@ -141,6 +163,7 @@ function initialize() {
 
     //#endregion
     
+    
     // Grab pins from rest api
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
@@ -162,23 +185,19 @@ function initialize() {
     // Change endpoint to venus when venus works.
     xhr.open('GET', 'http://jupiter.cs.vt.edu/StreetSmartREST-1.0/webresources/com.mycompany.streetsmartrest.pin', true);
     xhr.send(null);
+}
 
+function drawUserLocMarker() {
     // Current location marker
     var myLocMarker = "resources/images/currlocmarker.png";
     var myloc = new google.maps.Marker({
         clickable: false,
-        icon:myLocMarker,
+        icon: myLocMarker,
         shadow: null,
         zIndex: 999,
         map: map
     });
-
-    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function(pos) {
-        var me = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-        myloc.setPosition(me);
-    }, function() {
-        // error function
-    });
+    myloc.setPosition(userLoc);
 }
 
 // Display a message at the top of the map
@@ -198,60 +217,42 @@ function showMapMessage(message, displayTime) {
     }, displayTime);
 }
 
-// Pan to a location on map that is offset by offsetx and offsety pixels
-function offsetCenter(latlng, offsetx, offsety) {
-    var scale = Math.pow(2, map.getZoom());
-    var nw = new google.maps.LatLng(
+// Sets the map center
+function setMapCenter(latlng, offsetx, offsety, pan) {
+    var center = latlng;
+    
+    if (offsetx !== 0 || offsety !== 0) {
+        var scale = Math.pow(2, map.getZoom());
+        var nw = new google.maps.LatLng(
             map.getBounds().getNorthEast().lat(),
             map.getBounds().getSouthWest().lng()
-            );
+        );
 
-    var worldCoordinateCenter = map.getProjection().fromLatLngToPoint(latlng);
-    var pixelOffset = new google.maps.Point((offsetx / scale) || 0, (offsety / scale) || 0);
+        var worldCoordinateCenter = map.getProjection().fromLatLngToPoint(latlng);
+        var pixelOffset = new google.maps.Point((offsetx / scale) || 0, (offsety / scale) || 0);
 
-    var worldCoordinateNewCenter = new google.maps.Point(
+        var worldCoordinateNewCenter = new google.maps.Point(
             worldCoordinateCenter.x - pixelOffset.x,
             worldCoordinateCenter.y + pixelOffset.y
-            );
+        );
 
-    var newCenter = map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
-    map.panTo(newCenter);
-}
-
-function setMapCenterCurrLoc() {
-    // Try HTML5 geolocation
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            var pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-                coordinates: function () {
-                    return this.lat + " " + this.lng;
-                }
-            };
-            map.setCenter(pos);
-        }, function () {
-            // Error getting geolocation
-            showLocationError = true;
-            if ($("#map-loading").css("display") === "none") {
-                showMapMessage("Couldn't get current location. Try entering an address in the menu.", 5000);
-            }
-        });
+        center = map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
+    }
+    
+    if (pan) {
+        map.panTo(center);
+    } else {
+        map.setCenter(center);
     }
 }
 
-function setMapCenterFromAddress(address) {
+function convertAddressToLoc(address) {
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({'address': address}, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            map.setCenter(results[0].geometry.location);
-            // Clear style changes made from error
-            $("#map-menu-change-loc").css("background-color", "#ffffff");
-            $("#map-menu-change-loc").css("border-color", "#dcdcdc");
+        if (status === google.maps.GeocoderStatus.OK) {
+            return results[0].geometry.location;
         } else {
-            // Change text box color indicating error
-            $("#map-menu-change-loc").css("background-color", "#fad8d8");
-            $("#map-menu-change-loc").css("border-color", "#de9191");
+            return null;
         }
     });
 }
