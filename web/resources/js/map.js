@@ -75,12 +75,13 @@ function initialize() {
     // TODO: put this in it's own file
 
     // CustomMarker constructor
-    function CustomMarker(latlng, map, args, imgsrc, text) {
+    function CustomMarker(latlng, map, args, imgsrc, text, expand) {
         this.latlng = latlng;
         this.args = args;
         this.setMap(map);
         this.imgsrc = imgsrc;
         this.text = text;
+        this.expand = expand;
     }
 
     // Extend OverlayView class
@@ -166,6 +167,10 @@ function initialize() {
             div.style.left = (point.x - 22) + 'px';
             div.style.top = (point.y - 22) + 'px';
         }
+        
+        if (this.expand) {
+            this.div.firstChild.click();
+        }
     };
 
     // Remove pin from map
@@ -187,12 +192,14 @@ function initialize() {
             var jsonResult = JSON.parse(data);
             for (var i = 0; i < jsonResult.length; i++){
                 var curPin = jsonResult[i];
+                var expand = getUrlParameter("id") === curPin.id.toString();
                 overlay = new CustomMarker(
                     new google.maps.LatLng(curPin.latitude, curPin.longitude),
                     map,
                     {marker_id: curPin.id},
                     "resources/images/profile-picture-" + (curPin.id % 4) + ".png",
-                    curPin.description
+                    curPin.description,
+                    expand
                 );
             }
         }
@@ -287,3 +294,18 @@ function setMapCenter(latlng, offsetx, offsety, pan) {
         map.setCenter(center);
     }
 }
+
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
