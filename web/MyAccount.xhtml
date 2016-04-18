@@ -72,10 +72,11 @@
                 </h:commandButton>
                     
                 <h:commandButton id="delete-btn" class="btn" value="Delete Account" 
-                                 action="/index.xhtml?faces-redirect=true">                                     
-                </h:commandButton>                 
+                                 action="#{accountManager.deleteAccount()}"
+                                 onclick="return confirm('Are you sure you want to delete your account? This cannot be undone.')">
+                </h:commandButton>                
             </h:form>
-        </div>
+            </div>
                 
                         <!-- Page bottom fix -->
                         <div id="page-bottom-padding">&nbsp;</div>
