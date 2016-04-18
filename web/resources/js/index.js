@@ -39,6 +39,9 @@ $(document).ready(function () {
     
     // Close pin details menu
     $("#map-menu-pin-close").bind("click", function (e) {
+        selectedPin.siblings().hide();
+        selectedPin = null;
+        
         $("#map-menu-pin").removeClass("open");
         $("#map-menu-pin").hide();
     });

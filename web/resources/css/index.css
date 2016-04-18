@@ -269,24 +269,24 @@
     position: absolute;
     height: 50px;
     width: 280px;
-    cursor: pointer;
 }
 
 .pin-pic {
     height: 45px;
     margin: 3px 6px 0 0;
     float: left;
+    cursor: pointer;
 }
 
 .pin-text { 
-    display: block;
+    display: none;
     height: 27px;
-    width: 200px;
+    width: auto;
+    max-width: 200px;
     font-size: 14px;
     padding: 9px 8px 0 8px;
     margin-top: 4px;
     background-color: white;
-    border: 1px #ffffff solid;
     border-radius: 3px;
     float: left;
     box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
@@ -296,6 +296,7 @@
 }
 
 .pin-text-arrow {
+    display: none;
     border: solid transparent;
     content: " ";
     height: 0;
