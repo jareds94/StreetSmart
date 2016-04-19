@@ -4,8 +4,10 @@
  */
 
 package com.streetsmart.managers;
+import com.streetsmart.entitypackage.Photo;
 import com.streetsmart.entitypackage.Pin;
 import com.streetsmart.entitypackage.User;
+import com.streetsmart.sessionbeanpackage.PhotoFacade;
 import com.streetsmart.sessionbeanpackage.PinFacade;
 import com.streetsmart.sessionbeanpackage.UserFacade;
 import java.io.Serializable;
@@ -62,6 +64,15 @@ public class AccountManager implements Serializable {
      */
     @EJB
     private PinFacade pinFacade;
+    
+     /**
+     * The instance variable 'photoFacade' is annotated with the @EJB annotation.
+     * This means that the GlassFish application server, at runtime, will inject in
+     * this instance variable a reference to the @Stateless session bean PhotoFacade.
+     */
+    @EJB
+    private PhotoFacade photoFacade;
+
 
     /**
      * Creates a new instance of AccountManager
@@ -366,5 +377,16 @@ public class AccountManager implements Serializable {
             return pinFacade.findAllPinsWithUserId(this.getSelected().getId());
         }
         return null;
+    }
+    
+      public String userPhoto() {
+        String user_name = (String) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("username");
+        User user = userFacade.findByUsername(user_name);
+        List<Photo> photoList = photoFacade.findPhotosByUserID(user.getId());
+        if (photoList.isEmpty()) {
+            return "defaultUserPhoto.png";
+        }
+        return photoList.get(0).getThumbnailName();
     }
 }
