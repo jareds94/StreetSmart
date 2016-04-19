@@ -19,25 +19,7 @@
             </ui:define>
             <!-- Additional JS files needed -->
             <ui:define name="js">
-                <script type="text/javascript">
-                    $(document).ready(function() {
-                        setTimeout(function() {
-                            $("#form\\:password_panel").removeClass();
-                            $("#form\\:password_panel").addClass("ui-password-panel");
-                            $("#form\\:password").removeClass();
-                            $("#form\\:password").addClass("input-control");
-                            $("#form\\:password_panel").detach().appendTo("#password_panel-wrapper");
-                        }, 500);
-                        
-                        $("#form\\:password").bind("blur", function() {
-                            $("#password_panel-wrapper").css("display", "none");
-                        });
-
-                        $("#form\\:password").bind("focus", function() {
-                            $("#password_panel-wrapper").css("display", "inline-block");
-                        });
-                    });
-                </script>
+                <script type="text/javascript" src="resources/js/createAccount.js"></script>
             </ui:define>
             
             <!-- Page content -->

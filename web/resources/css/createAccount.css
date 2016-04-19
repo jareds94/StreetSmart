@@ -87,9 +87,9 @@
 .ui-state-hover,
 .ui-state-focus {
     font-weight: normal !important;
-    background-color: #ffffff !important;
 }
 
 #password_panel-wrapper {
     display: none;
+    margin-left: -10px;
 }

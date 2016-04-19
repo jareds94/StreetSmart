@@ -19,12 +19,11 @@
             <!-- Page content -->
             <ui:define name="editableContent">
                  <div align="center" style="width:50%; margin:0 auto;">
-            <h:form class="form-signin">
+            <h:form id="my-account-form" class="form-signin">
                 
                        
-                    <h2> #{profileViewManager.loggedInUser.firstName} #{profileViewManager.loggedInUser.lastName} </h2>
+                <h2> #{profileViewManager.loggedInUser.firstName} #{profileViewManager.loggedInUser.lastName} </h2>
                    <!-- <h:button value="Change Photo"  outcome="EditPhoto"/> -->
-                    <h:commandButton value="Log Out" action="#{accountManager.logout()}" />
                 <br/>
                 <br/>
                 <!-- Basic Info goes here -->
@@ -34,11 +33,13 @@
                      
 
                     <h:outputText value="Last Name: " />
-                    <h:outputText value="#{profileViewManager.loggedInUser.lastName}" />     
+                    <h:outputText value="#{profileViewManager.loggedInUser.lastName}" />
+                    
+                     <h:outputText value="Username: " />
+                     <h:outputText value="#{profileViewManager.loggedInUser.username}" />
 
                     <h:outputText value="Email: " />
-                    <h:outputText value="#{profileViewManager.loggedInUser.email}" />
-                    
+                    <h:outputText value="#{profileViewManager.loggedInUser.email}" />                   
                 </h:panelGrid>
                 <br/>
                 Posted Pins
@@ -63,9 +64,19 @@
                     <h:column>
                         <h:outputText value="Time Posted: #{pinManager.getFormattedDate(pin)}" />
                     </h:column>
-                </h:dataTable>
+                </h:dataTable>               
+                <br/>
+                <!-- Edit and Delete Account buttons -->
+                <h:commandButton id="edit-btn" class="btn" value="Edit Profile" 
+                                 action="/EditAccount.xhtml?faces-redirect=true">                                    
+                </h:commandButton>
+                    
+                <h:commandButton id="delete-btn" class="btn" value="Delete Account" 
+                                 action="#{accountManager.deleteAccount()}"
+                                 onclick="return confirm('Are you sure you want to delete your account? This cannot be undone.')">
+                </h:commandButton>                
             </h:form>
-        </div>
+            </div>
                 
                         <!-- Page bottom fix -->
                         <div id="page-bottom-padding">&nbsp;</div>

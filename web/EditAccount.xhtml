@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created by Timothy Street on 2016.04.15 
+Copyright © 2016 Timothy Street. All rights reserved.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:body>
+        <ui:composition template="template/siteTemplate.xhtml">
+            <!-- Page title -->
+            <title><ui:define name="title">StreetSmart - Edit Account</ui:define></title>
+            <!-- Additional CSS styles needed -->
+            <ui:define name="css">
+                <link rel="stylesheet" type="text/css" href="resources/css/myAccount.css"/>
+            </ui:define>
+            <!-- Additional JS files needed -->
+            
+            <!-- Page content -->
+            <ui:define name="editableContent">
+                 <div align="center" style="width:50%; margin:0 auto;">
+                    <h:form id="edit-account-form" class="form-signin">
+                      
+                        <!-- Edit Account Content here -->
+                        <h:panelGrid columns="3" cellpadding="6">
+                            <p:outputLabel for="firstName" value="First Name" />
+                            <h:inputText id="firstName" value="#{accountManager.selected.firstName}"
+                                         required="true" label="First Name">
+                                <f:validateLength minimum="2" />
+                            </h:inputText>
+                            <p:message for="firstName" display="icon" /> 
+                            
+                            <p:outputLabel for="lastName" value="Last Name" />
+                            <h:inputText id="lastName" value="#{accountManager.selected.lastName}"
+                                         required="true" label="Last Name">
+                                <f:validateLength minimum="2" />
+                            </h:inputText>
+                            <p:message for="lastName" display="icon" /> 
+                            
+                            <p:outputLabel for="username" value="Username" />
+                            <h:inputText id="username" value="#{accountManager.selected.username}"
+                                         required="true" label="Username">
+                                <f:validateLength minimum="4" />
+                            </h:inputText>
+                            <p:message for="username" display="icon" /> 
+                            
+                            <p:outputLabel for="email" value="Email" />
+                            <h:inputText id="email" value="#{accountManager.selected.email}"
+                                         required="true" label="Email">
+                                <f:validateLength minimum="4" />
+                            </h:inputText>
+                            <p:message for="email" display="icon" />
+                            
+                        </h:panelGrid>
+                        
+                        <h:outputLabel id="error" value="#{accountManager.statusMessage}"/>
+                            
+                        <!-- Save and Cancel Account buttons -->
+                        <h:commandButton id="save-btn" class="btn" value="Save" 
+                                         action="#{accountManager.updateAccount()}">                                    
+                        </h:commandButton>
+
+                        <h:commandButton id="cancel-btn" class="btn" value="Cancel" 
+                                         action="/MyAccount.xhtml?faces-redirect=true">                                     
+                        </h:commandButton>
+                                                         
+                        <!-- Page bottom fix (This causes an exception for some reason) -->
+                        <!--<div id="page-bottom-padding">&nbsp;</div>
+                        -->
+                    </h:form>
+                </div>                            
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
