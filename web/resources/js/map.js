@@ -2,14 +2,12 @@
 var map;
 var userLoc;
 var selectedPin;
-var selectedPinLoc;
 var parent;
 
 // Called when map loads
 function initialize() {
     map = null;
     userLoc = null;
-    selectedPinLoc = null;
     var locationError = false;
     var locationDialogOpen = false;
 
@@ -41,8 +39,8 @@ function initialize() {
     });
     
     // Initialize map by centering on current location and showing location dot
-    if ($("#hidden\\:userLocationHidden").val() !== "") {
-        var value = $("#hidden\\:userLocationHidden").val();
+    if ($("#hidden-loc\\:userLocationHidden").val() !== "") {
+        var value = $("#hidden-loc\\:userLocationHidden").val();
         value = value.replace("(", "");
         value = value.replace(")", "");
         var split = value.split(", ");
@@ -56,8 +54,8 @@ function initialize() {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
-                $("#hidden\\:userLocationHidden").val("(" + userLoc.lat + ", " + userLoc.lng + ")");
-                $("#hidden\\:hiddenSubmit").click();
+                $("#hidden-loc\\:userLocationHidden").val("(" + userLoc.lat + ", " + userLoc.lng + ")");
+                $("#hidden-loc\\:hiddenSubmit").click();
                 map.setCenter(userLoc);
                 drawUserLocMarker();
             }, function() {
@@ -123,20 +121,34 @@ function initialize() {
             panes.overlayImage.appendChild(div);
 
             google.maps.event.addDomListener(div.firstChild, "click", function (event) {
+                // Remove currently selected pin
                 if (selectedPin !== null && selectedPin !== undefined) {
                     panes.floatPane.removeChild(parent);
                     panes.overlayImage.appendChild(parent);
                     selectedPin.siblings().hide();
                 }
+                // Set currently selected pin
                 parent = div;
                 selectedPin = $(this);
                 selectedPin.siblings().show();
                 panes.overlayImage.removeChild(div);
                 panes.floatPane.appendChild(div);
                 
-                $("#map-menu-pin-pic").attr("src", self.imgsrc);
-                $("#map-menu-pin-message").text(self.text);
-                selectedPinLoc = self.latlng;
+                // Update pin details in menu
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        var data = xhr.responseText;
+                        var jsonResult = JSON.parse(data);
+                        var curPin = jsonResult[0];
+                        $("#map-menu-pin-pic").attr("src", self.imgsrc);
+                        $("#map-menu-pin-title").text(self.text);
+                        //$("#map-menu-pin-desc").text(curPin.desc);
+                    }
+                };
+                // Change endpoint to venus when venus works.
+                xhr.open('GET', 'http://jupiter.cs.vt.edu/StreetSmartREST-1.0/webresources/com.mycompany.streetsmartrest.pin/' + self.args[0], true);
+                xhr.send(null);
 
                 // Show pin details
                 if (!$("#map-menu-pin").hasClass("open")) {
@@ -214,8 +226,8 @@ function initialize() {
     xhr.open('GET', 'http://jupiter.cs.vt.edu/StreetSmartREST-1.0/webresources/com.mycompany.streetsmartrest.pin', true);
     xhr.send(null);
    
-   /*
    // Pins for testing
+   /*
    overlay = new CustomMarker(
         new google.maps.LatLng(37.2277411, -80.422268),
         map,

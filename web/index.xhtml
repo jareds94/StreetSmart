@@ -68,7 +68,7 @@
                     <div id="map-menu-pin">
                         <img id="map-menu-pin-close" src="resources/images/close.png" alt="Close Menu"/>
                         <img id="map-menu-pin-pic" src="" alt="Pin Picture"/>
-                        <div id="map-menu-pin-message"></div>
+                        <div id="map-menu-pin-title"></div>
                     </div>
                 </div>
 
@@ -81,8 +81,8 @@
                 </div>
                 <img id="hidden-add-pin-hover" src="resources/images/add-pin-hover.png" alt=""/> <!-- preload hover img -->
 
-                <!-- Contains the user's current location as "[lat] [long]" -->
-                <h:form id="hidden">
+                <!-- Contains the user's current location as "([lat], [lng])" -->
+                <h:form id="hidden-loc">
                     <h:inputHidden id="userLocationHidden" value="#{accountManager.userLoc}" />
                     <h:commandButton id="hiddenSubmit" style="display: none">
                         <f:ajax execute="@form" render="@form"/>

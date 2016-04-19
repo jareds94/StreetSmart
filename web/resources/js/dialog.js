@@ -60,8 +60,8 @@ function enterLocSubmit() {
         if (status == google.maps.GeocoderStatus.OK) {
             userLoc = results[0].geometry.location;
             closeDialogs();
-            $("#hidden\\:userLocationHidden").val(userLoc.toString());
-            $("#hidden\\:hiddenSubmit").click();
+            $("#hidden-loc\\:userLocationHidden").val(userLoc.toString());
+            $("#hidden-loc\\:hiddenSubmit").click();
             map.setCenter(userLoc);
             drawUserLocMarker();
         } else {

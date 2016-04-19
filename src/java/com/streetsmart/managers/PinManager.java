@@ -29,7 +29,7 @@ public class PinManager implements Serializable {
     private String pinTitle;
     private String pinDescription;
     private boolean pinAnonymous;
-    private User selected;
+    private User user;
 
     /**
      * The instance variable 'userFacade' is annotated with the @EJB annotation.
@@ -84,6 +84,15 @@ public class PinManager implements Serializable {
     public void setPinAnonymous(boolean pinAnonymous) {
         this.pinAnonymous = pinAnonymous;
     }
+    
+    public User getUser() {
+        if (user == null) {
+            user = userFacade.find(FacesContext.getCurrentInstance().
+                    getExternalContext().getSessionMap().get("user_id"));
+        }
+
+        return user;
+    }
 
     public String createPin() {
         // Parse out latitiude and longitude from container
@@ -104,7 +113,7 @@ public class PinManager implements Serializable {
             // If the pin is not anonymous and a User is currently logged
             // in, set the associated User id.
             if (!pinAnonymous) {
-                pin.setUserId(this.getSelected().getId());
+                pin.setUserId(this.getUser().getId());
             } else {
                 // Otherwise, set the id to a row in the User table associated
                 // with all anonymous users (i.e. users are anonymous with id
@@ -128,15 +137,6 @@ public class PinManager implements Serializable {
             //statusMessage = "Something went wrong while creating your pin!";
         }
         return "";
-    }
-
-    public User getSelected() {
-        if (selected == null) {
-            selected = userFacade.find(FacesContext.getCurrentInstance().
-                    getExternalContext().getSessionMap().get("user_id"));
-        }
-
-        return selected;
     }
 
     /**
