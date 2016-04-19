@@ -53,16 +53,33 @@
                         </select>
                     </div>
                     <!-- Distance check box -->
-                    <div id="map-menu-distance-filter">
-                        <input id="map-menu-distance-checkbox" type="checkbox" />
-                        Only show pins within 
-                        <input id="map-menu-distance-input" class="input-control" type="text" value="5" /> 
-                        miles
-                    </div>
-                    <!-- Listed pins -->
-                    <div id="map-menu-pins-list">
-                        
-                    </div>
+                    <h:form id="filterContainer">
+                        <div id="map-menu-distance-filter">
+                            <input id="map-menu-distance-checkbox" type="checkbox" />
+                            Only show pins within 
+                            <input id="map-menu-distance-input" class="input-control" type="text" value="#{pinManager.filterDistance}" onchange="#{pinManager.filterByDistance()}">
+                            </input> 
+                            miles
+                        </div>
+                        <!-- Listed pins -->
+                        <div id="map-menu-pins-list">
+                            <!-- Output all posted pins for a user. -->
+                            <h:dataTable value="#{pinManager.mapMenuPins}" var="pin" cellpadding="2">
+                                <h:column>
+                                    <h:outputText value="Title: #{pin.title} " />                       
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Description: #{pin.description}" />                                                                                          
+                                </h:column> 
+                                <h:column>
+                                    <h:outputText value="Upvotes: #{pin.upvotes}" />                 
+                                </h:column>
+                                <h:column>
+                                    <h:outputText value="Downvotes: #{pin.downvotes}" />
+                                </h:column>
+                            </h:dataTable>                 
+                        </div>
+                    </h:form>
                     
                     <!-- Pin details goes over the other menu items when displayed -->
                     <div id="map-menu-pin">
@@ -83,7 +100,8 @@
                 
                 <!-- Contains the user's current location as "[lat] [long]" -->
                 <h:form id="hidden">
-                    <h:inputHidden id="userLocationHidden" value="#{accountManager.userLoc}" />
+                    <h:inputHidden id="userLocationHidden"                                   
+                                   value="#{accountManager.userLoc}" />
                     <h:commandButton id="hiddenSubmit" style="display: none">
                         <f:ajax execute="@form" render="@form"/>
                     </h:commandButton>
@@ -141,9 +159,8 @@
                                          onclick="closeDialogs()">
                             <f:ajax execute="@form" render="@form"/>
                         </h:commandButton>
-                        <h:commandButton id="create-btn" class="btn" value="Create Pin" 
-                                         action="#{pinManager.createPin()}">
-                            <f:ajax execute="@form" render="@form"/>
+                        <h:commandButton id="create-btn" class="btn" value="Create Pin" action="#{pinManager.createPin()}">
+                            <f:ajax execute="@form" render="@form"/>8
                         </h:commandButton>
                     </h:form>
                 </div>

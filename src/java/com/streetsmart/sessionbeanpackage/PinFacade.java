@@ -50,4 +50,22 @@ public class PinFacade extends AbstractFacade<Pin> {
                 .getResultList());        
         }
     }
+    
+    /**
+     * Retrieves all pins from the Pin table. List results are filtered
+     * later.
+     * 
+     * @return 
+     */
+    public List<Pin> findAllPins() {
+        if (em.createQuery("SELECT p FROM Pin p")
+                .getResultList().isEmpty()) {
+            return null;
+        }
+        else {
+            return (List<Pin>) (em.createQuery("SELECT p FROM Pin p")
+                .getResultList());   
+            
+        }
+    }
 }

@@ -16,6 +16,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 @Named(value = "pinManager")
 @SessionScoped
@@ -25,11 +26,15 @@ import java.text.SimpleDateFormat;
  */
 public class PinManager implements Serializable {
 
+    private static final double DEFAULT_DISTANCE_FILTER = 10.0;
+    
     // Instance Variables (Properties) for Pins 
     private String pinTitle;
     private String pinDescription;
     private boolean pinAnonymous;
     private User selected;
+    private List<Pin> mapMenuPins;
+    private int filterDistance;
 
     /**
      * The instance variable 'userFacade' is annotated with the @EJB annotation.
@@ -50,7 +55,7 @@ public class PinManager implements Serializable {
     private PinFacade pinFacade;
 
     public PinManager() {
-
+         filterDistance = 5;
     }
 
     public PinFacade getPinFacade() {
@@ -85,13 +90,17 @@ public class PinManager implements Serializable {
         this.pinAnonymous = pinAnonymous;
     }
 
+    public int getFilterDistance() {
+        return filterDistance;
+    }
+
+    public void setFilterDistance(int filterDistance) {
+        this.filterDistance = filterDistance;
+    }
+
     public String createPin() {
-        // Parse out latitiude and longitude from container
-        String locData = (String)FacesContext.getCurrentInstance().
-                getExternalContext().getSessionMap().get("userLoc");
-        locData = locData.replace("(", "");
-        locData = locData.replace(")", "");
-        String[] latAndLong = locData.split(", ");
+        
+        String[] latAndLong = this.getParsedUserLoc();
 
         // Generate timestamp for pin posting time
         int timestamp = (int) (new Date().getTime() / 1000);
@@ -148,4 +157,141 @@ public class PinManager implements Serializable {
         SimpleDateFormat format = new SimpleDateFormat();
         return format.format(new Date(((long) pin.getTimePosted()) * 1000L));
     }
+    
+    public List<Pin> getMapMenuPins() {
+        return mapMenuPins;
+    }
+
+    public void setMapMenuPins(List<Pin> mapMenuPins) {
+        this.mapMenuPins = mapMenuPins;
+    }
+
+    public UserFacade getUserFacade() {
+        return userFacade;
+    }
+
+    public void setUserFacade(UserFacade userFacade) {
+        this.userFacade = userFacade;
+    }
+    
+    public String[] getParsedUserLoc() {
+        // Parse out latitiude and longitude from container
+        String locData = (String)FacesContext.getCurrentInstance().
+                getExternalContext().getSessionMap().get("userLoc");
+        // If locData could not be retrieved, stop parsing
+        if(locData == null) {
+            return null;
+        }
+        locData = locData.replace("(", "");
+        locData = locData.replace(")", "");
+        return locData.split(", ");
+    }
+    
+    /**
+     * Sets map menu pins list to be populated with pins within
+     * 10 miles of the user's current location (regardless of whether
+     * or not a user is logged in).
+     */
+    public void setDefaultMapMenuPins() {
+       String[] currentUserLoc = this.getParsedUserLoc();
+       if(currentUserLoc != null) {
+            float userLat = Float.valueOf(currentUserLoc[0]);
+            float userLong = Float.valueOf(currentUserLoc[1]);
+            List<Pin> allPins = pinFacade.findAllPins();
+
+            for(int i = 0; i < allPins.size(); i++) {
+                Pin pin = allPins.get(i);
+                double distanceInMiles = this.getDistanceFromLatLongInMiles(userLat, userLong, 
+                        pin.getLatitude(), pin.getLongitude());
+                if(!(distanceInMiles <= DEFAULT_DISTANCE_FILTER)) {
+                    allPins.remove(i);
+                }
+            }       
+            this.setMapMenuPins(allPins);
+        }
+    }
+    
+    /**
+     * 
+     * @param keyword 
+     */
+    public void filterByKeyword(String keyword) {
+        List<Pin> allPins = pinFacade.findAllPins();
+        
+        for(int i = 0; i < allPins.size(); i++) {
+            Pin pin = allPins.get(i);
+            if(!pin.getTitle().contains(keyword)) {
+                allPins.remove(i);
+            }
+        }
+    }
+    
+    /**
+     * 
+     */
+    public void filterByDistance() {
+        String[] currentUserLoc = this.getParsedUserLoc();
+        
+        if(currentUserLoc != null) {
+            float userLat = Float.valueOf(currentUserLoc[0]);
+            float userLong = Float.valueOf(currentUserLoc[1]);
+            List<Pin> allPins = pinFacade.findAllPins();
+
+            for(int i = 0; i < allPins.size(); i++) {
+                Pin pin = allPins.get(i);
+                double distanceInMiles = this.getDistanceFromLatLongInMiles(userLat, userLong, 
+                        pin.getLatitude(), pin.getLongitude());
+                if(!(distanceInMiles <= filterDistance)) {
+                    allPins.remove(i);
+                }
+            }       
+            this.setMapMenuPins(allPins);
+        }
+    }
+    
+    /**
+     * 
+     */
+    public void filterByNewest() {
+        
+    }
+    
+    /**
+     * 
+     */
+    public void filterByPopularity() {
+        
+    }
+    
+    /**
+     * 
+     * @param lat1
+     * @param long1
+     * @param lat2
+     * @param long2
+     * @return 
+     */
+    private double getDistanceFromLatLongInMiles(float lat1, float long1, 
+                                                float lat2, float long2) {
+        double R = 3958.756; // Mean radius of the earth in miles
+        double dLat = deg2rad(lat2-lat1);
+        double dLon = deg2rad(long2-long1); 
+        double a = 
+          (Math.sin(dLat/2) * Math.sin(dLat/2)) +
+          (Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+          Math.sin(dLon/2) * Math.sin(dLon/2)); 
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        return (R * c); // Distance in miles
+    }
+
+    /**
+     * 
+     * @param deg
+     * @return 
+     */
+    private double deg2rad(float deg) {
+        return (deg * (Math.PI/180));
+    }
+    
+    
 }
