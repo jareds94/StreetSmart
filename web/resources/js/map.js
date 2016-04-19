@@ -3,6 +3,7 @@ var map;
 var userLoc;
 var selectedPin;
 var selectedPinLoc;
+var parent;
 
 // Called when map loads
 function initialize() {
@@ -116,13 +117,21 @@ function initialize() {
             if (typeof (self.args.marker_id) !== 'undefined') {
                 div.dataset.marker_id = self.args.marker_id;
             }
+            
+            var panes = this.getPanes();
+            panes.overlayImage.appendChild(div);
 
             google.maps.event.addDomListener(div.firstChild, "click", function (event) {
                 if (selectedPin !== null && selectedPin !== undefined) {
+                    panes.floatPane.removeChild(parent);
+                    panes.overlayImage.appendChild(parent);
                     selectedPin.siblings().hide();
                 }
+                parent = div;
                 selectedPin = $(this);
                 selectedPin.siblings().show();
+                panes.overlayImage.removeChild(div);
+                panes.floatPane.appendChild(div);
                 
                 $("#map-menu-pin-pic").attr("src", self.imgsrc);
                 $("#map-menu-pin-message").text(self.text);
@@ -154,9 +163,6 @@ function initialize() {
                     setMapCenter(self.latlng, 150, 0, true);
                 }
             });
-
-            var panes = this.getPanes();
-            panes.overlayImage.appendChild(div);
         }
 
         // Position div to have the center of the profile picture
