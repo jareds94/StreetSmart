@@ -4,3 +4,5 @@ nbbuild/
 dist/
 nbdist/
 nbactions.xml
+src/java/com/streetsmart/managers/Constants.java
+web/WEB-INF/glassfish-web.xml
