@@ -204,7 +204,7 @@ function initialize() {
                     map,
                     {marker_id: curPin.id},
                     "resources/images/profile-picture-" + (curPin.id % 4) + ".png",
-                    curPin.description,
+                    curPin.title,
                     expand
                 );
             }
