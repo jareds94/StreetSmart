@@ -124,8 +124,26 @@
                     <!-- Pin details goes over the other menu items when displayed -->
                     <div id="map-menu-full-pin">
                         <img id="full-pin-close" src="resources/images/close.png" alt="Close Menu"/>
-                        <img id="full-pin-pic" src="" alt="Pin Picture"/>
-                        <div id="full-pin-message"></div>
+                        <div id="full-pin-top-wrapper">
+                            <div id="full-pin-vote-wrapper">
+                                <img id="full-pin-upvote" src="resources/images/upvote.png" alt="Upvote" />
+                                <div id="full-pin-votes">12</div>
+                                <img id="full-pin-downvote" src="resources/images/downvote.png" alt="Downvote" />
+                            </div>
+                            <img id="full-pin-pic" src="resources/images/profile-picture-2.png" alt="Pin Picture"/>
+                        </div>
+                        <div id="full-pin-title">Free ice cream!</div>
+                        <div id="full-pin-desc">From now (1:00pm) until 6:00 tonight there is free ice cream on the drillfield! Come get it.</div>
+                        <div id="full-pin-details">By Jared Schwalbe on Mar 11, 2016</div>
+                        <hr class="full-pin-divider" />
+                        <!-- Comments -->
+                        <div id="full-pin-comments-wrapper">
+                            <h:form id="comment">
+                                <h:inputTextarea id="full-pin-post-comment" 
+                                                 class="input-control #{component.valid?'':'validation-failed'}"
+                                                 a:placeholder="Write your comment..." required="true" />
+                            </h:form>
+                        </div>
                     </div>
                 </div>
 

@@ -116,7 +116,7 @@
 }
 
 #map-menu-full-pin {
-    display: none;
+    /*display: none;*/
     position: absolute;
     left: 0px;
     top: 0px;
@@ -133,16 +133,96 @@
     cursor: pointer;
 }
 
-#full-pin-pic {
-    margin: 50px 0 0 75px;
-    width: 100px;
+#full-pin-top-wrapper {
+    width: 100%;
+    clear: both;
+    float: left;
+    margin-top: 10px;
+    overflow: hidden;
 }
 
-#full-pin-message {
-    margin-top: 16px;
-    padding: 5px;
-    font-size: 16px;
+#full-pin-vote-wrapper {
+    margin-top: 15px;
+    float: left;
+    width: 26px;
+    overflow: hidden;
+    text-align: center;
 }
+
+#full-pin-upvote {
+    width: 26px;
+    cursor: pointer;
+    opacity: 0.7;
+    margin-bottom: 3px;
+}
+
+#full-pin-downvote {
+    width: 26px;
+    margin-top: 7px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+#full-pin-votes {
+    line-height: 18px;
+    font-size: 18px;
+    color: #555555;
+}
+
+#full-pin-pic {
+    display: inline-block;
+    width: 100px;
+    margin-left: 50px;
+}
+
+#full-pin-title {
+    float: left;
+    margin-top: 15px;
+    font-size: 20px;
+}
+
+#full-pin-desc {
+    float: left;
+    clear: both;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+#full-pin-details {
+    font-size: 13px;
+    color: #777777;
+    float: left;
+    margin-top: 13px;
+}
+
+.full-pin-divider {
+    display: block;
+    float: left;
+    clear: left;
+    width: 260px;
+    height: 1px;
+    margin: 20px 0 20px 0;
+    border: 0;
+    border-top: 1px solid #cccccc;
+}
+
+#full-pin-comments-wrapper {
+    width: 260px;
+    float: left;
+    clear: both;
+    overflow-y: scroll;
+}
+
+#comment\:full-pin-post-comment {
+    width: 210px;
+    height: 45px;
+    resize:vertical;
+}
+
+#comment\:full-pin-post-comment:focus {
+    outline: none;
+}
+
 
 /* -----------------
    END MENU REGION 
@@ -194,10 +274,6 @@
 .add-pin-button:hover {
     background: url(../images/add-pin-hover.png) no-repeat bottom right;
     background-size: 100%;
-}
-
-#JSFFrameId {
-    display: none;
 }
 
 /* -----------------
@@ -325,7 +401,6 @@
     float: left;
     clear: both;
     overflow-y: scroll;
-    height: 600px;
     margin-top: 20px;
 }
 
@@ -394,4 +469,9 @@
     border-top: 1px solid #cccccc;
     float: left;
     clear: both;
+}
+
+/* Wtf is this and how did it come to be */
+#JSFFrameId {
+    display: none;
 }
