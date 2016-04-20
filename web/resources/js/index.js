@@ -38,12 +38,12 @@ $(document).ready(function () {
     });
     
     // Close pin details menu
-    $("#map-menu-pin-close").bind("click", function (e) {
+    $("#map-menu-full-pin-close").bind("click", function (e) {
         selectedPin.siblings().hide();
         selectedPin = null;
         
-        $("#map-menu-pin").removeClass("open");
-        $("#map-menu-pin").hide();
+        $("#map-menu-full-pin").removeClass("open");
+        $("#map-menu-full-pin").hide();
     });
     
     // Change location button
@@ -101,7 +101,7 @@ function resizeMapComponents(width, height, delay) {
         
         // Resize height, width will always be fixed
         $("#map-menu").css("height", (height - 40) + "px");
-        $("#map-menu-pin").css("height", (height - 40) + "px");
+        $("#map-menu-full-pin").css("height", (height - 40) + "px");
 
         // Resize height, width will always be 100%
         $("#map").css("height", height + "px");
