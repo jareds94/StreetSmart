@@ -11,7 +11,6 @@
         <ui:composition template="template/siteTemplate.xhtml">
             <!-- Page title -->
             <title><ui:define name="title">StreetSmart</ui:define></title>
-            <h:outputStylesheet name="css/jsfcrud.css"/>
             <!-- Additional CSS styles needed -->
             <ui:define name="css">
                 <link rel="stylesheet" type="text/css" href="resources/css/index.css" />
@@ -20,6 +19,7 @@
             </ui:define>
             <!-- Additional JS files needed -->
             <ui:define name="js">
+                <script type="text/javascript" src="resources/js/jquery-dotdotdot.js"></script>
                 <script type="text/javascript" src="resources/js/index.js"></script>
                 <script type="text/javascript" src="resources/js/pins.js"></script>
                 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"/>
@@ -53,34 +53,20 @@
                         </select>
                     </div>
                     <!-- Distance check box -->
-                    <h:form id="filterContainer">
-                        <div id="map-menu-distance-filter">
-                            <input id="map-menu-distance-checkbox" type="checkbox" />
-                            Only show pins within 
-                            <input id="map-menu-distance-input" class="input-control" type="text" value="#{pinManager.filterDistance}" onchange="#{pinManager.filterByDistance()}">
-                            </input> 
-                            miles
-                        </div>
-                        <!-- Listed pins -->
-                        <div id="map-menu-pins-list">
-                            <!-- Output all posted pins for a user. -->
-                            <h:dataTable value="#{pinManager.mapMenuPins}" var="pin" cellpadding="2">
-                                <h:column>
-                                    <h:outputText value="Title: #{pin.title} " />                       
-                                </h:column>
-                                <h:column>
-                                    <h:outputText value="Description: #{pin.description}" />                                                                                          
-                                </h:column> 
-                                <h:column>
-                                    <h:outputText value="Upvotes: #{pin.upvotes}" />                 
-                                </h:column>
-                                <h:column>
-                                    <h:outputText value="Downvotes: #{pin.downvotes}" />
-                                </h:column>
-                            </h:dataTable>                 
-                        </div>
-                    </h:form>
+                    <div id="map-menu-distance-filter">
+                        Only show pins within 
+                        <input id="map-menu-distance-input" class="input-control" 
+                               type="text" 
+                               value="#{pinManager.filterDistance}" /> 
+                        miles
+                    </div>
+                    <br/>
+                    <!-- Listed pins -->
                     
+                    <div id="map-menu-pins-list">
+                       
+                    </div>
+
                     <!-- Pin details goes over the other menu items when displayed -->
                     <div id="map-menu-pin">
                         <img id="map-menu-pin-close" src="resources/images/close.png" alt="Close Menu"/>
@@ -97,7 +83,7 @@
                     <div id="map-message"></div> <!-- Gets centered inside parent -->
                 </div>
                 <img id="hidden-add-pin-hover" src="resources/images/add-pin-hover.png" alt=""/> <!-- preload hover img -->
-                
+
                 <!-- Contains the user's current location as "[lat] [long]" -->
                 <h:form id="hidden">
                     <h:inputHidden id="userLocationHidden"                                   
@@ -105,15 +91,20 @@
                     <h:commandButton id="hiddenSubmit" style="display: none">
                         <f:ajax execute="@form" render="@form"/>
                     </h:commandButton>
+                    <h:inputHidden id="menuPinsListHidden"                                   
+                                   value="#{pinManager.mapMenuPins}"/>
+                    <h:commandButton id="hiddenUpdatePins" style="display: none" action="#{pinManager.filterByDistance()}">
+                        <f:ajax execute="@form" render="@form"/>
+                    </h:commandButton>
                 </h:form>
-                             
+
                 <!-- Map -->
                 <div id="map"></div>
 
                 <!-- Map js -->
                 <script type="text/javascript" src="resources/js/map.js"></script>
                 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUFqUfsRLDfd4kVe4wYkACPu9Aswm0AT0&amp;callback=initialize" async="async" defer="defer"></script>
-            
+
                 <!-- Enter location dialog -->
                 <div id="enter-loc-dialog" title="Enter Your Location">
                     <h:form id="enter-loc-form" enctype="multipart/form-data">
@@ -124,7 +115,7 @@
                             </div>
                             <!-- Field -->
                             <h:inputText id="loc" class="input-control #{component.valid?'':'validation-failed'}" 
-                                         a:placeholder="Your Location*" required="true" />
+                                         a:placeholder="Ex: 1000 Main St, Blacksburg, VA" required="true" />
                         </div>
                         <!-- Divider -->
                         <hr style="margin: 15px 0 15px 0" />
@@ -135,7 +126,7 @@
                         </h:commandButton>
                     </h:form>
                 </div>
-                
+
                 <!-- Add pin dialog -->
                 <div id="create-pin-dialog" title="Create a Pin at Your Location">
                     <h:form id="create-pin-form" enctype="multipart/form-data">
@@ -166,5 +157,11 @@
                 </div>
             </ui:define>
         </ui:composition>
+        <br />
+        <h:link outcome="/photo/List" value="Show All Photo Items"/>
+        <br />
+        <h:link outcome="/user/List" value="Show All User Items"/>
     </h:body>
+
+
 </html>

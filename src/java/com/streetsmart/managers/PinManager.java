@@ -240,7 +240,7 @@ public class PinManager implements Serializable {
             for(int i = 0; i < allPins.size(); i++) {
                 Pin pin = allPins.get(i);
                 double distanceInMiles = this.getDistanceFromLatLongInMiles(userLat, userLong, 
-                        pin.getLatitude(), pin.getLongitude());
+                                              pin.getLatitude(), pin.getLongitude());
                 if(!(distanceInMiles <= filterDistance)) {
                     allPins.remove(i);
                 }
