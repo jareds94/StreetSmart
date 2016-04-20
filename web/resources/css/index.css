@@ -196,6 +196,10 @@
     background-size: 100%;
 }
 
+#JSFFrameId {
+    display: none;
+}
+
 /* -----------------
    START DIALOG REGION 
    ----------------- */
@@ -265,6 +269,10 @@
    END DIALOG REGION 
    ----------------- */
 
+/* --------------------
+   START MAP PIN REGION
+   -------------------- */
+
 .pin-wrapper {
     position: absolute;
     height: 50px;
@@ -309,6 +317,81 @@
     margin-top: 15px;
 }
 
-#JSFFrameId {
-    display: none;
+/* ------------------
+   END MAP PIN REGION
+   ------------------ */
+
+#map-menu-pins-list {
+    float: left;
+    clear: both;
+    overflow-y: scroll;
+    height: 600px;
+    margin-top: 20px;
+}
+
+.pins-list-pin-wrapper {
+    float: left;
+    width: 242px;
+    overflow: hidden;
+    clear: both;
+}
+
+.pins-list-pin-text-wrapper {
+    float: left;
+    width: 165px;
+    margin-bottom: 10px;
+}
+
+.pins-list-pin-title {
+    width: 165px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.pins-list-pin-desc {
+    width: 165px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    line-height: 17px;
+    height: 34px;
+}
+
+.pins-list-pin-img {
+    float: right;
+    width: 55px;
+    margin: 5px 7px 0 0;
+}
+
+.pins-list-pin-view {
+    float: left;
+    clear: both;
+    font-size: 13px;
+    cursor: pointer;
+    color: #5090e0;
+}
+
+.pins-list-pin-date {
+    float: left;
+    font-size: 13px;
+    color: #777777;
+}
+
+.pins-list-pin-votes {
+    float: left;
+    font-size: 13px;
+    color: #777777;
+}
+
+.pins-list-pin-divider {
+    display: block;
+    width: 230px;
+    height: 1px;
+    margin: 15px 0 15px 0;
+    border: 0;
+    border-top: 1px solid #cccccc;
+    float: left;
+    clear: both;
 }

@@ -74,6 +74,8 @@ $(document).ready(function () {
             $("#map-menu-change-loc-btn").click();
         }
     });
+    
+    $(".pins-list-pin-desc").dotdotdot();
 });
 
 // Fired when window is resized by the user
@@ -110,6 +112,9 @@ function resizeMapComponents(width, height, delay) {
                 $("#map-message-wrapper").css("width", width + "px");
             }
         }
+        
+        // Resize pins list height
+        $("#map-menu-pins-list").height(height - 320);
         
         // Reposition dialogs
         $("#enter-loc-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
