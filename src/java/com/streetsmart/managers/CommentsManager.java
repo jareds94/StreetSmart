@@ -105,16 +105,18 @@ public class CommentsManager implements Serializable {
         int timestamp = (int) (new Date().getTime() / 1000);
         
         try{
-            
-            
-            
-            
+            Comments comment = new Comments();
+            comment.setPinId(this.getSelectedPin().getId());
+            comment.setComment(this.comment);
+            comment.setUserId(this.getSelectedUser().getId());
+            comment.setTimePosted(timestamp);
+            comment.setUsername(this.getSelectedUser().getUsername());
+            commentsFacade.create(comment);
+            return "index?faces-redirect=true";
+
         }catch(EJBException e){
-            
+            //status code
         }
-        
-        
-        
         return "";
     }
     
