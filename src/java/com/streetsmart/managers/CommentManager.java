@@ -20,7 +20,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-@Named(value = "commmentsManager")
+@Named(value = "commentsManager")
 @SessionScoped
 /**
  *
@@ -28,7 +28,7 @@ import javax.inject.Named;
  */
 public class CommentManager implements Serializable {
     
-    private int user_id;
+    private int userId;
     private String comment;
     private int timePosted;
     private Pin selectedPin;
@@ -85,11 +85,11 @@ public class CommentManager implements Serializable {
         return selectedUser;
     }
     
+    public void setSelectedPin(Pin pin){
+        selectedPin = pin;
+    }
+    
     public Pin getSelectedPin() {
-        if (selectedPin == null){
-            selectedPin = pinFacade.find(FacesContext.getCurrentInstance().
-                    getExternalContext().getSessionMap().get("pin_id"));
-        }
         return selectedPin;
     }
     
@@ -102,6 +102,13 @@ public class CommentManager implements Serializable {
         return selectedPinId;
     }
     
+    public void setTimePosted(int timePosted){
+        this.timePosted = timePosted;
+    }
+    
+    public int getTimedPosted(){
+        return timePosted;
+    }
     
     public void setComment(String comment){
         this.comment = comment;
@@ -111,16 +118,25 @@ public class CommentManager implements Serializable {
         return comment;
     }
     
+    
+    public void setUserId(int id){
+        userId = id;
+    }
+    
+    public int getUserId(){
+        return userId;
+    }
+    
     public String createComment(){
         
         int timestamp = (int) (new Date().getTime() / 1000);
         
         try{
             Comment currComment = new Comment();
-            currComment.setPinId(this.getSelectedPin().getId());
-            currComment.setComment(this.comment);
-            user_id = this.getSelectedUser().getId();
-            currComment.setUserId(user_id);
+            currComment.setPinId(selectedPinId);
+            currComment.setComment(comment);
+            userId = this.getSelectedUser().getId();
+            currComment.setUserId(userId);
             timePosted = timestamp;
             currComment.setTimePosted(timePosted);
             commentsFacade.create(currComment);
@@ -137,7 +153,7 @@ public class CommentManager implements Serializable {
     }
     
     public List<Comment> getCommentsList(){
-        commentsList = commentsFacade.findAllCommentsByPinId(this.getSelectedPin().getId());
+        commentsList = commentsFacade.findAllCommentsByPinId(selectedPinId);
         return commentsList;
     }
     

@@ -39,13 +39,13 @@ public class CommentFacade extends AbstractFacade<Comment> {
      * @return 
      */
     public List<Comment> findAllCommentsByPinId(int pinId) {
-        if (em.createQuery("SELECT c FROM Comments c WHERE c.pinId = :pinId")
+        if (em.createQuery("SELECT c FROM Comment c WHERE c.pinId = :pinId")
                 .setParameter("pinId", pinId)
                 .getResultList().isEmpty()) {
             return null;
         }
         else {
-            return (List<Comment>) (em.createQuery("SELECT p FROM Pin p WHERE p.userId = :uid")
+            return (List<Comment>) (em.createQuery("SELECT c FROM Comment c WHERE c.pinId = :pinId")
                 .setParameter("pinId", pinId)
                 .getResultList());        
         }

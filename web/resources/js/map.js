@@ -235,7 +235,7 @@ function initialize() {
         new google.maps.LatLng(37.2277411, -80.422268),
         map,
         {marker_id: 1},
-        "resources/images/default-1.png",
+        "resources/images/profile-picture-0.png",
         "Ultimate frisbee on the drillfield"
     );
         
@@ -243,7 +243,7 @@ function initialize() {
         new google.maps.LatLng(37.2327411, -80.420268),
         map,
         {marker_id: 2},
-        "resources/images/default-2.png",
+        "resources/images/profile-picture-1.png",
         "Studying all night"
     );
     
@@ -251,7 +251,7 @@ function initialize() {
         new google.maps.LatLng(37.2157411, -80.421268),
         map,
         {marker_id: 3},
-        "resources/images/default-3.png",
+        "resources/images/profile-picture-2.png",
         "Free ice cream"
     );
     
