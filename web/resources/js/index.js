@@ -2,7 +2,6 @@
 $(document).ready(function () {
     resizeMapComponents($(window).width(), $(window).height() - 130, 0);
     
-    
     // Hide home button
     $("#header-links-form\\:home-btn").hide();
     

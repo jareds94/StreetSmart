@@ -77,7 +77,7 @@
     font-size: 15px;
 }
 
-#map-menu-sort-select {
+#selectfilterForm\:map-menu-sort-select {
     margin-left: 10px;
     width: 167px;
     padding: 5px;
@@ -89,8 +89,8 @@
     font-size: 15px;
 }
 
-#map-menu-distance-input {
-    width: 35px;
+#filterForm\:map-menu-distance-input {
+    width: 50px;
     padding: 5px;
 }
 
