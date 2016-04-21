@@ -10,6 +10,13 @@ $(document).ready(function () {
     $("#account-form\\:last-name").prop("disabled", true);
     $("#account-form\\:email").prop("disabled", true);
     
+    // Display a message if there are no pins
+    if ($('.pin-wrapper').length === 0) {
+        var div = document.createElement("div");
+        div.textContent = "No pins to display.";
+        $("#pins-list-wrapper").append(div);
+    }
+    
     // Fix time display for each pin
     $(".pin-time-posted").each(function(i, obj) {
         var timestamp = $(this).text();

@@ -44,7 +44,14 @@
     float: left;
     clear: both;
     margin: 15px 13px 0 0;
-    padding: 8px 20px 8px 20px;
+    padding: 10px 20px 10px 20px;
+    background: #e35353 !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+#account-form\:edit-account-save-btn:hover {
+    border: none !important;
 }
 
 #account-form\:edit-account-cancel-btn {
@@ -65,7 +72,7 @@
 #pins-list-wrapper {
     width: 560px;
     margin: 0 auto;
-    margin-top: 40px;
+    margin-top: 60px;
 }
 
 .pin-wrapper {
@@ -78,7 +85,7 @@
 
 .pin-desc {
     font-size: 16px;
-    margin: 5px 0 5px 0;
+    margin: 7px 0 7px 0;
 }
 
 .pin-details {
