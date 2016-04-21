@@ -38,7 +38,7 @@ $(document).ready(function () {
     });
     
     // Close pin details menu
-    $("#map-menu-full-pin-close").bind("click", function (e) {
+    $("#full-pin-close").bind("click", function (e) {
         selectedPin.siblings().hide();
         selectedPin = null;
         
