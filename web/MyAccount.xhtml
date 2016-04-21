@@ -101,9 +101,14 @@
                 </div>
                 
                 <!-- Pins -->
-                <h:form id="pin-form">
-                    
-                </h:form>
+                <div id="pins-wrapper">
+                    <div id="page-title">My Pins</div>
+                    <h:form id="pin-form">
+                        <ui:repeat value="#{accountManager.postedPins}" var="pin">
+                            <h:outputText value="#{pin.title}" />
+                        </ui:repeat>
+                    </h:form>
+                </div>
                 
                 <!-- Page bottom fix -->
                 <div id="page-bottom-padding">&nbsp;</div>

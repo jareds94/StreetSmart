@@ -212,7 +212,13 @@ public class AccountManager implements Serializable {
         this.userLoc = userLoc;
         FacesContext.getCurrentInstance().getExternalContext().
                 getSessionMap().put("userLoc", this.userLoc);
-        
+    }
+    
+    public List<Pin> getPostedPins() {
+        if (this.isLoggedIn()) {
+            return pinFacade.findAllPinsWithUserId(this.getSelected().getId());
+        }
+        return null;
     }
 
     public String createAccount() {
@@ -368,18 +374,8 @@ public class AccountManager implements Serializable {
                getSessionMap().get("username") != null;
     } 
       
-    /**
-     * 
-     * @return 
-     */
-    public List<Pin> getPostedPins() {
-        if(this.isLoggedIn()) {
-            return pinFacade.findAllPinsWithUserId(this.getSelected().getId());
-        }
-        return null;
-    }
     
-      public String userPhoto() {
+    public String userPhoto() {
         String user_name = (String) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("username");
         User user = userFacade.findByUsername(user_name);

@@ -1,7 +1,12 @@
+/* ----------------------------
+   START ACCOUNT DETAILS REGION 
+   ---------------------------- */
+
 #account-details-wrapper {
-    width: 600px;
+    width: 560px;
     margin: 0 auto;
     margin-top: 60px;
+    overflow: hidden;
 }
 
 #page-title {
@@ -54,6 +59,25 @@
     padding: 10px 20px 10px 20px;
     background-color: #999999;
 }
+
+/* --------------------------
+   END ACCOUNT DETAILS REGION 
+   -------------------------- */
+
+/* -----------------
+   START PINS REGION 
+   ----------------- */
+
+#pins-wrapper {
+    width: 560px;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
+/* ---------------
+   END PINS REGION 
+   --------------- */
+
 
 .error-message {
     width: 328px;
