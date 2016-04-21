@@ -2,6 +2,7 @@
 $(document).ready(function () {
     resizeMapComponents($(window).width(), $(window).height() - 130, 0);
     
+    
     // Hide home button
     $("#header-links-form\\:home-btn").hide();
     
@@ -76,6 +77,20 @@ $(document).ready(function () {
     });
     
     $(".pins-list-pin-desc").dotdotdot();
+    
+    /* Fired when input text field is changed corresponding to the filter
+     * by distance */
+    $(document.body).on('change keydown paste','#filterForm\\:map-menu-distance-input',function() {       
+        /* Send the updated input text field's property to the backend. */
+        $("#filterForm\\:filterBtn").click();      
+        /* Click the hidden command button to populate menuPinsListHidden's
+         * value field. */  
+        $("#map-menu-pins-list-form\\:filterPinsByDistance").click();
+    });  
+    
+    $(document.body).on('focusout','#filterForm\\:map-menu-distance-input',function(event) {       
+        
+    }); 
 });
 
 // Fired when window is resized by the user

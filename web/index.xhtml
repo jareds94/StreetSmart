@@ -41,86 +41,65 @@
                     <!-- Clear + divider -->
                     <div style="clear: both"></div>
                     <hr class="map-menu-divider" />
-                    <!-- Filter by keyword -->
-                    <input id="map-menu-filter-keyword" class="input-control" type="text" placeholder="Filter pins by keyword"/>
                     <!-- Sort drop down -->
                     <div id="map-menu-sort-filter">
-                        Sort pins by: 
-                        <select id="map-menu-sort-select" class="input-control">
-                            <option value="distance">Distance</option>
-                            <option value="newest">Newest</option>
-                            <option value="popular">Popular</option>
-                        </select>
+                        <h:form id="selectfilterForm">                           
+                            Sort pins by: 
+                            <h:selectOneMenu id="map-menu-sort-select" class="input-control" value="#{pinManager.filterOption}">
+                                <f:selectItem itemValue="pop" itemLabel="Popularity" />
+                                <f:selectItem itemValue="new" itemLabel="Newest" />
+                                <f:selectItem itemValue="dist" itemLabel="Distance" />                                                            
+                                <f:ajax render=":filterForm :map-menu-pins-list-form"/>
+                            </h:selectOneMenu>
+                        </h:form>
                     </div>
+                    <!-- Filter by keyword -->
+                    <h:inputText id="map-menu-filter-keyword" class="input-control" style="display: none"/>          
                     <!-- Distance check box -->
-                    <div id="map-menu-distance-filter">
-                        <input id="map-menu-distance-checkbox" type="checkbox" />
-                        Only show pins within 
-                        <input id="map-menu-distance-input" class="input-control" type="text" value="5" /> 
-                        miles
+                    <div id="map-menu-distance-filter">                       
+                        <h:form id="filterForm" style="#{pinManager.distanceFilterStyle}">
+                            Only show pins within
+                            <h:inputText id="map-menu-distance-input" class="input-control"  
+                                   value="#{pinManager.filterDistanceStr}" />                           
+                            miles
+                            <h:commandButton id="filterBtn" style="display: none">
+                                <f:ajax execute="@form" render="@form"/>
+                            </h:commandButton>
+                        </h:form>
                     </div>
                     <br/>
                     <!-- Listed pins -->
                     <div id="map-menu-pins-list">
-                        <div class="pins-list-pin-wrapper">
-                            <div class="pins-list-pin-text-wrapper">
-                                <div class="pins-list-pin-title">Free Ice Cream!</div>
-                                <div class="pins-list-pin-desc">
-                                    From now (1:00pm) until 6:00 tonight there is free ice cream on the drillfield! Come get it.
+                        <h:form id="map-menu-pins-list-form">
+                            <ui:repeat value="#{pinManager.mapMenuPins}" var="pin">
+                                <div class="pins-list-pin-wrapper">                              
+                                    <div class="pins-list-pin-text-wrapper">
+                                        <div class="pins-list-pin-title">
+                                            <h:outputText value="#{pin.title}"/>
+                                        </div>
+                                        <div class="pins-list-pin-desc">
+                                            <h:outputText value="#{pin.description}"/>
+                                        </div>
+                                    </div>
+                                    <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt=""></img>
+                                    <div class="pins-list-pin-view">View pin</div>
+                                    <div class="pins-list-pin-date">
+                                        <h:outputText value="#{pinManager.getFormattedDate(pin)}"/>
+                                    </div>
+                                    <div class="pins-list-pin-votes">
+                                        <h:outputText value="Votes: #{pin.upvotes}"/>
+                                    </div>   
                                 </div>
-                            </div>
-                            <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt=""></img>
-                            <div class="pins-list-pin-view">View full pin</div>
-                            <div class="pins-list-pin-date">&nbsp;&nbsp;&bull;&nbsp;&nbsp;Mar 11&nbsp;&nbsp;&bull;&nbsp;&nbsp;</div>
-                            <div class="pins-list-pin-votes">12 points</div>
-                        </div>
-                        
-                        <hr class="pins-list-pin-divider" />
-                        
-                        <div class="pins-list-pin-wrapper">
-                            <div class="pins-list-pin-text-wrapper">
-                                <div class="pins-list-pin-title">Free Ice Cream!</div>
-                                <div class="pins-list-pin-desc">
-                                    From now (1:00pm) until 6:00 tonight there is free ice cream on the drillfield! Come get it.
-                                </div>
-                            </div>
-                            <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt=""></img>
-                            <div class="pins-list-pin-view">View full pin</div>
-                            <div class="pins-list-pin-date">&nbsp;&nbsp;&bull;&nbsp;&nbsp;Mar 11&nbsp;&nbsp;&bull;&nbsp;&nbsp;</div>
-                            <div class="pins-list-pin-votes">12 points</div>
-                        </div>
-                        
-                        <hr class="pins-list-pin-divider" />
-                        
-                        <div class="pins-list-pin-wrapper">
-                            <div class="pins-list-pin-text-wrapper">
-                                <div class="pins-list-pin-title">Free Ice Cream!</div>
-                                <div class="pins-list-pin-desc">
-                                    From now (1:00pm) until 6:00 tonight there is free ice cream on the drillfield! Come get it.
-                                </div>
-                            </div>
-                            <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt=""></img>
-                            <div class="pins-list-pin-view">View full pin</div>
-                            <div class="pins-list-pin-date">&nbsp;&nbsp;&bull;&nbsp;&nbsp;Mar 11&nbsp;&nbsp;&bull;&nbsp;&nbsp;</div>
-                            <div class="pins-list-pin-votes">12 points</div>
-                        </div>
-                        
-                        <hr class="pins-list-pin-divider" />
-                        
-                        <div class="pins-list-pin-wrapper">
-                            <div class="pins-list-pin-text-wrapper">
-                                <div class="pins-list-pin-title">Free Ice Cream!</div>
-                                <div class="pins-list-pin-desc">
-                                    From now (1:00pm) until 6:00 tonight there is free ice cream on the drillfield! Come get it.
-                                </div>
-                            </div>
-                            <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt=""></img>
-                            <div class="pins-list-pin-view">View full pin</div>
-                            <div class="pins-list-pin-date">&nbsp;&nbsp;&bull;&nbsp;&nbsp;Mar 11&nbsp;&nbsp;&bull;&nbsp;&nbsp;</div>
-                            <div class="pins-list-pin-votes">12 points</div>
-                        </div>
+                                
+                                <div class="pins-list-pin-divider"/>
+                            </ui:repeat>
+                            <h:commandButton id="filterPinsByDistance" style="display: none" action="#{pinManager.filterByDistance()}">
+                                <f:ajax execute="@form" render="@form"/>
+                            </h:commandButton>
+                        </h:form>
                     </div>
-
+                    <!-- End of listed pins area -->
+                        
                     <!-- Pin details goes over the other menu items when displayed -->
                     <div id="map-menu-full-pin">
                         <img id="full-pin-close" src="resources/images/close.png" alt="Close Menu"/>
@@ -173,10 +152,11 @@
 
                 <!-- Contains the user's current location as "[lat] [long]" -->
                 <h:form id="hidden">
-                    <h:inputHidden id="userLocationHidden" value="#{accountManager.userLoc}" />
+                    <h:inputHidden id="userLocationHidden"                                   
+                                   value="#{accountManager.userLoc}" />
                     <h:commandButton id="hiddenSubmit" style="display: none">
                         <f:ajax execute="@form" render="@form"/>
-                    </h:commandButton>
+                    </h:commandButton>                   
                 </h:form>
                 <h:form id="hidden-comment">
                     <h:inputHidden id="commentInput" value="#{commentsManager.selectedPinId}" />
@@ -237,9 +217,8 @@
                                          onclick="closeDialogs()">
                             <f:ajax execute="@form" render="@form"/>
                         </h:commandButton>
-                        <h:commandButton id="create-btn" class="btn" value="Create Pin" 
-                                         action="#{pinManager.createPin()}">
-                            <f:ajax execute="@form" render="@form"/>
+                        <h:commandButton id="create-btn" class="btn" value="Create Pin" action="#{pinManager.createPin()}">
+                            <f:ajax execute="@form" render="@form"/>8
                         </h:commandButton>
                     </h:form>
                 </div>
