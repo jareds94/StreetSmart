@@ -135,6 +135,11 @@ function initialize() {
                 
                 /* TODO: Inject pin details into the side menu */
                 
+                // Inject current pin id into hidden text field
+                // Click hidden button to submit hidden form
+                $("#commentInput").val(self.args.marker_id);
+                $("#commentSubmit").click();
+                
 
                 // Show pin details
                 if (!$("#map-menu-full-pin").hasClass("open")) {
@@ -212,7 +217,7 @@ function initialize() {
     xhr.open('GET', 'http://jupiter.cs.vt.edu/StreetSmartREST-1.0/webresources/com.mycompany.streetsmartrest.pin', true);
     xhr.send(null);
    
-   /*
+   
    // Pins for testing
    overlay = new CustomMarker(
         new google.maps.LatLng(37.2277411, -80.422268),
@@ -237,7 +242,7 @@ function initialize() {
         "resources/images/profile-picture-2.png",
         "Free ice cream"
     );
-    */
+    
 }
 
 function drawUserLocMarker() {

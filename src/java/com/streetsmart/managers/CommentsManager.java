@@ -13,6 +13,7 @@ import com.streetsmart.sessionbeanpackage.UserFacade;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
@@ -27,13 +28,14 @@ import javax.inject.Named;
  */
 public class CommentsManager implements Serializable {
     
-    private int pin_id;
     private int user_id;
     private int username;
     private String comment;
     private int timePosted;
     private Pin selectedPin;
+    private int selectedPinId;
     private User selectedUser;
+    private List<Comments> commentsList;
     
     
         /**
@@ -92,6 +94,16 @@ public class CommentsManager implements Serializable {
         return selectedPin;
     }
     
+    public void setSelectedPinId(int id){
+        this.selectedPinId = id;
+        setCommentsList(commentsFacade.findAllCommentsByPinId(this.getSelectedPin().getId()));
+    }
+    
+    public int getSelectedPinId(){
+        return selectedPinId;
+    }
+    
+    
     public void setComment(String comment){
         this.comment = comment;
     }
@@ -105,19 +117,28 @@ public class CommentsManager implements Serializable {
         int timestamp = (int) (new Date().getTime() / 1000);
         
         try{
-            Comments comment = new Comments();
-            comment.setPinId(this.getSelectedPin().getId());
-            comment.setComment(this.comment);
-            comment.setUserId(this.getSelectedUser().getId());
-            comment.setTimePosted(timestamp);
-            comment.setUsername(this.getSelectedUser().getUsername());
-            commentsFacade.create(comment);
+            Comments currComment = new Comments();
+            currComment.setPinId(this.getSelectedPin().getId());
+            currComment.setComment(this.comment);
+            currComment.setUserId(this.getSelectedUser().getId());
+            currComment.setTimePosted(timestamp);
+            currComment.setUsername(this.getSelectedUser().getUsername());
+            commentsFacade.create(currComment);
             return "index?faces-redirect=true";
 
         }catch(EJBException e){
             //status code
         }
         return "";
+    }
+    
+    public void setCommentsList(List<Comments> comments){
+        this.commentsList =  comments;
+    }
+    
+    public List<Comments> getCommentsList(){
+        commentsList = commentsFacade.findAllCommentsByPinId(this.getSelectedPin().getId());
+        return commentsList;
     }
     
     

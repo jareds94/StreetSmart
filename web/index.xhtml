@@ -144,28 +144,18 @@
                                                  a:placeholder="Write your comment..." required="true" />
                                 <h:commandButton id="full-pin-post-comment-btn" class="btn" value="Post Comment" />
                             </h:form>
+      
                             <div id="full-pin-comments-list">
+                                <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment">
                                 <div id="full-pin-comment">
-                                    <div id="full-pin-comment-user">Tim Street</div>
-                                    <div id="full-pin-comment-msg">Yo free ice cream is dope.</div>
-                                    <div id="full-pin-comment-date">3 hours ago</div>
+                                    <div id="full-pin-comment-user"><h:outputText value="#{comment.getUsername()}"/></div>
+                                    <div id="full-pin-comment-msg"><h:outputText value="#{comment.getComment()}"/></div>
+                                    <div id="full-pin-comment-date"><h:outputText value="#{commentManager.getFormattedDate(comment)}"/></div>
                                 </div>
                                 
                                 <hr class="full-pin-comment-divider" />
-                                
-                                <div id="full-pin-comment">
-                                    <div id="full-pin-comment-user">Tim Street</div>
-                                    <div id="full-pin-comment-msg">Yo free ice cream is dope.</div>
-                                    <div id="full-pin-comment-date">3 hours ago</div>
-                                </div>
-                                
-                                <hr class="full-pin-comment-divider" />
-                                    
-                                <div id="full-pin-comment">
-                                    <div id="full-pin-comment-user">Tim Street</div>
-                                    <div id="full-pin-comment-msg">Yo free ice cream is dope.</div>
-                                    <div id="full-pin-comment-date">3 hours ago</div>
-                                </div>
+                
+                                </ui:repeat>
                             </div>
                         </div>
                     </div>
@@ -184,6 +174,12 @@
                 <h:form id="hidden">
                     <h:inputHidden id="userLocationHidden" value="#{accountManager.userLoc}" />
                     <h:commandButton id="hiddenSubmit" style="display: none">
+                        <f:ajax execute="@form" render="@form"/>
+                    </h:commandButton>
+                </h:form>
+                <h:form id="hidden-comment">
+                    <h:inputHidden id="commentInput" value="#{commentsManager.selectedPinId}" />
+                    <h:commandButton id="commentSubmit" style="display: none" onclick="#{commentsManager.createComment()}">
                         <f:ajax execute="@form" render="@form"/>
                     </h:commandButton>
                 </h:form>
