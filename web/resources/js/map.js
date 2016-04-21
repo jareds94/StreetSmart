@@ -97,10 +97,13 @@ function initialize() {
             div.className = "pin-wrapper";
 
             // Pin picture
+            var picWrapper = document.createElement("div");
+            picWrapper.className = "pin-pic-wrapper";
             var pic = document.createElement("img");
             pic.className = "pin-pic";
             pic.src = this.imgsrc;
-            div.appendChild(pic);
+            picWrapper.appendChild(pic);
+            div.appendChild(picWrapper);
 
             // Pin text arrow
             var textArrow = document.createElement("div");
@@ -204,13 +207,13 @@ function initialize() {
                 var expand = getUrlParameter("id") === curPin.id.toString();
                 var photoFile;
                 if (curPin.anonymous){
-                    photoFile = "resources/images/profile-picture-" + (curPin.id % 4) + ".png";
+                    photoFile = "resources/images/profile-picture-" + (curPin.id % 3) + ".png";
                 }
                 else if (curPin.photo){
                     photoFile = "StreetSmartPhotoStorage/" + curPin.id.toString() + ".png";
                 }
                 else if (!curPin.photo){
-                    photoFile = "resources/images/profile-picture-" + (curPin.id % 4) + ".png";
+                    photoFile = "resources/images/profile-picture-" + (curPin.id % 3) + ".png";
                 }
                 overlay = new CustomMarker(
                     new google.maps.LatLng(curPin.latitude, curPin.longitude),
@@ -227,13 +230,12 @@ function initialize() {
     xhr.open('GET', 'http://jupiter.cs.vt.edu/StreetSmartREST-1.0/webresources/com.mycompany.streetsmartrest.pin', true);
     xhr.send(null);
    
-   
    // Pins for testing
    overlay = new CustomMarker(
         new google.maps.LatLng(37.2277411, -80.422268),
         map,
         {marker_id: 1},
-        "resources/images/profile-picture-0.png",
+        "resources/images/default-1.png",
         "Ultimate frisbee on the drillfield"
     );
         
@@ -241,7 +243,7 @@ function initialize() {
         new google.maps.LatLng(37.2327411, -80.420268),
         map,
         {marker_id: 2},
-        "resources/images/profile-picture-1.png",
+        "resources/images/default-2.png",
         "Studying all night"
     );
     
@@ -249,7 +251,7 @@ function initialize() {
         new google.maps.LatLng(37.2157411, -80.421268),
         map,
         {marker_id: 3},
-        "resources/images/profile-picture-2.png",
+        "resources/images/default-3.png",
         "Free ice cream"
     );
     
