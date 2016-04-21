@@ -2,6 +2,7 @@
 $(document).ready(function () {
     resizeMapComponents($(window).width(), $(window).height() - 130, 0);
     
+    
     // Hide home button
     $("#header-links-form\\:home-btn").hide();
     
@@ -75,58 +76,21 @@ $(document).ready(function () {
         }
     });
     
-    //$(".pins-list-pin-desc").dotdotdot();
+    $(".pins-list-pin-desc").dotdotdot();
     
-    $( "#map-menu-distance-input" ).change(function() {
+    /* Fired when input text field is changed corresponding to the filter
+     * by distance */
+    $(document.body).on('change keydown paste','#filterForm\\:map-menu-distance-input',function() {       
+        /* Send the updated input text field's property to the backend. */
+        $("#filterForm\\:filterBtn").click();      
+        /* Click the hidden command button to populate menuPinsListHidden's
+         * value field. */  
+        $("#map-menu-pins-list-form\\:filterPinsByDistance").click();
+    });  
+    
+    $(document.body).on('focusout','#filterForm\\:map-menu-distance-input',function(event) {       
         
-        /* TODO: Handle removal of previously inserted child elements to
-         * properly update list */
-        if(document.getElementById("pins-list-pin-wrapper")) {
-            $('pins-list-pin-wrapper').remove();
-        }
-        
-        $('#hidden\\:menuPinsListHidden').val(" ");
-        $("#hidden\\:hiddenUpdatePins").click();
-        var pinMenuList = $('#hidden\\:menuPinsListHidden').val();
-        
-        for (i = 0; i < pinMenuList.length; i++) { 
-            
-            // Create pin list div
-            var pinListDiv = document.getElementById("map-menu-pins-list");
-
-            // Create pin list wrapper div
-            var pinListWrapper = document.createElement("div");
-            pinListWrapper.className = "pins-list-pin-wrapper";
-
-            // Append pin list wrapper inside div 
-            pinListDiv.appendChild(pinListWrapper);
-
-            // Create pin list pin text wrapper
-            var pinTextWrapper = document.createElement("div");
-            pinTextWrapper.className = "pins-list-pin-text-wrapper";
-
-            // Append it to div
-            pinListWrapper.appendChild(pinTextWrapper);
-
-            var pinTitle = document.createElement("div");
-            pinTitle.className = "pins-list-pin-title";
-
-            var pinDescription = document.createElement("div");
-            pinDescription.className = "pins-list-pin-desc";
-
-            pinTitle.innerHTML = "Pin title here";
-            pinDescription.innerHTML = "Pin description here";
-
-            pinTextWrapper.appendChild(pinTitle);
-            pinTextWrapper.appendChild(pinDescription);
-        }
-
-        // Pin picture
-        // var pic = document.createElement("img");
-        //pic.className = "pin-pic";
-        //pic.src = this.imgsrc;
-        //div.appendChild(pic);
-    });
+    }); 
 });
 
 // Fired when window is resized by the user
@@ -174,10 +138,4 @@ function resizeMapComponents(width, height, delay) {
         $("#enter-loc-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
         $("#create-pin-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
     }, delay);
-}
-
-/* Updates menu pin listing. */
-function updateMapMenuPinsList() {
-    
-    
 }
