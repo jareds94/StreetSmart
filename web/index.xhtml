@@ -81,13 +81,15 @@
                                             <h:outputText value="#{pin.description}"/>
                                         </div>
                                     </div>
-                                    <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt=""></img>
-                                    <div class="pins-list-pin-view">View pin</div>
+                                    <div class="pins-list-pin-img-wrapper">
+                                        <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt="" />
+                                    </div>
+                                    <div class="pins-list-pin-view">View full pin</div>
                                     <div class="pins-list-pin-date">
-                                        <h:outputText value="#{pinManager.getFormattedDate(pin)}"/>
+                                        &nbsp;&nbsp;&bull;&nbsp;&nbsp;<h:outputText value="#{pinManager.getFormattedDate(pin)}"/>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
                                     </div>
                                     <div class="pins-list-pin-votes">
-                                        <h:outputText value="Votes: #{pin.upvotes}"/>
+                                        <h:outputText value="#{pin.upvotes - pin.downvotes} points"/>
                                     </div>   
                                 </div>
                                 

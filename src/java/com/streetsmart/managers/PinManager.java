@@ -239,7 +239,7 @@ public class PinManager implements Serializable {
      * @return
      */
     public String getFormattedDate(Pin pin) {
-        SimpleDateFormat format = new SimpleDateFormat();
+        SimpleDateFormat format = new SimpleDateFormat("MMM d");
         return format.format(new Date(((long) pin.getTimePosted()) * 1000L));
     }
     
