@@ -1,5 +1,5 @@
 /*
- * Created by Mukund Katti on 2016.04.19  * 
+ * Created by Mukund Katti on 2016.04.21  * 
  * Copyright © 2016 Mukund Katti. All rights reserved. * 
  */
 package com.streetsmart.entitypackage;
@@ -24,16 +24,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author kattim
  */
 @Entity
-@Table(name = "comments")
+@Table(name = "Comment")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Comments.findAll", query = "SELECT c FROM Comments c"),
-    @NamedQuery(name = "Comments.findById", query = "SELECT c FROM Comments c WHERE c.id = :id"),
-    @NamedQuery(name = "Comments.findByPinId", query = "SELECT c FROM Comments c WHERE c.pinId = :pinId"),
-    @NamedQuery(name = "Comments.findByUserId", query = "SELECT c FROM Comments c WHERE c.userId = :userId"),
-    @NamedQuery(name = "Comments.findByUsername", query = "SELECT c FROM Comments c WHERE c.username = :username"),
-    @NamedQuery(name = "Comments.findByTimePosted", query = "SELECT c FROM Comments c WHERE c.timePosted = :timePosted")})
-public class Comments implements Serializable {
+    @NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c"),
+    @NamedQuery(name = "Comment.findById", query = "SELECT c FROM Comment c WHERE c.id = :id"),
+    @NamedQuery(name = "Comment.findByPinId", query = "SELECT c FROM Comment c WHERE c.pinId = :pinId"),
+    @NamedQuery(name = "Comment.findByUserId", query = "SELECT c FROM Comment c WHERE c.userId = :userId"),
+    @NamedQuery(name = "Comment.findByTimePosted", query = "SELECT c FROM Comment c WHERE c.timePosted = :timePosted")})
+public class Comment implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,11 +50,6 @@ public class Comments implements Serializable {
     private int userId;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 32)
-    @Column(name = "username")
-    private String username;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "time_posted")
     private int timePosted;
     @Basic(optional = false)
@@ -65,18 +59,17 @@ public class Comments implements Serializable {
     @Column(name = "comment")
     private String comment;
 
-    public Comments() {
+    public Comment() {
     }
 
-    public Comments(Integer id) {
+    public Comment(Integer id) {
         this.id = id;
     }
 
-    public Comments(Integer id, int pinId, int userId, String username, int timePosted, String comment) {
+    public Comment(Integer id, int pinId, int userId, int timePosted, String comment) {
         this.id = id;
         this.pinId = pinId;
         this.userId = userId;
-        this.username = username;
         this.timePosted = timePosted;
         this.comment = comment;
     }
@@ -105,14 +98,6 @@ public class Comments implements Serializable {
         this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public int getTimePosted() {
         return timePosted;
     }
@@ -139,10 +124,10 @@ public class Comments implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Comments)) {
+        if (!(object instanceof Comment)) {
             return false;
         }
-        Comments other = (Comments) object;
+        Comment other = (Comment) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -151,7 +136,7 @@ public class Comments implements Serializable {
 
     @Override
     public String toString() {
-        return "com.streetsmart.entitypackage.Comments[ id=" + id + " ]";
+        return "com.streetsmart.entitypackage.Comment[ id=" + id + " ]";
     }
     
 }

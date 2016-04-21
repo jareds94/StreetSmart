@@ -1,9 +1,9 @@
 package com.streetsmart.jsfclassespackage;
 
-import com.streetsmart.entitypackage.Comments;
+import com.streetsmart.entitypackage.Comment;
 import com.streetsmart.jsfclassespackage.util.JsfUtil;
 import com.streetsmart.jsfclassespackage.util.JsfUtil.PersistAction;
-import com.streetsmart.sessionbeanpackage.CommentsFacade;
+import com.streetsmart.sessionbeanpackage.CommentFacade;
 
 import java.io.Serializable;
 import java.util.List;
@@ -21,21 +21,21 @@ import javax.faces.convert.FacesConverter;
 
 @Named("commentsController")
 @SessionScoped
-public class CommentsController implements Serializable {
+public class CommentController implements Serializable {
 
     @EJB
-    private com.streetsmart.sessionbeanpackage.CommentsFacade ejbFacade;
-    private List<Comments> items = null;
-    private Comments selected;
+    private com.streetsmart.sessionbeanpackage.CommentFacade ejbFacade;
+    private List<Comment> items = null;
+    private Comment selected;
 
-    public CommentsController() {
+    public CommentController() {
     }
 
-    public Comments getSelected() {
+    public Comment getSelected() {
         return selected;
     }
 
-    public void setSelected(Comments selected) {
+    public void setSelected(Comment selected) {
         this.selected = selected;
     }
 
@@ -45,12 +45,12 @@ public class CommentsController implements Serializable {
     protected void initializeEmbeddableKey() {
     }
 
-    private CommentsFacade getFacade() {
+    private CommentFacade getFacade() {
         return ejbFacade;
     }
 
-    public Comments prepareCreate() {
-        selected = new Comments();
+    public Comment prepareCreate() {
+        selected = new Comment();
         initializeEmbeddableKey();
         return selected;
     }
@@ -74,7 +74,7 @@ public class CommentsController implements Serializable {
         }
     }
 
-    public List<Comments> getItems() {
+    public List<Comment> getItems() {
         if (items == null) {
             items = getFacade().findAll();
         }
@@ -109,19 +109,19 @@ public class CommentsController implements Serializable {
         }
     }
 
-    public Comments getComments(java.lang.Integer id) {
+    public Comment getComments(java.lang.Integer id) {
         return getFacade().find(id);
     }
 
-    public List<Comments> getItemsAvailableSelectMany() {
+    public List<Comment> getItemsAvailableSelectMany() {
         return getFacade().findAll();
     }
 
-    public List<Comments> getItemsAvailableSelectOne() {
+    public List<Comment> getItemsAvailableSelectOne() {
         return getFacade().findAll();
     }
 
-    @FacesConverter(forClass = Comments.class)
+    @FacesConverter(forClass = Comment.class)
     public static class CommentsControllerConverter implements Converter {
 
         @Override
@@ -129,7 +129,7 @@ public class CommentsController implements Serializable {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            CommentsController controller = (CommentsController) facesContext.getApplication().getELResolver().
+            CommentController controller = (CommentController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "commentsController");
             return controller.getComments(getKey(value));
         }
@@ -151,11 +151,11 @@ public class CommentsController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Comments) {
-                Comments o = (Comments) object;
+            if (object instanceof Comment) {
+                Comment o = (Comment) object;
                 return getStringKey(o.getId());
             } else {
-                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Comments.class.getName()});
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Comment.class.getName()});
                 return null;
             }
         }

@@ -4,10 +4,10 @@
  */
 package com.streetsmart.managers;
 
-import com.streetsmart.entitypackage.Comments;
+import com.streetsmart.entitypackage.Comment;
 import com.streetsmart.entitypackage.Pin;
 import com.streetsmart.entitypackage.User;
-import com.streetsmart.sessionbeanpackage.CommentsFacade;
+import com.streetsmart.sessionbeanpackage.CommentFacade;
 import com.streetsmart.sessionbeanpackage.PinFacade;
 import com.streetsmart.sessionbeanpackage.UserFacade;
 import java.io.Serializable;
@@ -26,7 +26,7 @@ import javax.inject.Named;
  *
  * @author kattim
  */
-public class CommentsManager implements Serializable {
+public class CommentManager implements Serializable {
     
     private int user_id;
     private int username;
@@ -35,7 +35,7 @@ public class CommentsManager implements Serializable {
     private Pin selectedPin;
     private int selectedPinId;
     private User selectedUser;
-    private List<Comments> commentsList;
+    private List<Comment> commentsList;
     
     
         /**
@@ -63,17 +63,17 @@ public class CommentsManager implements Serializable {
      * PhotoFacade.
      */
     @EJB
-    private CommentsFacade commentsFacade;
+    private CommentFacade commentsFacade;
     
-    public CommentsManager(){
+    public CommentManager(){
         
     }
     
-    public CommentsFacade getCommmentsFacade() {
+    public CommentFacade getCommmentsFacade() {
         return commentsFacade;
     }
 
-    public void setCommentsFacade(CommentsFacade commentsFacade) {
+    public void setCommentsFacade(CommentFacade commentsFacade) {
         this.commentsFacade = commentsFacade;
     }
     
@@ -117,12 +117,11 @@ public class CommentsManager implements Serializable {
         int timestamp = (int) (new Date().getTime() / 1000);
         
         try{
-            Comments currComment = new Comments();
+            Comment currComment = new Comment();
             currComment.setPinId(this.getSelectedPin().getId());
             currComment.setComment(this.comment);
             currComment.setUserId(this.getSelectedUser().getId());
             currComment.setTimePosted(timestamp);
-            currComment.setUsername(this.getSelectedUser().getUsername());
             commentsFacade.create(currComment);
             return "index?faces-redirect=true";
 
@@ -132,11 +131,11 @@ public class CommentsManager implements Serializable {
         return "";
     }
     
-    public void setCommentsList(List<Comments> comments){
+    public void setCommentsList(List<Comment> comments){
         this.commentsList =  comments;
     }
     
-    public List<Comments> getCommentsList(){
+    public List<Comment> getCommentsList(){
         commentsList = commentsFacade.findAllCommentsByPinId(this.getSelectedPin().getId());
         return commentsList;
     }
@@ -147,7 +146,7 @@ public class CommentsManager implements Serializable {
      * @param comment
      * @return
      */
-    public String getFormattedDate(Comments comment) {
+    public String getFormattedDate(Comment comment) {
         SimpleDateFormat format = new SimpleDateFormat();
         return format.format(new Date(((long) comment.getTimePosted()) * 1000L));
     }
