@@ -1,34 +1,157 @@
-#my-account-form\:delete-btn {
-    float: none;
-    font-family: "Franklin Gothic Book" !important;
-    background-color: #79aceb;
-    margin: 0 0 10px 10px;
+/* ----------------------------
+   START ACCOUNT DETAILS REGION 
+   ---------------------------- */
+
+#account-details-wrapper {
+    width: 560px;
+    margin: 0 auto;
+    margin-top: 60px;
+    overflow: hidden;
 }
 
-#my-account-form\:edit-btn {
-    float: none;
-    font-family: "Franklin Gothic Book" !important;
-    background-color: #79aceb;
-    margin: 0 0 10px 10px;
+#account-details-table {
+    float: left;
+    margin-right: 20px;
+    color: #333;
+    font-size: 18px;
 }
 
-#edit-account-form\:save-btn {
-    float: none;
-    font-family: "Franklin Gothic Book" !important;
-    background-color: #79aceb;
-    margin: 0 0 10px 10px;
+#account-details-table td.label {
+    width: 140px;
+    vertical-align: middle;
+    font-size: 16px;
 }
 
-#edit-account-form\:cancel-btn {
-    float: none;
-    font-family: "Franklin Gothic Book" !important;
-    background-color: #79aceb;
-    margin: 0 0 10px 10px;
+#account-details-table td.value {
+    padding: 3px 0 3px 0;
+    vertical-align: middle;
 }
 
-#edit-account-form\:delete-btn {
-    float: none;
+#account-form\:edit-account-btn {
+    float: left;
+    clear: both;
+    margin: 15px 13px 0 0;
+    padding: 10px 20px 10px 20px;
+}
+
+#account-form\:delete-account-btn {
+    float: left;
+    margin: 15px 0 0 0;
+    padding: 10px 20px 10px 20px;
+}
+
+#account-form\:edit-account-save-btn {
+    float: left;
+    clear: both;
+    margin: 15px 13px 0 0;
+    padding: 10px 20px 10px 20px;
+    background: #e35353 !important;
+    border: none !important;
+    color: #ffffff !important;
+}
+
+#account-form\:edit-account-save-btn:hover {
+    border: none !important;
+}
+
+#account-form\:edit-account-cancel-btn {
+    float: left;
+    margin: 15px 0 0 0;
+    padding: 10px 20px 10px 20px;
+    background-color: #999999;
+}
+
+/* --------------------------
+   END ACCOUNT DETAILS REGION 
+   -------------------------- */
+
+/* -----------------
+   START PINS REGION 
+   ----------------- */
+
+#pins-list-wrapper {
+    width: 560px;
+    margin: 0 auto;
+    margin-top: 60px;
+}
+
+.pin-wrapper {
+    margin-bottom: 30px;
+}
+
+.pin-title {
+    font-size: 20px;
+}
+
+.pin-desc {
+    font-size: 16px;
+    margin: 7px 0 7px 0;
+}
+
+.pin-details {
+    font-size: 14px;
+    color: #999999;
+}
+
+/* ---------------
+   END PINS REGION 
+   --------------- */
+
+/* -------------------
+   START DIALOG REGION
+   ------------------- */
+
+#delete-dialog {
+    display: none;
+}
+
+#delete-text {
+    margin: 10px 0 40px 0;
     font-family: "Franklin Gothic Book" !important;
-    background-color: #79aceb;
-    margin: 0 0 10px 10px;
+}
+
+#delete-dialog-form\:close-button {
+    float: right;
+    width: 85px;
+    margin-top: 5px;
+    background-color: #999;
+    font-family: "Franklin Gothic Book" !important;
+}
+
+#delete-dialog-form\:yes-delete-button {
+    float: right;
+    width: 180px;
+    margin: 5px 15px 0 0;
+    font-family: "Franklin Gothic Book" !important;
+}
+
+/* -----------------
+   END DIALOG REGION
+   ----------------- */
+
+.title {
+    font-size: 24px;
+    color: #555555;
+    margin-bottom: 20px;
+}
+
+.error-message {
+    width: 328px;
+}
+
+.ui-messages-info, 
+.ui-messages-warn, 
+.ui-messages-error, 
+.ui-messages-fatal {
+    width: 328px;
+}
+
+.input-control {
+    margin: 2px 0 2px 0;
+    width: 180px;
+}
+
+.ui-button-text,
+.ui-c {
+    padding: 0 !important;
 }

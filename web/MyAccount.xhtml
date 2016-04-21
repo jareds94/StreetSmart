@@ -12,80 +12,206 @@
             <title><ui:define name="title">StreetSmart - My Account</ui:define></title>
             <!-- Additional CSS styles needed -->
             <ui:define name="css">
-                <link rel="stylesheet" type="text/css" href="resources/css/myAccount.css"/>
+                <link rel="stylesheet" type="text/css" href="resources/css/myAccount.css" />
+                <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/ui-lightness/jquery-ui.min.css"/>
+                <link rel="stylesheet" type="text/css" href="resources/css/dialog.css" />
             </ui:define>
             <!-- Additional JS files needed -->
+            <ui:define name="js">
+                <script type="text/javascript" src="resources/js/myAccount.js" ></script>
+                <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+                <script type="text/javascript" src="resources/js/dialog.js"></script>
+            </ui:define>
             
             <!-- Page content -->
             <ui:define name="editableContent">
-                 <div align="center" style="width:50%; margin:0 auto;">
-            <h:form id="my-account-form" class="form-signin">
-                 <h:graphicImage value="StreetSmartPhotoStorage/#{accountManager.userPhoto()}" id="profilePic"
-                          class="img-rounded col-md-3"></h:graphicImage>
-                   
-                    <h:button value="Change Photo"  outcome="EditPhoto"/>
-                <br/>
-                <br/>
-                       
-                <h2> #{profileViewManager.loggedInUser.firstName} #{profileViewManager.loggedInUser.lastName} </h2>
-                <br/>
-                <br/>
-                <!-- Basic Info goes here -->
-                <h:panelGrid columns="2" cellpadding="6">
-                    <h:outputText value="First Name: " />
-                    <h:outputText value="#{profileViewManager.loggedInUser.firstName}" />
-                     
-
-                    <h:outputText value="Last Name: " />
-                    <h:outputText value="#{profileViewManager.loggedInUser.lastName}" />
-                    
-                     <h:outputText value="Username: " />
-                     <h:outputText value="#{profileViewManager.loggedInUser.username}" />
-
-                    <h:outputText value="Email: " />
-                    <h:outputText value="#{profileViewManager.loggedInUser.email}" />                   
-                </h:panelGrid>
-                <br/>
-                Posted Pins
-                <br/>
-                <!-- Output all posted pins for a user. -->
-                <h:dataTable value="#{accountManager.postedPins}" var="pin" cellpadding="10">
-                    <h:column>
-                        <h:outputText value="Title: #{pin.title} " />                       
-                    </h:column>
-                    <h:column>
-                        <h:outputText value="Pin Type: #{pin.type}" />
-                    </h:column>
-                    <h:column>
-                        <h:outputText value="Description: #{pin.description}" />                                                                                          
-                    </h:column>                   
-                    <h:column>
-                        <h:outputText value="Upvotes: #{pin.upvotes}" />                 
-                    </h:column>
-                    <h:column>
-                        <h:outputText value="Downvotes: #{pin.downvotes}" />
-                    </h:column>
-                    <h:column>
-                        <h:outputText value="Time Posted: #{pinManager.getFormattedDate(pin)}" />
-                    </h:column>
-                </h:dataTable>               
-                <br/>
-                <!-- Edit and Delete Account buttons -->
-                <h:commandButton id="edit-btn" class="btn" value="Edit Profile" 
-                                 action="/EditAccount.xhtml?faces-redirect=true">                                    
-                </h:commandButton>
-                    
-                <h:commandButton id="delete-btn" class="btn" value="Delete Account" 
-                                 action="#{accountManager.deleteAccount()}"
-                                 onclick="return confirm('Are you sure you want to delete your account? This cannot be undone.')">
-                                 <f:actionListener binding="#{fileManager.deletePhoto()}" />
-                </h:commandButton>                
-            </h:form>
-            </div>
+                <!-- Account information -->
+                <div id="account-details-wrapper">
+                    <div class="title">My Account Profile</div>
+                    <h:form id="account-form">
+                        <!-- Account info fields -->
+                        <table id="account-details-table">
+                            <tr>
+                                <td class="label">
+                                    <h:outputText value="First Name:"/>
+                                </td>
+                                <td class="value">
+                                    <h:inputText id="first-name" label="First Name"
+                                                 styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                                 value="#{accountManager.selected.firstName}" required="true"
+                                                 requiredMessage="First Name is required." />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">
+                                    <h:outputText value="Last Name:"/>
+                                </td>
+                                <td class="value">
+                                    <h:inputText id="last-name" label="Last Name"
+                                                 styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                                 value="#{accountManager.selected.lastName}" required="true"
+                                                 requiredMessage="Last Name is required." />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">
+                                    <h:outputText value="Email:"/>
+                                </td>
+                                <td class="value">
+                                    <h:inputText id="email" label="Email"
+                                                 styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                                 value="#{accountManager.selected.email}" required="true"
+                                                 requiredMessage="Email is required." />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">
+                                    <h:outputText value="Password:"/>
+                                </td>
+                                <td class="value">
+                                    <h:inputSecret id="password" label="Password"
+                                                   styleClass="input-control #{component.valid?'':'validation-failed'}" 
+                                                   value="#{accountManager.selected.password}"
+                                                   required="true" requiredMessage="Password is required.">
+                                        <f:validator validatorId="passwordValidator"/> 
+                                    </h:inputSecret>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label">
+                                    <h:outputText value="Confirm Password:"/>
+                                </td>
+                                <td class="value hidden-td">
+                                    <h:inputSecret id="confirm-password" label="Confirm Password"
+                                                   styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                                   required="true" requiredMessage="Confirm Password is required."/>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- Error message output -->
+                        <div id="messages-wrapper">
+                            <p:messages id="msgs" showIcon="false"/>
+                            <h:outputLabel id="form-error-message" class="error-message" 
+                                           value="#{accountManager.statusMessage}"/>
+                        </div>
+                        <!-- Buttons -->
+                        <h:commandButton id="edit-account-btn" class="btn noupdate" value="Edit Profile" type="button" />
+                        <h:commandButton id="delete-account-btn" class="btn noupdate" value="Delete Account" type="button" />
+                        <p:commandButton id="edit-account-save-btn" class="btn noupdate" value="Save"
+                                         action="#{accountManager.updateAccount()}" update="@(form :not(.noupdate))"
+                                         oncomplete="if (!args.validationFailed) window.location.reload();" />
+                        <h:button id="edit-account-cancel-btn" class="btn noupdate" value="Cancel" outcome="MyAccount.xhtml" />
+                    </h:form>
+                </div>
                 
-                        <!-- Page bottom fix -->
-                        <div id="page-bottom-padding">&nbsp;</div>
+                <!-- Pins -->
+                <div id="pins-list-wrapper">
+                    <div class="title">My Pins</div>
+                    <h:form id="pins-list-form">
+                        <ui:repeat value="#{accountManager.postedPins}" var="pin">
+                            <div class="pin-wrapper">
+                                <div class="pin-title"><h:outputText value="#{pin.title}"/></div>
+                                <div class="pin-desc"><h:outputText value="#{pin.description}"/></div>
+                                <div class="pin-details">
+                                    Posted on <h:outputText class="pin-time-posted" value="#{pin.timePosted}"/>
+                                    &nbsp;&bull;&nbsp;
+                                    <h:outputText value="#{pin.upvotes - pin.downvotes}"/> points
+                                </div>
+                            </div>
+                        </ui:repeat>
+                    </h:form>
+                </div>
+                
+                <!-- This div will appear as a dialog box when the user clicks the 
+                     "delete account" button -->
+                <div id="delete-dialog" title="Delete Account Confirmation">
+                    <h:form id="delete-dialog-form" enctype="multipart/form-data">
+                        <!-- Are your sure?! -->
+                        <div id="delete-text">
+                            Are you sure you really want to delete your account?<br/>
+                            This action cannot be undone.
+                        </div>
+                        <!-- Divider -->
+                        <hr style="margin: 15px 0 15px 0" />
+                        <!-- Delete / close buttons -->
+                        <h:button id="close-button" class="btn" 
+                                         value="Cancel" onclick="closeDialogs()"/>
+                        <h:commandButton id="yes-delete-button" class="btn" 
+                                         value="Yes, Delete Account" action="#{accountManager.deleteAccount()}"/>
+                    </h:form>
+                </div>
+                
+                <!-- Page bottom fix -->
+                <div id="page-bottom-padding">&nbsp;</div>
             </ui:define>
         </ui:composition>
     </h:body>
 </html>
+                
+                
+                
+                <!--
+                <div align="center" style="width:50%; margin:0 auto;">
+                    <h:form id="my-account-form" class="form-signin">
+                         <h:graphicImage value="StreetSmartPhotoStorage/#{accountManager.userPhoto()}" id="profilePic"
+                                  class="img-rounded col-md-3"></h:graphicImage>
+
+                            <h:button value="Change Photo"  outcome="EditPhoto"/>
+                        <br/>
+                        <br/>
+
+                        <h2> #{profileViewManager.loggedInUser.firstName} #{profileViewManager.loggedInUser.lastName} </h2>
+                        <br/>
+                        <br/>
+                        <h:panelGrid columns="2" cellpadding="6">
+                            <h:outputText value="First Name: " />
+                            <h:outputText value="#{profileViewManager.loggedInUser.firstName}" />
+
+
+                            <h:outputText value="Last Name: " />
+                            <h:outputText value="#{profileViewManager.loggedInUser.lastName}" />
+
+                             <h:outputText value="Username: " />
+                             <h:outputText value="#{profileViewManager.loggedInUser.username}" />
+
+                            <h:outputText value="Email: " />
+                            <h:outputText value="#{profileViewManager.loggedInUser.email}" />                   
+                        </h:panelGrid>
+                        <br/>
+                        Posted Pins
+                        <br/>
+                
+                        <h:dataTable value="#{accountManager.postedPins}" var="pin" cellpadding="10">
+                            <h:column>
+                                <h:outputText value="Title: #{pin.title} " />                       
+                            </h:column>
+                            <h:column>
+                                <h:outputText value="Pin Type: #{pin.type}" />
+                            </h:column>
+                            <h:column>
+                                <h:outputText value="Description: #{pin.description}" />                                                                                          
+                            </h:column>                   
+                            <h:column>
+                                <h:outputText value="Upvotes: #{pin.upvotes}" />                 
+                            </h:column>
+                            <h:column>
+                                <h:outputText value="Downvotes: #{pin.downvotes}" />
+                            </h:column>
+                            <h:column>
+                                <h:outputText value="Time Posted: #{pinManager.getFormattedDate(pin)}" />
+                            </h:column>
+                        </h:dataTable>               
+                        <br/>
+                
+                        <h:commandButton id="edit-btn" class="btn" value="Edit Profile" 
+                                         action="/EditAccount.xhtml?faces-redirect=true">                                    
+                        </h:commandButton>
+
+                        <h:commandButton id="delete-btn" class="btn" value="Delete Account" 
+                                         action="#{accountManager.deleteAccount()}"
+                                         onclick="return confirm('Are you sure you want to delete your account? This cannot be undone.')">
+                                         <f:actionListener binding="#{fileManager.deletePhoto()}" />
+                        </h:commandButton>                
+                    </h:form>
+                    </div>
+                    -->

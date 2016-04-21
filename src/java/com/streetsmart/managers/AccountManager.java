@@ -212,7 +212,13 @@ public class AccountManager implements Serializable {
         this.userLoc = userLoc;
         FacesContext.getCurrentInstance().getExternalContext().
                 getSessionMap().put("userLoc", this.userLoc);
-        
+    }
+    
+    public List<Pin> getPostedPins() {
+        if (this.isLoggedIn()) {
+            return pinFacade.findAllPinsWithUserId(this.getSelected().getId());
+        }
+        return null;
     }
 
     public String createAccount() {
@@ -265,21 +271,20 @@ public class AccountManager implements Serializable {
             }
             return "MyAccount";
         }
-        return "";
+        return "MyAccount";
     }
     
     public String deleteAccount() {
         if (statusMessage.isEmpty()) {
             int user_id = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id");
             try {
-                userFacade.deleteUser(user_id);
-                                
+                this.logout();
+                userFacade.deleteUser(user_id);    
             } catch (EJBException e) {
                 username = "";
                 statusMessage = "Something went wrong while deleting your account!";
                 return "";
             }
-            
             return "/index.xhtml?faces-redirect=true";
         }
         return "";
@@ -368,18 +373,8 @@ public class AccountManager implements Serializable {
                getSessionMap().get("username") != null;
     } 
       
-    /**
-     * 
-     * @return 
-     */
-    public List<Pin> getPostedPins() {
-        if(this.isLoggedIn()) {
-            return pinFacade.findAllPinsWithUserId(this.getSelected().getId());
-        }
-        return null;
-    }
     
-      public String userPhoto() {
+    public String userPhoto() {
         String user_name = (String) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("username");
         User user = userFacade.findByUsername(user_name);

@@ -8,6 +8,11 @@ import com.streetsmart.entitypackage.Pin;
 import com.streetsmart.entitypackage.User;
 import com.streetsmart.sessionbeanpackage.PinFacade;
 import com.streetsmart.sessionbeanpackage.UserFacade;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Date;
 import javax.ejb.EJB;
@@ -17,6 +22,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import javax.faces.application.FacesMessage;
+import org.primefaces.model.UploadedFile;
 
 @Named(value = "pinManager")
 @SessionScoped
@@ -29,9 +36,12 @@ public class PinManager implements Serializable {
     private static final double DEFAULT_DISTANCE_FILTER = 10.0;
     
     // Instance Variables (Properties) for Pins 
+    private UploadedFile file;
+    private String message = "";
     private String pinTitle;
     private String pinDescription;
     private boolean pinAnonymous;
+    private boolean pinPhotoExists;
     private User selected;
     private List<Pin> mapMenuPins;
     private List<Pin> allPins;
@@ -57,7 +67,7 @@ public class PinManager implements Serializable {
      */
     @EJB
     private PinFacade pinFacade;
-
+    
     public PinManager() {
          filterDistanceStr = "10.0";
          distanceFilterStyle = "display: none";
@@ -69,6 +79,26 @@ public class PinManager implements Serializable {
 
     public void setPinFacade(PinFacade pinFacade) {
         this.pinFacade = pinFacade;
+    }
+    
+        // Returns the uploaded file
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    // Obtains the uploaded file
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+    
+        // Returns the message
+    public String getMessage() {
+        return message;
+    }
+
+    // Obtains the message
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getPinTitle() {
@@ -151,11 +181,47 @@ public class PinManager implements Serializable {
             pin.setType("Some_pin_type");
             pin.setReports(0);
             pinFacade.create(pin);
+            if (file.getSize() != 0){
+                pin.setPhoto(true);
+                copyPhotoFile(file);
+            }
+            else {
+                pin.setPhoto(false);
+            }
             return "index?faces-redirect=true";
         } catch (EJBException e) {
             //statusMessage = "Something went wrong while creating your pin!";
         }
         return "";
+    }
+    
+    
+    public FacesMessage copyPhotoFile(UploadedFile file){
+        try {
+            InputStream in = file.getInputstream();
+            
+            File tempFile = inputStreamToFile(in, Constants.TEMP_FILE);
+            in.close();
+            
+            FacesMessage resultMsg;
+            
+            int pinID = pinFacade.findLastID();
+            
+            Pin pin = pinFacade.findPinWithId(pinID);
+            
+            String extension = file.getContentType();
+            extension = extension.startsWith("image/") ? extension.subSequence(6, extension.length()).toString() : "png";
+            
+            in = file.getInputstream();
+            File uploadedFile = inputStreamToFile(in, pinID + ".png");
+            // use uploadedFile if we want to make thumbnails
+            resultMsg = new FacesMessage("Success!", "File Successfully Uploaded!");
+            return resultMsg;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new FacesMessage("Upload failure!",
+            "There was a problem reading the image file. Please try again with a new photo file.");
     }
 
     public User getSelected() {
@@ -408,5 +474,24 @@ public class PinManager implements Serializable {
         Pin temp = pinValues.get(i);
         pinValues.set(i, pinValues.get(j));
         pinValues.set(j, temp);
+
+    }
+    
+    private File inputStreamToFile(InputStream inputStream, String childName) 
+            throws IOException {
+        // Read in the series of bytes from the input stream
+        byte[] buffer = new byte[inputStream.available()];
+        inputStream.read(buffer);
+
+        // Write the series of bytes on file.
+        File targetFile = new File(Constants.ROOT_DIRECTORY, childName);
+
+        OutputStream outStream;
+        outStream = new FileOutputStream(targetFile);
+        outStream.write(buffer);
+        outStream.close();
+
+        // Save reference to the current image.
+        return targetFile;
     }
 }
