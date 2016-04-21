@@ -23,7 +23,7 @@
             <ui:define name="editableContent">
                 <!-- Account information -->
                 <div id="account-details-wrapper">
-                    <div id="page-title">My Account Profile</div>
+                    <div class="title">My Account Profile</div>
                     <h:form id="account-form">
                         <!-- Account info fields -->
                         <table id="account-details-table">
@@ -101,11 +101,19 @@
                 </div>
                 
                 <!-- Pins -->
-                <div id="pins-wrapper">
-                    <div id="page-title">My Pins</div>
-                    <h:form id="pin-form">
+                <div id="pins-list-wrapper">
+                    <div class="title">My Pins</div>
+                    <h:form id="pins-list-form">
                         <ui:repeat value="#{accountManager.postedPins}" var="pin">
-                            <h:outputText value="#{pin.title}" />
+                            <div class="pin-wrapper">
+                                <div class="pin-title"><h:outputText value="#{pin.title}"/></div>
+                                <div class="pin-desc"><h:outputText value="#{pin.description}"/></div>
+                                <div class="pin-details">
+                                    Posted at <h:outputText value="#{pin.timePosted}"/>
+                                    &nbsp;&bull;&nbsp;
+                                    <h:outputText value="#{pin.upvotes - pin.downvotes}"/> points
+                                </div>
+                            </div>
                         </ui:repeat>
                     </h:form>
                 </div>

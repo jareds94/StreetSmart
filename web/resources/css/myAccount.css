@@ -9,12 +9,6 @@
     overflow: hidden;
 }
 
-#page-title {
-    font-size: 24px;
-    color: #555555;
-    margin-bottom: 20px;
-}
-
 #account-details-table {
     float: left;
     margin-right: 20px;
@@ -68,16 +62,39 @@
    START PINS REGION 
    ----------------- */
 
-#pins-wrapper {
+#pins-list-wrapper {
     width: 560px;
     margin: 0 auto;
     margin-top: 40px;
+}
+
+.pin-wrapper {
+    margin-bottom: 30px;
+}
+
+.pin-title {
+    font-size: 20px;
+}
+
+.pin-desc {
+    font-size: 16px;
+    margin: 5px 0 5px 0;
+}
+
+.pin-details {
+    font-size: 14px;
+    color: #999999;
 }
 
 /* ---------------
    END PINS REGION 
    --------------- */
 
+.title {
+    font-size: 24px;
+    color: #555555;
+    margin-bottom: 20px;
+}
 
 .error-message {
     width: 328px;
