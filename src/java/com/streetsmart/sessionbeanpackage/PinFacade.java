@@ -56,7 +56,17 @@ public class PinFacade extends AbstractFacade<Pin> {
      * later.
      * 
      * @return 
+     *
+     * Finds all pins under an associated id in the Pin table.
+     * @param id
+     * @return 
      */
+    public Pin findPinWithId(int id) {
+        return (Pin) (em.createQuery("SELECT p FROM Pin p WHERE p.id = :id")
+                .setParameter("id", id)
+                .getSingleResult());        
+    }
+
     public List<Pin> findAllPins() {
         if (em.createQuery("SELECT p FROM Pin p")
                 .getResultList().isEmpty()) {
@@ -68,4 +78,11 @@ public class PinFacade extends AbstractFacade<Pin> {
             
         }
     }
+    
+    public int findLastID() {
+        List<Pin> allPins = findAllPins();
+        
+        return allPins.get(allPins.size()-1).getId();
+        
+        }
 }

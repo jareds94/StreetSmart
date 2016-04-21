@@ -168,9 +168,9 @@
     clear: both;
 }
 
-/* -----------------
+/* ---------------
    END MENU REGION 
-   ----------------- */
+   --------------- */
 
 /* ---------------------
    START FULL PIN REGION 
@@ -484,11 +484,24 @@
     width: 280px;
 }
 
-.pin-pic {
-    height: 45px;
+.pin-pic-wrapper {
+    height: 40px;
+    width: 40px;
     margin: 3px 6px 0 0;
     float: left;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    box-shadow: 0 2px 3px 1px rgba(0,0,0,0.2);
+}
+
+.pin-pic {
+    float: left;
     cursor: pointer;
+    display: inline;
+    margin: 0 auto;
+    height: 100%;
+    width: auto;
 }
 
 .pin-text { 

@@ -56,7 +56,7 @@ public class FileManager {
      */
     @EJB
     private PhotoFacade photoFacade;
-
+    
     // Returns the uploaded file
     public UploadedFile getFile() {
         return file;

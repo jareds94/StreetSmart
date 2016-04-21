@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Pin.findByLongitude", query = "SELECT p FROM Pin p WHERE p.longitude = :longitude"),
     @NamedQuery(name = "Pin.findByTitle", query = "SELECT p FROM Pin p WHERE p.title = :title"),
     @NamedQuery(name = "Pin.findByAnonymous", query = "SELECT p FROM Pin p WHERE p.anonymous = :anonymous"),
+    @NamedQuery(name = "Pin.findByPhoto", query = "SELECT p FROM Pin p WHERE p.photo = :photo"),
     @NamedQuery(name = "Pin.findByType", query = "SELECT p FROM Pin p WHERE p.type = :type"),
     @NamedQuery(name = "Pin.findByUpvotes", query = "SELECT p FROM Pin p WHERE p.upvotes = :upvotes"),
     @NamedQuery(name = "Pin.findByDownvotes", query = "SELECT p FROM Pin p WHERE p.downvotes = :downvotes"),
@@ -60,6 +61,8 @@ public class Pin implements Serializable {
     private String description;
     @Column(name = "anonymous")
     private Boolean anonymous;
+    @Column(name = "photo")
+    private Boolean photo;
     @Size(max = 20)
     @Column(name = "type")
     private String type;
@@ -128,6 +131,14 @@ public class Pin implements Serializable {
     public void setAnonymous(Boolean anonymous) {
         this.anonymous = anonymous;
     }
+    
+    public Boolean getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Boolean photo) {
+        this.photo = photo;
+    }
 
     public String getType() {
         return type;
@@ -152,7 +163,7 @@ public class Pin implements Serializable {
     public void setDownvotes(Integer downvotes) {
         this.downvotes = downvotes;
     }
-
+    
     public Integer getReports() {
         return reports;
     }

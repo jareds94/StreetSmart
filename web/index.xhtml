@@ -22,7 +22,7 @@
                 <script type="text/javascript" src="resources/js/jquery-dotdotdot.js"></script>
                 <script type="text/javascript" src="resources/js/index.js"></script>
                 <script type="text/javascript" src="resources/js/pins.js"></script>
-                <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"/>
+                <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
                 <script type="text/javascript" src="resources/js/dialog.js"></script>
             </ui:define>
 
@@ -199,7 +199,7 @@
                                              value="#{pinManager.pinDescription}" a:placeholder="Pin Description*"
                                              required="true" />
                             Upload photo (optional):
-                            <p:fileUpload id="browse-btn" mode="simple" fileLimit="1" />
+                            <p:fileUpload id="browse-btn" value="#{pinManager.file}" mode="simple" fileLimit="1" />
                             <h:selectBooleanCheckbox id="anonymous" value="#{pinManager.pinAnonymous}" /> Make anonymous
                         </div>
                         <!-- Divider -->
