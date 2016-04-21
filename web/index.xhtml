@@ -72,22 +72,33 @@
                     <div id="map-menu-pins-list">
                         <h:form id="map-menu-pins-list-form">
                             <ui:repeat value="#{pinManager.mapMenuPins}" var="pin">
-                                <div id="pins-list-pin-wrapper">                              
-                                    <div id="pins-list-pin-text-wrapper">
-                                        <div id="pins-list-pin-title">
+                                <div class="pins-list-pin-wrapper">                              
+                                    <div class="pins-list-pin-text-wrapper">
+                                        <div class="pins-list-pin-title">
                                             <h:outputText value="#{pin.title}"/>
                                         </div>
-                                        <div id="pins-list-pin-desc">
+                                        <div class="pins-list-pin-desc">
                                             <h:outputText value="#{pin.description}"/>
                                         </div>
                                     </div>
+                                    <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt=""></img>
+                                    <div class="pins-list-pin-view">View pin</div>
+                                    <div class="pins-list-pin-date">
+                                        <h:outputText value="#{pinManager.getFormattedDate(pin)}"/>
+                                    </div>
+                                    <div class="pins-list-pin-votes">
+                                        <h:outputText value="Votes: #{pin.upvotes}"/>
+                                    </div>   
                                 </div>
+                                
+                                <div class="pins-list-pin-divider"/>
                             </ui:repeat>
                             <h:commandButton id="filterPinsByDistance" style="display: none" action="#{pinManager.filterByDistance()}">
                                 <f:ajax execute="@form" render="@form"/>
                             </h:commandButton>
                         </h:form>
                     </div>
+                    <!-- End of listed pins area -->
                         
                     <!-- Pin details goes over the other menu items when displayed -->
                     <div id="map-menu-full-pin">
