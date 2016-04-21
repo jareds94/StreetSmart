@@ -38,12 +38,12 @@ $(document).ready(function () {
     });
     
     // Close pin details menu
-    $("#map-menu-pin-close").bind("click", function (e) {
+    $("#map-menu-full-pin-close").bind("click", function (e) {
         selectedPin.siblings().hide();
         selectedPin = null;
         
-        $("#map-menu-pin").removeClass("open");
-        $("#map-menu-pin").hide();
+        $("#map-menu-full-pin").removeClass("open");
+        $("#map-menu-full-pin").hide();
     });
     
     // Change location button
@@ -152,7 +152,7 @@ function resizeMapComponents(width, height, delay) {
         
         // Resize height, width will always be fixed
         $("#map-menu").css("height", (height - 40) + "px");
-        $("#map-menu-pin").css("height", (height - 40) + "px");
+        $("#map-menu-full-pin").css("height", (height - 40) + "px");
 
         // Resize height, width will always be 100%
         $("#map").css("height", height + "px");
@@ -166,6 +166,9 @@ function resizeMapComponents(width, height, delay) {
         
         // Resize pins list height
         $("#map-menu-pins-list").height(height - 320);
+        
+        // Resize comments list height
+        $("#full-pin-comments-wrapper").height(height - 340);
         
         // Reposition dialogs
         $("#enter-loc-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
