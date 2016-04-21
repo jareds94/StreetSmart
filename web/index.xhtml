@@ -11,7 +11,6 @@
         <ui:composition template="template/siteTemplate.xhtml">
             <!-- Page title -->
             <title><ui:define name="title">StreetSmart</ui:define></title>
-            <h:outputStylesheet name="css/jsfcrud.css"/>
             <!-- Additional CSS styles needed -->
             <ui:define name="css">
                 <link rel="stylesheet" type="text/css" href="resources/css/index.css" />
@@ -20,9 +19,10 @@
             </ui:define>
             <!-- Additional JS files needed -->
             <ui:define name="js">
+                <script type="text/javascript" src="resources/js/jquery-dotdotdot.js"></script>
                 <script type="text/javascript" src="resources/js/index.js"></script>
                 <script type="text/javascript" src="resources/js/pins.js"></script>
-                <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"/>
+                <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
                 <script type="text/javascript" src="resources/js/dialog.js"></script>
             </ui:define>
 
@@ -59,16 +59,115 @@
                         <input id="map-menu-distance-input" class="input-control" type="text" value="5" /> 
                         miles
                     </div>
+                    <br/>
                     <!-- Listed pins -->
                     <div id="map-menu-pins-list">
-
+                        <div class="pins-list-pin-wrapper">
+                            <div class="pins-list-pin-text-wrapper">
+                                <div class="pins-list-pin-title">Free Ice Cream!</div>
+                                <div class="pins-list-pin-desc">
+                                    From now (1:00pm) until 6:00 tonight there is free ice cream on the drillfield! Come get it.
+                                </div>
+                            </div>
+                            <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt=""></img>
+                            <div class="pins-list-pin-view">View full pin</div>
+                            <div class="pins-list-pin-date">&nbsp;&nbsp;&bull;&nbsp;&nbsp;Mar 11&nbsp;&nbsp;&bull;&nbsp;&nbsp;</div>
+                            <div class="pins-list-pin-votes">12 points</div>
+                        </div>
+                        
+                        <hr class="pins-list-pin-divider" />
+                        
+                        <div class="pins-list-pin-wrapper">
+                            <div class="pins-list-pin-text-wrapper">
+                                <div class="pins-list-pin-title">Free Ice Cream!</div>
+                                <div class="pins-list-pin-desc">
+                                    From now (1:00pm) until 6:00 tonight there is free ice cream on the drillfield! Come get it.
+                                </div>
+                            </div>
+                            <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt=""></img>
+                            <div class="pins-list-pin-view">View full pin</div>
+                            <div class="pins-list-pin-date">&nbsp;&nbsp;&bull;&nbsp;&nbsp;Mar 11&nbsp;&nbsp;&bull;&nbsp;&nbsp;</div>
+                            <div class="pins-list-pin-votes">12 points</div>
+                        </div>
+                        
+                        <hr class="pins-list-pin-divider" />
+                        
+                        <div class="pins-list-pin-wrapper">
+                            <div class="pins-list-pin-text-wrapper">
+                                <div class="pins-list-pin-title">Free Ice Cream!</div>
+                                <div class="pins-list-pin-desc">
+                                    From now (1:00pm) until 6:00 tonight there is free ice cream on the drillfield! Come get it.
+                                </div>
+                            </div>
+                            <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt=""></img>
+                            <div class="pins-list-pin-view">View full pin</div>
+                            <div class="pins-list-pin-date">&nbsp;&nbsp;&bull;&nbsp;&nbsp;Mar 11&nbsp;&nbsp;&bull;&nbsp;&nbsp;</div>
+                            <div class="pins-list-pin-votes">12 points</div>
+                        </div>
+                        
+                        <hr class="pins-list-pin-divider" />
+                        
+                        <div class="pins-list-pin-wrapper">
+                            <div class="pins-list-pin-text-wrapper">
+                                <div class="pins-list-pin-title">Free Ice Cream!</div>
+                                <div class="pins-list-pin-desc">
+                                    From now (1:00pm) until 6:00 tonight there is free ice cream on the drillfield! Come get it.
+                                </div>
+                            </div>
+                            <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt=""></img>
+                            <div class="pins-list-pin-view">View full pin</div>
+                            <div class="pins-list-pin-date">&nbsp;&nbsp;&bull;&nbsp;&nbsp;Mar 11&nbsp;&nbsp;&bull;&nbsp;&nbsp;</div>
+                            <div class="pins-list-pin-votes">12 points</div>
+                        </div>
                     </div>
 
                     <!-- Pin details goes over the other menu items when displayed -->
-                    <div id="map-menu-pin">
-                        <img id="map-menu-pin-close" src="resources/images/close.png" alt="Close Menu"/>
-                        <img id="map-menu-pin-pic" src="" alt="Pin Picture"/>
-                        <div id="map-menu-pin-message"></div>
+                    <div id="map-menu-full-pin">
+                        <img id="full-pin-close" src="resources/images/close.png" alt="Close Menu"/>
+                        <div id="full-pin-top-wrapper">
+                            <div id="full-pin-vote-wrapper">
+                                <img id="full-pin-upvote" src="resources/images/upvote.png" alt="Upvote" />
+                                <div id="full-pin-votes">12</div>
+                                <img id="full-pin-downvote" src="resources/images/downvote.png" alt="Downvote" />
+                            </div>
+                            <img id="full-pin-pic" src="resources/images/profile-picture-2.png" alt="Pin Picture"/>
+                        </div>
+                        <div id="full-pin-title">Free ice cream!</div>
+                        <div id="full-pin-desc">From now (1:00pm) until 6:00 tonight there is free ice cream on the drillfield! Come get it.</div>
+                        <div id="full-pin-details">By Jared Schwalbe on Mar 11, 2016</div>
+                        <hr class="full-pin-divider" />
+                        <!-- Comments -->
+                        <div id="full-pin-comments-wrapper">
+                            <h:form id="comment">
+                                <h:inputTextarea id="full-pin-post-comment" 
+                                                 class="input-control #{component.valid?'':'validation-failed'}"
+                                                 a:placeholder="Write your comment..." required="true" />
+                                <h:commandButton id="full-pin-post-comment-btn" class="btn" value="Post Comment" />
+                            </h:form>
+                            <div id="full-pin-comments-list">
+                                <div id="full-pin-comment">
+                                    <div id="full-pin-comment-user">Tim Street</div>
+                                    <div id="full-pin-comment-msg">Yo free ice cream is dope.</div>
+                                    <div id="full-pin-comment-date">3 hours ago</div>
+                                </div>
+                                
+                                <hr class="full-pin-comment-divider" />
+                                
+                                <div id="full-pin-comment">
+                                    <div id="full-pin-comment-user">Tim Street</div>
+                                    <div id="full-pin-comment-msg">Yo free ice cream is dope.</div>
+                                    <div id="full-pin-comment-date">3 hours ago</div>
+                                </div>
+                                
+                                <hr class="full-pin-comment-divider" />
+                                    
+                                <div id="full-pin-comment">
+                                    <div id="full-pin-comment-user">Tim Street</div>
+                                    <div id="full-pin-comment-msg">Yo free ice cream is dope.</div>
+                                    <div id="full-pin-comment-date">3 hours ago</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -106,7 +205,7 @@
                             </div>
                             <!-- Field -->
                             <h:inputText id="loc" class="input-control #{component.valid?'':'validation-failed'}" 
-                                         a:placeholder="Your Location*" required="true" />
+                                         a:placeholder="Ex: 1000 Main St, Blacksburg, VA" required="true" />
                         </div>
                         <!-- Divider -->
                         <hr style="margin: 15px 0 15px 0" />

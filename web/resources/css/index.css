@@ -6,27 +6,6 @@
     position: absolute;
 }
 
-#map-loading {
-    width: 100%;
-    min-width: 650px;
-    min-height: 100px;
-    margin: 0;
-    position: absolute;
-    background: url(../images/loading.gif) no-repeat;
-    background-size: 64px 22px;
-    background-color: #ffffff;
-    z-index: 6;
-}
-
-#show-menu {
-    width: 40px;
-    position: absolute;
-    top: 25px;
-    left: 28px;
-    cursor: pointer;
-    z-index: 2;
-}
-
 /* -----------------
    START MENU REGION 
    ----------------- */
@@ -66,7 +45,7 @@
 
 #map-menu-change-loc-btn {
     width: 40px;
-    height: 39px;       /* Height and margin-top off 1px from matching text box... why? */
+    height: 39px;
     margin-top: 24px;
     float: left;
     background-color: #79aceb;
@@ -115,7 +94,89 @@
     padding: 5px;
 }
 
-#map-menu-pin {
+#map-menu-pins-list {
+    float: left;
+    clear: both;
+    overflow-y: scroll;
+    margin-top: 20px;
+}
+
+.pins-list-pin-wrapper {
+    float: left;
+    width: 242px;
+    overflow: hidden;
+    clear: both;
+}
+
+.pins-list-pin-text-wrapper {
+    float: left;
+    width: 165px;
+    margin-bottom: 10px;
+}
+
+.pins-list-pin-title {
+    width: 165px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.pins-list-pin-desc {
+    width: 165px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    line-height: 17px;
+    height: 34px;
+}
+
+.pins-list-pin-img {
+    float: right;
+    width: 55px;
+    margin: 5px 7px 0 0;
+}
+
+.pins-list-pin-view {
+    float: left;
+    clear: both;
+    font-size: 13px;
+    cursor: pointer;
+    color: #5090e0;
+}
+
+.pins-list-pin-date {
+    float: left;
+    font-size: 13px;
+    color: #777777;
+}
+
+.pins-list-pin-votes {
+    float: left;
+    font-size: 13px;
+    color: #777777;
+}
+
+.pins-list-pin-divider {
+    display: block;
+    width: 230px;
+    height: 1px;
+    margin: 15px 0 15px 0;
+    border: 0;
+    border-top: 1px solid #cccccc;
+    float: left;
+    clear: both;
+}
+
+/* ---------------
+   END MENU REGION 
+   --------------- */
+
+/* ---------------------
+   START FULL PIN REGION 
+   --------------------- */
+
+#map-menu-full-pin {
     display: none;
     position: absolute;
     left: 0px;
@@ -126,27 +187,171 @@
     z-index: 4;
 }
 
-#map-menu-pin-close {
+#full-pin-close {
     width: 20px;
     float: right;
     opacity: 0.7;
     cursor: pointer;
 }
 
-#map-menu-pin-pic {
-    margin: 50px 0 0 75px;
+#full-pin-top-wrapper {
+    width: 100%;
+    clear: both;
+    float: left;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+#full-pin-vote-wrapper {
+    margin-top: 15px;
+    float: left;
+    width: 26px;
+    overflow: hidden;
+    text-align: center;
+}
+
+#full-pin-upvote {
+    width: 26px;
+    cursor: pointer;
+    opacity: 0.7;
+    margin-bottom: 3px;
+}
+
+#full-pin-downvote {
+    width: 26px;
+    margin-top: 7px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+#full-pin-votes {
+    line-height: 18px;
+    font-size: 18px;
+    color: #555555;
+}
+
+#full-pin-pic {
+    display: inline-block;
     width: 100px;
+    margin-left: 50px;
 }
 
-#map-menu-pin-message {
-    margin-top: 16px;
-    padding: 5px;
-    font-size: 16px;
+#full-pin-title {
+    float: left;
+    margin-top: 15px;
+    font-size: 20px;
 }
 
-/* -----------------
-   END MENU REGION 
-   ----------------- */
+#full-pin-desc {
+    float: left;
+    clear: both;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+#full-pin-details {
+    font-size: 13px;
+    color: #777777;
+    float: left;
+    margin-top: 13px;
+}
+
+.full-pin-divider {
+    display: block;
+    float: left;
+    clear: left;
+    width: 260px;
+    height: 1px;
+    margin: 20px 0 20px 0;
+    border: 0;
+    border-top: 1px solid #cccccc;
+}
+
+#full-pin-comments-wrapper {
+    width: 260px;
+    float: left;
+    clear: both;
+    overflow-y: scroll;
+}
+
+#comment\:full-pin-post-comment {
+    width: 210px;
+    height: 45px;
+    resize:vertical;
+}
+
+#comment\:full-pin-post-comment:focus {
+    outline: none;
+}
+
+#comment\:full-pin-post-comment-btn {
+    font-size: 14px;
+    padding: 8px 10px 8px 10px;
+    background-color: #5090e0;
+    float: right;
+    margin: -5px 11px 0 0;
+}
+
+#full-pin-comments-list {
+    float: left;
+    clear: both;
+    margin-top: 15px;
+}
+
+#full-pin-comment-user {
+    font-size: 14px;
+    color: #e35353;
+}
+
+#full-pin-comment-msg {
+    font-size: 14px;
+    margin: 3px 0 3px 0;
+}
+
+#full-pin-comment-date {
+    font-size: 13px;
+    color: #777777;
+}
+
+.full-pin-comment-divider {
+    display: block;
+    float: left;
+    clear: left;
+    width: 230px;
+    height: 1px;
+    margin: 10px 0 10px 0;
+    border: 0;
+    border-top: 1px solid #cccccc;
+}
+
+/* -------------------
+   END FULL PIN REGION 
+   ------------------- */
+
+/* -------------------------
+   START MAP OVERLAYS REGION 
+   ------------------------- */
+
+#map-loading {
+    width: 100%;
+    min-width: 650px;
+    min-height: 100px;
+    margin: 0;
+    position: absolute;
+    background: url(../images/loading.gif) no-repeat;
+    background-size: 64px 22px;
+    background-color: #ffffff;
+    z-index: 6;
+}
+
+#show-menu {
+    width: 40px;
+    position: absolute;
+    top: 25px;
+    left: 28px;
+    cursor: pointer;
+    z-index: 2;
+}
 
 #map-message-wrapper {
     display: none;
@@ -196,9 +401,13 @@
     background-size: 100%;
 }
 
-/* -----------------
+/* -----------------------
+   END MAP OVERLAYS REGION 
+   ----------------------- */
+
+/* -------------------
    START DIALOG REGION 
-   ----------------- */
+   ------------------- */
 
 #create-pin-dialog {
     display: none;
@@ -265,6 +474,10 @@
    END DIALOG REGION 
    ----------------- */
 
+/* --------------------
+   START MAP PIN REGION
+   -------------------- */
+
 .pin-wrapper {
     position: absolute;
     height: 50px;
@@ -309,6 +522,11 @@
     margin-top: 15px;
 }
 
+/* ------------------
+   END MAP PIN REGION
+   ------------------ */
+
+/* Wtf is this and how did it come to be */
 #JSFFrameId {
     display: none;
 }

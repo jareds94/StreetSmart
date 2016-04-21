@@ -2,14 +2,12 @@
 var map;
 var userLoc;
 var selectedPin;
-var selectedPinLoc;
 var parent;
 
 // Called when map loads
 function initialize() {
     map = null;
     userLoc = null;
-    selectedPinLoc = null;
     var locationError = false;
     var locationDialogOpen = false;
 
@@ -134,14 +132,14 @@ function initialize() {
                 panes.overlayImage.removeChild(div);
                 panes.floatPane.appendChild(div);
                 
-                $("#map-menu-pin-pic").attr("src", self.imgsrc);
-                $("#map-menu-pin-message").text(self.text);
-                selectedPinLoc = self.latlng;
+                
+                /* TODO: Inject pin details into the side menu */
+                
 
                 // Show pin details
-                if (!$("#map-menu-pin").hasClass("open")) {
-                    $("#map-menu-pin").addClass("open");
-                    $("#map-menu-pin").show();
+                if (!$("#map-menu-full-pin").hasClass("open")) {
+                    $("#map-menu-full-pin").addClass("open");
+                    $("#map-menu-full-pin").show();
                 }
 
                 // Pop out menu
@@ -213,8 +211,13 @@ function initialize() {
                     new google.maps.LatLng(curPin.latitude, curPin.longitude),
                     map,
                     {marker_id: curPin.id},
+<<<<<<< HEAD
                     photoFile,
                     curPin.description,
+=======
+                    "resources/images/profile-picture-" + (curPin.id % 4) + ".png",
+                    curPin.title,
+>>>>>>> develop
                     expand
                 );
             }
