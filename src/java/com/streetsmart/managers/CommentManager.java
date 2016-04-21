@@ -29,7 +29,6 @@ import javax.inject.Named;
 public class CommentManager implements Serializable {
     
     private int user_id;
-    private int username;
     private String comment;
     private int timePosted;
     private Pin selectedPin;
@@ -120,8 +119,10 @@ public class CommentManager implements Serializable {
             Comment currComment = new Comment();
             currComment.setPinId(this.getSelectedPin().getId());
             currComment.setComment(this.comment);
-            currComment.setUserId(this.getSelectedUser().getId());
-            currComment.setTimePosted(timestamp);
+            user_id = this.getSelectedUser().getId();
+            currComment.setUserId(user_id);
+            timePosted = timestamp;
+            currComment.setTimePosted(timePosted);
             commentsFacade.create(currComment);
             return "index?faces-redirect=true";
 
