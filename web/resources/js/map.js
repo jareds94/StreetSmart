@@ -211,13 +211,8 @@ function initialize() {
                     new google.maps.LatLng(curPin.latitude, curPin.longitude),
                     map,
                     {marker_id: curPin.id},
-<<<<<<< HEAD
                     photoFile,
                     curPin.description,
-=======
-                    "resources/images/profile-picture-" + (curPin.id % 4) + ".png",
-                    curPin.title,
->>>>>>> develop
                     expand
                 );
             }
