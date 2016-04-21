@@ -265,7 +265,7 @@ public class AccountManager implements Serializable {
             }
             return "MyAccount";
         }
-        return "";
+        return "MyAccount";
     }
     
     public String deleteAccount() {

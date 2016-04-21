@@ -168,16 +168,16 @@
     clear: both;
 }
 
-/* -----------------
+/* ---------------
    END MENU REGION 
-   ----------------- */
+   --------------- */
 
 /* ---------------------
    START FULL PIN REGION 
    --------------------- */
 
 #map-menu-full-pin {
-    display: none;
+    /*display: none;*/
     position: absolute;
     left: 0px;
     top: 0px;
