@@ -15,6 +15,11 @@ $(function () {
             $("#create-pin-dialog").dialog("open");
         }
     });
+    
+    // Open delete dialog
+    $("#account-form\\:delete-account-btn").on("click", function () {
+        $("#delete-dialog").dialog("open");
+    });
 
     // Dialog properties
     $("#create-pin-dialog").dialog({
@@ -35,11 +40,22 @@ $(function () {
         closeOnEscape: false,
         modal: true
     });
+    
+    // Dialog properties
+    $("#delete-dialog").dialog({
+        autoOpen: false,
+        height: 225,
+        width: 400,
+        resizable: false,
+        draggable: false,
+        modal: true
+    });
 });
 
 function closeDialogs() {
     $("#create-pin-dialog").dialog("close");
     $("#enter-loc-dialog").dialog("close");
+    $("#delete-dialog").dialog("close");
     
     setTimeout(function() {
         // Reset fields

@@ -13,10 +13,14 @@
             <!-- Additional CSS styles needed -->
             <ui:define name="css">
                 <link rel="stylesheet" type="text/css" href="resources/css/myAccount.css" />
+                <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/ui-lightness/jquery-ui.min.css"/>
+                <link rel="stylesheet" type="text/css" href="resources/css/dialog.css" />
             </ui:define>
             <!-- Additional JS files needed -->
             <ui:define name="js">
                 <script type="text/javascript" src="resources/js/myAccount.js" ></script>
+                <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+                <script type="text/javascript" src="resources/js/dialog.js"></script>
             </ui:define>
             
             <!-- Page content -->
@@ -115,6 +119,25 @@
                                 </div>
                             </div>
                         </ui:repeat>
+                    </h:form>
+                </div>
+                
+                <!-- This div will appear as a dialog box when the user clicks the 
+                     "delete account" button -->
+                <div id="delete-dialog" title="Delete Account Confirmation">
+                    <h:form id="delete-dialog-form" enctype="multipart/form-data">
+                        <!-- Are your sure?! -->
+                        <div id="delete-text">
+                            Are you sure you really want to delete your account?<br/>
+                            This action cannot be undone.
+                        </div>
+                        <!-- Divider -->
+                        <hr style="margin: 15px 0 15px 0" />
+                        <!-- Delete / close buttons -->
+                        <h:button id="close-button" class="btn" 
+                                         value="Cancel" onclick="closeDialogs()"/>
+                        <h:commandButton id="yes-delete-button" class="btn" 
+                                         value="Yes, Delete Account" action="#{accountManager.deleteAccount()}"/>
                     </h:form>
                 </div>
                 

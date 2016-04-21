@@ -90,6 +90,38 @@
    END PINS REGION 
    --------------- */
 
+/* -------------------
+   START DIALOG REGION
+   ------------------- */
+
+#delete-dialog {
+    display: none;
+}
+
+#delete-text {
+    margin: 10px 0 40px 0;
+    font-family: "Franklin Gothic Book" !important;
+}
+
+#delete-dialog-form\:close-button {
+    float: right;
+    width: 85px;
+    margin-top: 5px;
+    background-color: #999;
+    font-family: "Franklin Gothic Book" !important;
+}
+
+#delete-dialog-form\:yes-delete-button {
+    float: right;
+    width: 180px;
+    margin: 5px 15px 0 0;
+    font-family: "Franklin Gothic Book" !important;
+}
+
+/* -----------------
+   END DIALOG REGION
+   ----------------- */
+
 .title {
     font-size: 24px;
     color: #555555;
