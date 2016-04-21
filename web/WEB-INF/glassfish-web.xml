@@ -24,6 +24,6 @@ Copyright © 2016 Osman Balci. All rights reserved.
     requests for certain resources from outside their own docroot" 
     See page C-46 in [https://glassfish.java.net/docs/4.0/application-deployment-guide.pdf]
   -->
-  <!--<property name="alternatedocroot_1" value="from=/StreetSmartPhotoStorage/* dir=/Users/Kevin"/> -->
-  <property name="alternatedocroot_1" value="from=/StreetSmartPhotoStorage/* dir=/home/cs4984/StreetSmart"/>
+  <!--<property name="alternatedocroot_1" value="from=/StreetSmartPhotoStorage/* dir=/Users/mybu"/>--> 
+  <property name="alternatedocroot_1" value="from=/StreetSmartPhotoStorage/* dir=/home/cs4704/StreetSmart"/>
 </glassfish-web-app>

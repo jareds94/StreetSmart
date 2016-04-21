@@ -131,7 +131,7 @@
                                              value="#{pinManager.pinDescription}" a:placeholder="Pin Description*"
                                              required="true" />
                             Upload photo (optional):
-                            <p:fileUpload id="browse-btn" mode="simple" fileLimit="1" />
+                            <p:fileUpload id="browse-btn" value="#{pinManager.file}" mode="simple" fileLimit="1" />
                             <h:selectBooleanCheckbox id="anonymous" value="#{pinManager.pinAnonymous}" /> Make anonymous
                         </div>
                         <!-- Divider -->
