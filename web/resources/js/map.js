@@ -202,12 +202,22 @@ function initialize() {
             for (var i = 0; i < jsonResult.length; i++){
                 var curPin = jsonResult[i];
                 var expand = getUrlParameter("id") === curPin.id.toString();
+                var photoFile;
+                if (curPin.anonymous){
+                    photoFile = "resources/images/profile-picture-" + (curPin.id % 4) + ".png";
+                }
+                else if (curPin.photo){
+                    photoFile = "StreetSmartPhotoStorage/" + curPin.id.toString() + ".png";
+                }
+                else if (!curPin.photo){
+                    photoFile = "resources/images/profile-picture-" + (curPin.id % 4) + ".png";
+                }
                 overlay = new CustomMarker(
                     new google.maps.LatLng(curPin.latitude, curPin.longitude),
                     map,
                     {marker_id: curPin.id},
-                    "resources/images/profile-picture-" + (curPin.id % 4) + ".png",
-                    curPin.title,
+                    photoFile,
+                    curPin.description,
                     expand
                 );
             }
