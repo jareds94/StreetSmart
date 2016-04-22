@@ -79,8 +79,13 @@ public class Pin implements Serializable {
     private Integer userId;
     @Transient
     private int score;
+    @Transient
+    private String username;
       
     public Pin() {
+        upvotes = 0;
+        downvotes = 0;
+        score = 0;
     }
 
     public int getScore() {
@@ -92,7 +97,13 @@ public class Pin implements Serializable {
         this.score = score;
     }
 
-    
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
     
     public Pin(Integer id) {
         this.id = id;
