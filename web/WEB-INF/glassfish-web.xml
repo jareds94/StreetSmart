@@ -25,5 +25,5 @@ Copyright © 2016 Osman Balci. All rights reserved.
     See page C-46 in [https://glassfish.java.net/docs/4.0/application-deployment-guide.pdf]
   -->
   <!--<property name="alternatedocroot_1" value="from=/StreetSmartPhotoStorage/* dir=/Users/mybu"/>--> 
-  <property name="alternatedocroot_1" value="from=/StreetSmartPhotoStorage/* dir=/home/cs4704/StreetSmart"/>
+  <property name="alternatedocroot_1" value="from=/StreetSmartPhotoStorage/* dir=/Users/Tim"/>
 </glassfish-web-app>
