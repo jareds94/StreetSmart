@@ -34,19 +34,19 @@ import org.primefaces.model.UploadedFile;
 public class PinManager implements Serializable {
 
     private static final double DEFAULT_DISTANCE_FILTER = 10.0;
-    
+
     // Instance Variables (Properties) for Pins 
     private UploadedFile file;
-    private String message = "";
-    private String pinTitle;
-    private String pinDescription;
-    private boolean pinAnonymous;
-    private boolean pinPhotoExists;
-    private User selected;
+    private String newPinTitle;
+    private String newPinDescription;
+    private boolean newPinAnonymous;
+    private boolean newPinPhotoExists;
+    private int selectedPinId;
+    private Pin selectedPin;
     private List<Pin> mapMenuPins;
     private List<Pin> allPins;
     private List<Pin> pinValues;
-    private String filterDistanceStr;
+    private String filterDistance;
     private String filterOption;
     private String distanceFilterStyle;
 
@@ -67,10 +67,10 @@ public class PinManager implements Serializable {
      */
     @EJB
     private PinFacade pinFacade;
-    
+
     public PinManager() {
-         filterDistanceStr = "10.0";
-         distanceFilterStyle = "display: none";
+        filterDistance = "10.0";
+        distanceFilterStyle = "display: none";
     }
 
     public PinFacade getPinFacade() {
@@ -80,8 +80,8 @@ public class PinManager implements Serializable {
     public void setPinFacade(PinFacade pinFacade) {
         this.pinFacade = pinFacade;
     }
-    
-        // Returns the uploaded file
+
+    // Returns the uploaded file
     public UploadedFile getFile() {
         return file;
     }
@@ -90,65 +90,72 @@ public class PinManager implements Serializable {
     public void setFile(UploadedFile file) {
         this.file = file;
     }
-    
-        // Returns the message
-    public String getMessage() {
-        return message;
+
+    public String getNewPinTitle() {
+        return newPinTitle;
     }
 
-    // Obtains the message
-    public void setMessage(String message) {
-        this.message = message;
+    public void setNewPinTitle(String newPinTitle) {
+        this.newPinTitle = newPinTitle;
     }
 
-    public String getPinTitle() {
-        return pinTitle;
+    public String getNewPinDescription() {
+        return newPinDescription;
     }
 
-    public void setPinTitle(String pinTitle) {
-        this.pinTitle = pinTitle;
+    public void setNewPinDescription(String newPinDescription) {
+        this.newPinDescription = newPinDescription;
     }
 
-    public String getPinDescription() {
-        return pinDescription;
+    public boolean isNewPinAnonymous() {
+        return newPinAnonymous;
     }
 
-    public void setPinDescription(String pinDescription) {
-        this.pinDescription = pinDescription;
+    public void setNewPinAnonymous(boolean newPinAnonymous) {
+        this.newPinAnonymous = newPinAnonymous;
     }
 
-    public boolean isPinAnonymous() {
-        return pinAnonymous;
+    public boolean isNewPinPhotoExists() {
+        return newPinPhotoExists;
     }
 
-    public void setPinAnonymous(boolean pinAnonymous) {
-        this.pinAnonymous = pinAnonymous;
+    public void setNewPinPhotoExists(boolean newPinPhotoExists) {
+        this.newPinPhotoExists = newPinPhotoExists;
     }
 
-    public String getFilterDistanceStr() {
-        return filterDistanceStr;
+    public String getfilterDistance() {
+        return filterDistance;
     }
 
-    public void setFilterDistanceStr(String filterDistanceStr) {
-       
-        if(filterDistanceStr.isEmpty()) {
-            this.filterDistanceStr = "10.0";
+    public void setfilterDistance(String filterDistance) {
+
+        if (filterDistance.isEmpty()) {
+            this.filterDistance = "10.0";
             return;
         }
-        
+
         /* Attempt to parse the string*/
         try {
-            Double.parseDouble(filterDistanceStr);
+            Double.parseDouble(filterDistance);
         } catch (NumberFormatException | NullPointerException e) {
-            filterDistanceStr = "10.0";
+            filterDistance = "10.0";
             return;
         }
-   
-        this.filterDistanceStr = filterDistanceStr;
+
+        this.filterDistance = filterDistance;
+    }
+
+    public int getSelectedPinId() {
+        return selectedPinId;
+    }
+
+    public void setSelectedPinId(int selectedPinId) {
+        this.selectedPinId = selectedPinId;
+        this.selectedPin = pinFacade.findPinWithId(selectedPinId);
     }
 
     public String createPin() {
-        
+
         String[] latAndLong = this.getParsedUserLoc();
 
         // Generate timestamp for pin posting time
@@ -157,12 +164,13 @@ public class PinManager implements Serializable {
         try {
             Pin pin;
             pin = new Pin();
-            pin.setAnonymous(this.pinAnonymous);
+            pin.setAnonymous(this.newPinAnonymous);
 
             // If the pin is not anonymous and a User is currently logged
             // in, set the associated User id.
-            if (!pinAnonymous) {
-                pin.setUserId(this.getSelected().getId());
+            if (!newPinAnonymous) {
+                pin.setUserId(userFacade.find(FacesContext.getCurrentInstance().
+                        getExternalContext().getSessionMap().get("user_id")).getId());
             } else {
                 // Otherwise, set the id to a row in the User table associated
                 // with all anonymous users (i.e. users are anonymous with id
@@ -170,22 +178,21 @@ public class PinManager implements Serializable {
                 pin.setUserId(1);
             }
 
-            pin.setDescription(this.pinDescription);
+            pin.setDescription(this.newPinDescription);
             pin.setDownvotes(0);
             pin.setUpvotes(0);
             //pin.setId(1); // no need for this if pin id is auto increment
-            pin.setTitle(this.pinTitle);
+            pin.setTitle(this.newPinTitle);
             pin.setLatitude(Float.parseFloat(latAndLong[0]));
             pin.setLongitude(Float.parseFloat(latAndLong[1]));
             pin.setTimePosted(timestamp);
             pin.setType("Some_pin_type");
             pin.setReports(0);
             pinFacade.create(pin);
-            if (file.getSize() != 0){
+            if (file.getSize() != 0) {
                 pin.setPhoto(true);
                 copyPhotoFile(file);
-            }
-            else {
+            } else {
                 pin.setPhoto(false);
             }
             return "index?faces-redirect=true";
@@ -194,24 +201,23 @@ public class PinManager implements Serializable {
         }
         return "";
     }
-    
-    
-    public FacesMessage copyPhotoFile(UploadedFile file){
+
+    public FacesMessage copyPhotoFile(UploadedFile file) {
         try {
             InputStream in = file.getInputstream();
-            
+
             File tempFile = inputStreamToFile(in, Constants.TEMP_FILE);
             in.close();
-            
+
             FacesMessage resultMsg;
-            
+
             int pinID = pinFacade.findLastID();
-            
+
             Pin pin = pinFacade.findPinWithId(pinID);
-            
+
             String extension = file.getContentType();
             extension = extension.startsWith("image/") ? extension.subSequence(6, extension.length()).toString() : "png";
-            
+
             in = file.getInputstream();
             File uploadedFile = inputStreamToFile(in, pinID + ".png");
             // use uploadedFile if we want to make thumbnails
@@ -221,16 +227,7 @@ public class PinManager implements Serializable {
             e.printStackTrace();
         }
         return new FacesMessage("Upload failure!",
-            "There was a problem reading the image file. Please try again with a new photo file.");
-    }
-
-    public User getSelected() {
-        if (selected == null) {
-            selected = userFacade.find(FacesContext.getCurrentInstance().
-                    getExternalContext().getSessionMap().get("user_id"));
-        }
-
-        return selected;
+                "There was a problem reading the image file. Please try again with a new photo file.");
     }
 
     /**
@@ -242,7 +239,7 @@ public class PinManager implements Serializable {
         SimpleDateFormat format = new SimpleDateFormat("MMM d");
         return format.format(new Date(((long) pin.getTimePosted()) * 1000L));
     }
-    
+
     public List<Pin> getMapMenuPins() {
         return mapMenuPins;
     }
@@ -251,31 +248,15 @@ public class PinManager implements Serializable {
         this.mapMenuPins = mapMenuPins;
     }
 
-    public UserFacade getUserFacade() {
-        return userFacade;
-    }
-
-    public void setUserFacade(UserFacade userFacade) {
-        this.userFacade = userFacade;
-    }
-
     public String getFilterOption() {
         return filterOption;
     }
-    
-    public String getDistanceFilterStyle() {
-        return distanceFilterStyle;
-    }
 
-    public void setDistanceFilterStyle(String distanceFilterStyle) {
-        this.distanceFilterStyle = distanceFilterStyle;
-    }
-    
     public void setFilterOption(String filterOption) {
         switch (filterOption) {
             case "dist":
                 this.filterByDistance();
-                this.setDistanceFilterStyle("");               
+                this.setDistanceFilterStyle("");
                 break;
             case "pop":
                 this.filterByPopularity();
@@ -290,162 +271,145 @@ public class PinManager implements Serializable {
         }
         this.filterOption = filterOption;
     }
-      
+
+    public String getDistanceFilterStyle() {
+        return distanceFilterStyle;
+    }
+
+    public void setDistanceFilterStyle(String distanceFilterStyle) {
+        this.distanceFilterStyle = distanceFilterStyle;
+    }
+
     public String[] getParsedUserLoc() {
         // Parse out latitiude and longitude from container
-        String locData = (String)FacesContext.getCurrentInstance().
+        String locData = (String) FacesContext.getCurrentInstance().
                 getExternalContext().getSessionMap().get("userLoc");
         // If locData could not be retrieved, stop parsing
-        if(locData == null) {
+        if (locData == null) {
             return null;
         }
         locData = locData.replace("(", "");
         locData = locData.replace(")", "");
         return locData.split(", ");
     }
-    
-    /**
-     * Sets map menu pins list to be populated with pins within
-     * 10 miles of the user's current location (regardless of whether
-     * or not a user is logged in).
-     */
-    public void setDefaultMapMenuPins() {
-       String[] currentUserLoc = this.getParsedUserLoc();
-       if(currentUserLoc != null) {
-            float userLat = Float.valueOf(currentUserLoc[0]);
-            float userLong = Float.valueOf(currentUserLoc[1]);
-            allPins = pinFacade.findAllPins();
 
-            for(int i = 0; i < allPins.size(); i++) {
-                Pin pin = allPins.get(i);
-                double distanceInMiles = this.getDistanceFromLatLongInMiles(userLat, userLong, 
-                        pin.getLatitude(), pin.getLongitude());
-                if(!(distanceInMiles <= DEFAULT_DISTANCE_FILTER)) {
-                    allPins.remove(i);
-                }
-            }       
-            this.setMapMenuPins(allPins);
-        }
-    }
-    
     /**
-     * 
-     * @param keyword 
+     *
+     * @param keyword
      */
     public void filterByKeyword(String keyword) {
         allPins = pinFacade.findAllPins();
-        
-        for(int i = 0; i < allPins.size(); i++) {
+
+        for (int i = 0; i < allPins.size(); i++) {
             Pin pin = allPins.get(i);
-            if(!pin.getTitle().contains(keyword)) {
+            if (!pin.getTitle().contains(keyword)) {
                 allPins.remove(i);
             }
         }
     }
-    
+
     /**
-     * 
+     *
      */
     public void filterByDistance() {
         String[] currentUserLoc = this.getParsedUserLoc();
-        Double filterDistance = Double.parseDouble(this.filterDistanceStr);
-        
-        if(currentUserLoc != null) {
+        Double filterDistance = Double.parseDouble(this.filterDistance);
+
+        if (currentUserLoc != null) {
             float userLat = Float.valueOf(currentUserLoc[0]);
             float userLong = Float.valueOf(currentUserLoc[1]);
             allPins = pinFacade.findAllPins();
 
-            for(int i = 0; i < allPins.size(); i++) {
+            for (int i = 0; i < allPins.size(); i++) {
                 Pin pin = allPins.get(i);
-                double distanceInMiles = this.getDistanceFromLatLongInMiles(userLat, userLong, 
-                                              pin.getLatitude(), pin.getLongitude());
-                if(!(distanceInMiles <= filterDistance)) {
+                double distanceInMiles = this.getDistanceFromLatLongInMiles(userLat, userLong,
+                        pin.getLatitude(), pin.getLongitude());
+                if (!(distanceInMiles <= filterDistance)) {
                     allPins.remove(i);
                 }
-            }       
+            }
             this.setMapMenuPins(allPins);
-        }       
+        }
     }
-    
+
     /**
-     * 
+     *
      */
     public void filterByNewest() {
         allPins = pinFacade.findAllPins();
         this.sortPins(allPins, "time");
         this.setMapMenuPins(this.pinValues);
     }
-    
+
     /**
-     * 
+     *
      */
     public void filterByPopularity() {
         allPins = pinFacade.findAllPins();
         this.sortPins(allPins, "popularity");
         this.setMapMenuPins(this.pinValues);
     }
-    
+
     /**
-     * 
+     *
      * @param lat1
      * @param long1
      * @param lat2
      * @param long2
-     * @return 
+     * @return
      */
-    private double getDistanceFromLatLongInMiles(float lat1, float long1, 
-                                                float lat2, float long2) {
+    private double getDistanceFromLatLongInMiles(float lat1, float long1,
+            float lat2, float long2) {
         double R = 3958.756; // Mean radius of the earth in miles
-        double dLat = deg2rad(lat2-lat1);
-        double dLon = deg2rad(long2-long1); 
-        double a = 
-            ((Math.sin(dLat/2) * Math.sin(dLat/2)) +
-                (Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-                Math.sin(dLon/2) * Math.sin(dLon/2))); 
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        double dLat = deg2rad(lat2 - lat1);
+        double dLon = deg2rad(long2 - long1);
+        double a
+                = ((Math.sin(dLat / 2) * Math.sin(dLat / 2))
+                + (Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2))
+                * Math.sin(dLon / 2) * Math.sin(dLon / 2)));
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return (R * c); // Distance in miles
     }
 
     /**
-     * 
+     *
      * @param deg
-     * @return 
+     * @return
      */
     private float deg2rad(float deg) {
-        return (float) (deg * (Math.PI/180));
+        return (float) (deg * (Math.PI / 180));
     }
-    
+
     /**
      * Quicksort implementation for sorting pins depending on the sort type.
-     * 
+     *
      * @param pins
      * @param sortType
      */
     public void sortPins(List<Pin> pins, String sortType) {
         // check for empty or null array
-        if (pins == null || pins.isEmpty() || 
-            sortType == null || sortType.isEmpty()) {
+        if (pins == null || pins.isEmpty()
+                || sortType == null || sortType.isEmpty()) {
             return;
         }
-        
+
         this.pinValues = pins;
-        if(sortType.equals("time")) {
-            quicksortByTimePosted(0, (pinValues.size()) - 1);           
-        }
-        else if(sortType.equals("popularity")) {
+        if (sortType.equals("time")) {
+            quicksortByTimePosted(0, (pinValues.size()) - 1);
+        } else if (sortType.equals("popularity")) {
             quicksortByPopularity(0, (pinValues.size()) - 1);
         }
     }
 
     /**
-     * 
+     *
      * @param low
-     * @param high 
+     * @param high
      */
     private void quicksortByTimePosted(int low, int high) {
         int i = low, j = high;
 
-        int pivot = pinValues.get(low + (high-low)/2).getTimePosted();
+        int pivot = pinValues.get(low + (high - low) / 2).getTimePosted();
 
         while (i <= j) {
 
@@ -463,24 +427,24 @@ public class PinManager implements Serializable {
                 j--;
             }
         }
-        
+
         if (low < j) {
             quicksortByTimePosted(low, j);
         }
         if (i < high) {
-            quicksortByTimePosted(i, high); 
-        }    
+            quicksortByTimePosted(i, high);
+        }
     }
-    
+
     /**
-     * 
+     *
      * @param low
-     * @param high 
+     * @param high
      */
     public void quicksortByPopularity(int low, int high) {
         int i = low, j = high;
 
-        int pivot = pinValues.get(low + (high-low)/2).getScore();
+        int pivot = pinValues.get(low + (high - low) / 2).getScore();
 
         while (i <= j) {
 
@@ -498,30 +462,30 @@ public class PinManager implements Serializable {
                 j--;
             }
         }
-        
+
         if (low < j) {
             quicksortByPopularity(low, j);
         }
         if (i < high) {
-            quicksortByPopularity(i, high); 
+            quicksortByPopularity(i, high);
         }
     }
 
     /**
-     * Generic swap for two Pin objects in a list. Helper method for
-     * quicksort implementation.
-     * 
+     * Generic swap for two Pin objects in a list. Helper method for quicksort
+     * implementation.
+     *
      * @param i
-     * @param j 
+     * @param j
      */
     private void exchange(int i, int j) {
-        
+
         Pin temp = pinValues.get(i);
         pinValues.set(i, pinValues.get(j));
         pinValues.set(j, temp);
     }
-    
-    private File inputStreamToFile(InputStream inputStream, String childName) 
+
+    private File inputStreamToFile(InputStream inputStream, String childName)
             throws IOException {
         // Read in the series of bytes from the input stream
         byte[] buffer = new byte[inputStream.available()];
