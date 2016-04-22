@@ -22,7 +22,6 @@
             <ui:define name="js">
                 <script type="text/javascript" src="resources/js/jquery-dotdotdot.js"></script>
                 <script type="text/javascript" src="resources/js/index.js"></script>
-                <script type="text/javascript" src="resources/js/pins.js"></script>
                 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
                 <script type="text/javascript" src="resources/js/dialog.js"></script>
             </ui:define>
@@ -106,7 +105,7 @@
                     <!-- Pin details goes over the other menu items when displayed -->
                     <div id="map-menu-full-pin">
                         <img id="full-pin-close" src="resources/images/close.png" alt="Close Menu"/>
-                        <h:panelGroup id="please-render-2" layout="block">
+                        <h:panelGroup id="render-full-pin" layout="block">
                             <div id="full-pin-top-wrapper">
                                 <div id="full-pin-vote-wrapper">
                                     <img id="full-pin-upvote" src="resources/images/upvote.png" alt="Upvote" />
@@ -124,20 +123,21 @@
                         <hr class="full-pin-divider" />
                         <!-- Comments -->
                         <div id="full-pin-comments-wrapper">
+                            <!-- Post a comment (only show if signed in) -->
                             <c:if test="#{accountManager.isLoggedIn() == true}">
-                            <h:form id="comment">
-                                <h:inputTextarea id="full-pin-post-comment" 
-                                                 class="input-control #{component.valid?'':'validation-failed'}"
-                                                 a:placeholder="Write your comment..." required="true" 
-                                                 value="#{commentsManager.comment}"/>
-                                <h:commandButton id="full-pin-post-comment-btn" class="btn" value="Post Comment"
-                                                 action="#{commentsManager.createComment()}">
-                                    <f:ajax execute="@form" render=":please-render @form"/>
-                                </h:commandButton>
-                            </h:form>
+                                <h:form id="comment">
+                                    <h:inputTextarea id="full-pin-post-comment" 
+                                                     class="input-control #{component.valid?'':'validation-failed'}"
+                                                     a:placeholder="Write your comment..." required="true" 
+                                                     value="#{commentsManager.comment}"/>
+                                    <h:commandButton id="full-pin-post-comment-btn" class="btn" value="Post Comment"
+                                                     action="#{commentsManager.createComment()}">
+                                        <f:ajax execute="@form" render=":please-render @form"/>
+                                    </h:commandButton>
+                                </h:form>
                             </c:if>
-      
-                            <h:panelGroup id="please-render" layout="block">
+                            <!-- Comments list -->
+                            <h:panelGroup id="render-comments" layout="block">
                                 <div id="full-pin-comments-list">
                                     <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment">
                                     <div id="full-pin-comment">
@@ -145,15 +145,14 @@
                                         <div id="full-pin-comment-msg"><h:outputText value="#{comment.comment}"/></div>
                                         <div id="full-pin-comment-date"><h:outputText value="#{commentsManager.getFormattedDate(comment)}"/></div>
                                     </div>
-
                                     <hr class="full-pin-comment-divider" />
-
                                     </ui:repeat>
                                 </div>
                             </h:panelGroup>
                         </div>
                     </div>
                 </div>
+                <!-- End of map menu -->
 
                 <!-- Map overlays (ordered from highest z-index to lowest)-->
                 <div id="map-loading"></div>
@@ -164,19 +163,20 @@
                 </div>
                 <img id="hidden-add-pin-hover" src="resources/images/add-pin-hover.png" alt=""/> <!-- preload hover img -->
 
-                <!-- Contains the user's current location as "[lat] [long]" -->
-                <h:form id="hidden">
-                    <h:inputHidden id="userLocationHidden"                                   
+                <!-- Contains the user's current location as "([lat], [long])" -->
+                <h:form id="hidden-loc-form">
+                    <h:inputHidden id="user-loc-hidden"                                   
                                    value="#{accountManager.userLoc}" />
-                    <h:commandButton id="hiddenSubmit" style="display: none">
+                    <h:commandButton id="user-loc-submit" style="display: none">
                         <f:ajax execute="@form" render="@form"/>
                     </h:commandButton>
                 </h:form>
-                <h:form id="hidden-comment">
-                    <h:inputHidden id="commentInput" value="#{commentsManager.selectedPinId}" />
-                    <h:inputHidden id="pinInput" value="#{pinManager.selectedPinId}" />
-                    <h:commandButton id="commentSubmit" style="display: none">
-                        <f:ajax execute="@form" render=":please-render :please-render-2"/>
+                <!-- Contains the selected pin ID -->
+                <h:form id="hidden-pin-form">
+                    <h:inputHidden id="pin-id-hidden-1" value="#{commentsManager.selectedPinId}" />
+                    <h:inputHidden id="pin-id-hidden-2" value="#{pinManager.selectedPinId}" />
+                    <h:commandButton id="pin-id-submit" style="display: none">
+                        <f:ajax execute="@form" render=":render-comments :render-full-pin"/>
                     </h:commandButton>
                 </h:form>
 
@@ -233,17 +233,11 @@
                             <f:ajax execute="@form" render="@form"/>
                         </h:commandButton>
                         <h:commandButton id="create-btn" class="btn" value="Create Pin" action="#{pinManager.createPin()}">
-                            <f:ajax execute="@form" render="@form"/>8
+                            <f:ajax execute="@form" render="@form"/>
                         </h:commandButton>
                     </h:form>
                 </div>
             </ui:define>
         </ui:composition>
-        <br />
-        <h:link outcome="/photo/List" value="Show All Photo Items"/>
-        <br />
-        <h:link outcome="/user/List" value="Show All User Items"/>
     </h:body>
-
-
 </html>

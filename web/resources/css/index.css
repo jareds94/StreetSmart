@@ -400,8 +400,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 1px;
-    height: 1px;
+    width: 70px;
+    height: 70px;
     z-index: -1;
 }
 
@@ -567,7 +567,8 @@
 }
 
 /* Scroll bar fixes for OSX. We want it to always show so that the user knows
-   the div is scrollable */
+   the div is scrollable 
+   TODO: Test that this works */
 ::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 7px;

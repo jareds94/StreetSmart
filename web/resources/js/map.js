@@ -39,8 +39,8 @@ function initialize() {
     });
     
     // Initialize map by centering on current location and showing location dot
-    if ($("#hidden\\:userLocationHidden").val() !== "") {
-        var value = $("#hidden\\:userLocationHidden").val();
+    if ($("#hidden-loc-form\\:user-loc-hidden").val() !== "") {
+        var value = $("#hidden-loc-form\\:user-loc-hidden").val();
         value = value.replace("(", "");
         value = value.replace(")", "");
         var split = value.split(", ");
@@ -54,8 +54,8 @@ function initialize() {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
-                $("#hidden\\:userLocationHidden").val("(" + userLoc.lat + ", " + userLoc.lng + ")");
-                $("#hidden\\:hiddenSubmit").click();
+                $("#hidden-loc-form\\:user-loc-hidden").val("(" + userLoc.lat + ", " + userLoc.lng + ")");
+                $("#hidden-loc-form\\:user-loc-submit").click();
                 map.setCenter(userLoc);
                 drawUserLocMarker();
             }, function() {
@@ -123,7 +123,9 @@ function initialize() {
             var panes = this.getPanes();
             panes.overlayImage.appendChild(div);
 
+            // Listender for clicking the pin icon on the map
             google.maps.event.addDomListener(div.firstChild, "click", function (event) {
+                // Update selectedPin
                 if (selectedPin !== null && selectedPin !== undefined) {
                     panes.floatPane.removeChild(parent);
                     panes.overlayImage.appendChild(parent);
@@ -135,16 +137,11 @@ function initialize() {
                 panes.overlayImage.removeChild(div);
                 panes.floatPane.appendChild(div);
                 
+                // Send the current pin id to the backend
+                $("#hidden-pin-form\\:pin-id-hidden-1").val(self.args.marker_id);
+                $("#hidden-pin-form\\:pin-id-hidden-2").val(self.args.marker_id);
+                $("#hidden-pin-form\\:pin-id-submit").click();
                 
-                /* TODO: Inject pin details into the side menu */
-                
-                // Inject current pin id into hidden text field
-                // Click hidden button to submit hidden form
-                $("#hidden-comment\\:commentInput").val(self.args.marker_id);
-                $("#hidden-comment\\:pinInput").val(self.args.marker_id);
-                $("#hidden-comment\\:commentSubmit").click();
-                
-
                 // Show pin details
                 if (!$("#map-menu-full-pin").hasClass("open")) {
                     $("#map-menu-full-pin").addClass("open");

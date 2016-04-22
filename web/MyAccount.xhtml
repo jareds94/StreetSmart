@@ -122,6 +122,9 @@
                     </h:form>
                 </div>
                 
+                <!-- Page bottom fix -->
+                <div id="page-bottom-padding">&nbsp;</div>
+                
                 <!-- This div will appear as a dialog box when the user clicks the 
                      "delete account" button -->
                 <div id="delete-dialog" title="Delete Account Confirmation">
@@ -140,78 +143,7 @@
                                          value="Yes, Delete Account" action="#{accountManager.deleteAccount()}"/>
                     </h:form>
                 </div>
-                
-                <!-- Page bottom fix -->
-                <div id="page-bottom-padding">&nbsp;</div>
             </ui:define>
         </ui:composition>
     </h:body>
 </html>
-                
-                
-                
-                <!--
-                <div align="center" style="width:50%; margin:0 auto;">
-                    <h:form id="my-account-form" class="form-signin">
-                         <h:graphicImage value="StreetSmartPhotoStorage/#{accountManager.userPhoto()}" id="profilePic"
-                                  class="img-rounded col-md-3"></h:graphicImage>
-
-                            <h:button value="Change Photo"  outcome="EditPhoto"/>
-                        <br/>
-                        <br/>
-
-                        <h2> #{profileViewManager.loggedInUser.firstName} #{profileViewManager.loggedInUser.lastName} </h2>
-                        <br/>
-                        <br/>
-                        <h:panelGrid columns="2" cellpadding="6">
-                            <h:outputText value="First Name: " />
-                            <h:outputText value="#{profileViewManager.loggedInUser.firstName}" />
-
-
-                            <h:outputText value="Last Name: " />
-                            <h:outputText value="#{profileViewManager.loggedInUser.lastName}" />
-
-                             <h:outputText value="Username: " />
-                             <h:outputText value="#{profileViewManager.loggedInUser.username}" />
-
-                            <h:outputText value="Email: " />
-                            <h:outputText value="#{profileViewManager.loggedInUser.email}" />                   
-                        </h:panelGrid>
-                        <br/>
-                        Posted Pins
-                        <br/>
-                
-                        <h:dataTable value="#{accountManager.postedPins}" var="pin" cellpadding="10">
-                            <h:column>
-                                <h:outputText value="Title: #{pin.title} " />                       
-                            </h:column>
-                            <h:column>
-                                <h:outputText value="Pin Type: #{pin.type}" />
-                            </h:column>
-                            <h:column>
-                                <h:outputText value="Description: #{pin.description}" />                                                                                          
-                            </h:column>                   
-                            <h:column>
-                                <h:outputText value="Upvotes: #{pin.upvotes}" />                 
-                            </h:column>
-                            <h:column>
-                                <h:outputText value="Downvotes: #{pin.downvotes}" />
-                            </h:column>
-                            <h:column>
-                                <h:outputText value="Time Posted: #{pinManager.getFormattedDate(pin)}" />
-                            </h:column>
-                        </h:dataTable>               
-                        <br/>
-                
-                        <h:commandButton id="edit-btn" class="btn" value="Edit Profile" 
-                                         action="/EditAccount.xhtml?faces-redirect=true">                                    
-                        </h:commandButton>
-
-                        <h:commandButton id="delete-btn" class="btn" value="Delete Account" 
-                                         action="#{accountManager.deleteAccount()}"
-                                         onclick="return confirm('Are you sure you want to delete your account? This cannot be undone.')">
-                                         <f:actionListener binding="#{fileManager.deletePhoto()}" />
-                        </h:commandButton>                
-                    </h:form>
-                    </div>
-                    -->
