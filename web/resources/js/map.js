@@ -231,6 +231,7 @@ function initialize() {
     xhr.send(null);
    
    // Pins for testing
+   /*
    overlay = new CustomMarker(
         new google.maps.LatLng(37.2277411, -80.422268),
         map,
@@ -254,7 +255,7 @@ function initialize() {
         "resources/images/profile-picture-2.png",
         "Free ice cream"
     );
-    
+    */
 }
 
 function drawUserLocMarker() {

@@ -77,7 +77,7 @@
     font-size: 15px;
 }
 
-#map-menu-sort-select {
+#selectfilterForm\:map-menu-sort-select {
     margin-left: 10px;
     width: 167px;
     padding: 5px;
@@ -89,8 +89,8 @@
     font-size: 15px;
 }
 
-#map-menu-distance-input {
-    width: 35px;
+#filterForm\:map-menu-distance-input {
+    width: 50px;
     padding: 5px;
 }
 
@@ -131,10 +131,21 @@
     height: 34px;
 }
 
-.pins-list-pin-img {
+.pins-list-pin-img-wrapper {
+    height: 50px;
+    width: 50px;
+    margin: 8px 10px 0 0;
     float: right;
-    width: 55px;
-    margin: 5px 7px 0 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.pins-list-pin-img {
+    display: inline;
+    margin: 0 auto;
+    height: 100%;
+    width: auto;
 }
 
 .pins-list-pin-view {
