@@ -33,8 +33,6 @@ import org.primefaces.model.UploadedFile;
  */
 public class PinManager implements Serializable {
 
-    private static final double DEFAULT_DISTANCE_FILTER = 10.0;
-
     // Instance Variables (Properties) for Pins 
     private UploadedFile file;
     private String newPinTitle;
@@ -49,6 +47,7 @@ public class PinManager implements Serializable {
     private String filterDistance;
     private String filterOption;
     private String distanceFilterStyle;
+    private String keywordFilterInput;
 
     /**
      * The instance variable 'userFacade' is annotated with the @EJB annotation.
@@ -70,7 +69,8 @@ public class PinManager implements Serializable {
 
     public PinManager() {
         filterDistance = "10.0";
-        distanceFilterStyle = "display: none";
+        distanceFilterStyle = "visibility: hidden";
+        keywordFilterInput = "";
         selectedPin = new Pin();
         selectedPin.setTimePosted(0);
     }
@@ -125,11 +125,11 @@ public class PinManager implements Serializable {
         this.newPinPhotoExists = newPinPhotoExists;
     }
 
-    public String getfilterDistance() {
+    public String getFilterDistance() {
         return filterDistance;
     }
 
-    public void setfilterDistance(String filterDistance) {
+    public void setFilterDistance(String filterDistance) {
 
         if (filterDistance.isEmpty()) {
             this.filterDistance = "10.0";
@@ -155,6 +155,13 @@ public class PinManager implements Serializable {
         this.selectedPinId = selectedPinId;
         this.selectedPin = pinFacade.findPinWithId(selectedPinId);
     }
+
+    public String getKeywordFilterInput() {
+        return keywordFilterInput;
+    }
+
+    public void setKeywordFilterInput(String keywordFilterInput) {
+        this.keywordFilterInput = keywordFilterInput;
 
     public Pin getSelectedPin() {
         return selectedPin;
@@ -210,7 +217,7 @@ public class PinManager implements Serializable {
             }
             return "index?faces-redirect=true";
         } catch (EJBException e) {
-            //statusMessage = "Something went wrong while creating your pin!";
+            //TODO: Print useful error message somehow
         }
         return "";
     }
@@ -271,6 +278,9 @@ public class PinManager implements Serializable {
     }
 
     public void setFilterOption(String filterOption) {
+        if (filterOption == null || filterOption.isEmpty()) {
+            return;
+        }
         switch (filterOption) {
             case "dist":
                 this.filterByDistance();
@@ -313,17 +323,27 @@ public class PinManager implements Serializable {
 
     /**
      *
-     * @param keyword
      */
-    public void filterByKeyword(String keyword) {
-        allPins = pinFacade.findAllPins();
+    public void filterByKeyword() {
 
-        for (int i = 0; i < allPins.size(); i++) {
-            Pin pin = allPins.get(i);
-            if (!pin.getTitle().contains(keyword)) {
-                allPins.remove(i);
-            }
+        if (keywordFilterInput == null || keywordFilterInput.isEmpty()) {
+            return;
+        } else if (keywordFilterInput.length() < 3) {
+            this.setFilterOption(this.filterOption);
+            return;
         }
+        
+        List<Pin> keywordPins = mapMenuPins;
+
+        // We want to find all pins in MapMenuPins matching the keyword so:
+        for (int i = 0; i < keywordPins.size(); i++) {
+            Pin pin = keywordPins.get(i);
+            if (!pin.getTitle().contains(keywordFilterInput)
+                    && !pin.getDescription().contains(keywordFilterInput)) {
+                keywordPins.remove(pin);
+            }
+        }      
+        mapMenuPins = keywordPins;
     }
 
     /**

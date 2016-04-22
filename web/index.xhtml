@@ -52,9 +52,16 @@
                                 <f:ajax render=":filterForm :map-menu-pins-list-form"/>
                             </h:selectOneMenu>
                         </h:form>
-                    </div>
-                    <!-- Filter by keyword -->
-                    <h:inputText id="map-menu-filter-keyword" class="input-control" style="display: none"/>          
+                        <!-- Filter by keyword -->
+                        <h:form id="map-menu-filter-keyword-form">
+                            <h:inputText id="map-menu-filter-keyword-input" class="input-control" 
+                                         a:placeholder="Filter by keyword" value="#{pinManager.keywordFilterInput}"/>
+                            <h:commandButton id="filter-keyword-btn" style="display: none">
+                                <f:ajax execute="@form" render=":map-menu-pins-list-form"/>
+                            </h:commandButton>
+                        </h:form>
+                    </div>                  
+
                     <!-- Distance check box -->
                     <div id="map-menu-distance-filter">                       
                         <h:form id="filterForm" style="#{pinManager.distanceFilterStyle}">
@@ -63,7 +70,7 @@
                                    value="#{pinManager.filterDistance}" />                           
                             miles
                             <h:commandButton id="filterBtn" style="display: none">
-                                <f:ajax execute="@form" render="@form"/>
+                                <f:ajax execute="@form" render=":map-menu-pins-list-form"/>
                             </h:commandButton>
                         </h:form>
                     </div>
@@ -98,6 +105,9 @@
                             <h:commandButton id="filterPinsByDistance" style="display: none" action="#{pinManager.filterByDistance()}">
                                 <f:ajax execute="@form" render="@form"/>
                             </h:commandButton>
+                            <h:commandButton id="filterPinsByKeyword" style="display: none" action="#{pinManager.filterByKeyword()}">
+                                <f:ajax execute="@form" render="@form"/>
+                            </h:commandButton>                            
                         </h:form>
                     </div>
                     <!-- End of listed pins area -->
