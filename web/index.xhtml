@@ -61,7 +61,7 @@
                         <h:form id="filterForm" style="#{pinManager.distanceFilterStyle}">
                             Only show pins within
                             <h:inputText id="map-menu-distance-input" class="input-control"  
-                                   value="#{pinManager.filterDistanceStr}" />                           
+                                   value="#{pinManager.filterDistance}" />                           
                             miles
                             <h:commandButton id="filterBtn" style="display: none">
                                 <f:ajax execute="@form" render="@form"/>
@@ -138,6 +138,7 @@
                             <div id="full-pin-comments-list">
                                 <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment">
                                 <div id="full-pin-comment">
+                                    <div id="full-pin-comment-msg"><h:outputText value="#{comment.getComment()}"/></div>
                                     <div id="full-pin-comment-user"><h:outputText value="#{comment.username}"/></div>
                                     <div id="full-pin-comment-msg"><h:outputText value="#{comment.comment}"/></div>
                                     <div id="full-pin-comment-date"><h:outputText value="#{commentsManager.getFormattedDate(comment)}"/></div>
@@ -212,14 +213,14 @@
                         <div id="create-pin-fields-wrapper">
                             <!-- Fields -->
                             <h:inputText id="title" class="input-control #{component.valid?'':'validation-failed'}" 
-                                         value="#{pinManager.pinTitle}" a:placeholder="Pin Title*"
+                                         value="#{pinManager.newPinTitle}" a:placeholder="Pin Title*"
                                          required="true" />
                             <h:inputTextarea id="description" class="input-control #{component.valid?'':'validation-failed'}"
-                                             value="#{pinManager.pinDescription}" a:placeholder="Pin Description*"
+                                             value="#{pinManager.newPinDescription}" a:placeholder="Pin Description*"
                                              required="true" />
                             Upload photo (optional):
                             <p:fileUpload id="browse-btn" value="#{pinManager.file}" mode="simple" fileLimit="1" />
-                            <h:selectBooleanCheckbox id="anonymous" value="#{pinManager.pinAnonymous}" /> Make anonymous
+                            <h:selectBooleanCheckbox id="anonymous" value="#{pinManager.newPinAnonymous}" /> Make anonymous
                         </div>
                         <!-- Divider -->
                         <hr style="margin: 15px 0 15px 0" />

@@ -15,6 +15,7 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -76,10 +77,23 @@ public class Pin implements Serializable {
     private Integer timePosted;
     @Column(name = "user_id")
     private Integer userId;
-
+    @Transient
+    private int score;
+      
     public Pin() {
     }
 
+    public int getScore() {
+        score = (upvotes - downvotes);
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    
+    
     public Pin(Integer id) {
         this.id = id;
     }

@@ -165,7 +165,7 @@ public class CommentManager implements Serializable {
         for (int i = 0; i < commentsList.size(); i++) {
             int id = commentsList.get(i).getUserId();
             User user = userFacade.findByUserId(id);
-            commentsList.get(i).setUsername(user.getFirstName() + user.getLastName());
+            commentsList.get(i).setUsername(user.getFirstName() + " " + user.getLastName());
         }
         
         return commentsList;
