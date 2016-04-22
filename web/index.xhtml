@@ -106,17 +106,21 @@
                     <!-- Pin details goes over the other menu items when displayed -->
                     <div id="map-menu-full-pin">
                         <img id="full-pin-close" src="resources/images/close.png" alt="Close Menu"/>
-                        <div id="full-pin-top-wrapper">
-                            <div id="full-pin-vote-wrapper">
-                                <img id="full-pin-upvote" src="resources/images/upvote.png" alt="Upvote" />
-                                <div id="full-pin-votes">12</div>
-                                <img id="full-pin-downvote" src="resources/images/downvote.png" alt="Downvote" />
+                        <h:panelGroup id="please-render-2" layout="block">
+                            <div id="full-pin-top-wrapper">
+                                <div id="full-pin-vote-wrapper">
+                                    <img id="full-pin-upvote" src="resources/images/upvote.png" alt="Upvote" />
+                                    <div id="full-pin-votes"><h:outputText value="#{pinManager.selectedPin.score}" /></div>
+                                    <img id="full-pin-downvote" src="resources/images/downvote.png" alt="Downvote" />
+                                </div>
+                                <div id="full-pin-pic-wrapper">
+                                    <img id="full-pin-pic" src="resources/images/profile-picture-2.png" alt="Pin Picture"/>
+                                </div>
                             </div>
-                            <img id="full-pin-pic" src="resources/images/profile-picture-2.png" alt="Pin Picture"/>
-                        </div>
-                        <div id="full-pin-title">Free ice cream!</div>
-                        <div id="full-pin-desc">From now (1:00pm) until 6:00 tonight there is free ice cream on the drillfield! Come get it.</div>
-                        <div id="full-pin-details">By Jared Schwalbe on Mar 11, 2016</div>
+                            <div id="full-pin-title"><h:outputText value="#{pinManager.selectedPin.title}" /></div>
+                            <div id="full-pin-desc"><h:outputText value="#{pinManager.selectedPin.description}" /></div>
+                            <div id="full-pin-details">By <h:outputText value="#{pinManager.selectedPin.username}" /> on <h:outputText value="#{pinManager.getFullFormattedDate(pinManager.selectedPin)}" /></div>
+                        </h:panelGroup>
                         <hr class="full-pin-divider" />
                         <!-- Comments -->
                         <div id="full-pin-comments-wrapper">
@@ -129,25 +133,23 @@
                                 <h:commandButton id="full-pin-post-comment-btn" class="btn" value="Post Comment"
                                                  action="#{commentsManager.createComment()}">
                                     <f:ajax execute="@form" render=":please-render @form"/>
-                                    
                                 </h:commandButton>
                             </h:form>
                             </c:if>
       
                             <h:panelGroup id="please-render" layout="block">
-                            <div id="full-pin-comments-list">
-                                <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment">
-                                <div id="full-pin-comment">
-                                    <div id="full-pin-comment-msg"><h:outputText value="#{comment.getComment()}"/></div>
-                                    <div id="full-pin-comment-user"><h:outputText value="#{comment.username}"/></div>
-                                    <div id="full-pin-comment-msg"><h:outputText value="#{comment.comment}"/></div>
-                                    <div id="full-pin-comment-date"><h:outputText value="#{commentsManager.getFormattedDate(comment)}"/></div>
+                                <div id="full-pin-comments-list">
+                                    <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment">
+                                    <div id="full-pin-comment">
+                                        <div id="full-pin-comment-user"><h:outputText value="#{comment.username}"/></div>
+                                        <div id="full-pin-comment-msg"><h:outputText value="#{comment.comment}"/></div>
+                                        <div id="full-pin-comment-date"><h:outputText value="#{commentsManager.getFormattedDate(comment)}"/></div>
+                                    </div>
+
+                                    <hr class="full-pin-comment-divider" />
+
+                                    </ui:repeat>
                                 </div>
-                                
-                                <hr class="full-pin-comment-divider" />
-                
-                                </ui:repeat>
-                            </div>
                             </h:panelGroup>
                         </div>
                     </div>
@@ -168,12 +170,13 @@
                                    value="#{accountManager.userLoc}" />
                     <h:commandButton id="hiddenSubmit" style="display: none">
                         <f:ajax execute="@form" render="@form"/>
-                    </h:commandButton>                   
+                    </h:commandButton>
                 </h:form>
                 <h:form id="hidden-comment">
                     <h:inputHidden id="commentInput" value="#{commentsManager.selectedPinId}" />
+                    <h:inputHidden id="pinInput" value="#{pinManager.selectedPinId}" />
                     <h:commandButton id="commentSubmit" style="display: none">
-                        <f:ajax execute="@form" render=":please-render"/>
+                        <f:ajax execute="@form" render=":please-render :please-render-2"/>
                     </h:commandButton>
                 </h:form>
 

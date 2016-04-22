@@ -241,10 +241,21 @@
     color: #555555;
 }
 
-#full-pin-pic {
+#full-pin-pic-wrapper {
     display: inline-block;
+    height: 100px;
     width: 100px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
     margin-left: 50px;
+}
+
+#full-pin-pic {
+    display: inline;
+    margin: 0 auto;
+    height: 100%;
+    width: auto;
 }
 
 #full-pin-title {
@@ -553,4 +564,16 @@
 /* Wtf is this and how did it come to be */
 #JSFFrameId {
     display: none;
+}
+
+/* Scroll bar fixes for OSX. We want it to always show so that the user knows
+   the div is scrollable */
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }

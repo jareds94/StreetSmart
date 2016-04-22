@@ -71,6 +71,8 @@ public class PinManager implements Serializable {
     public PinManager() {
         filterDistance = "10.0";
         distanceFilterStyle = "display: none";
+        selectedPin = new Pin();
+        selectedPin.setTimePosted(0);
     }
 
     public PinFacade getPinFacade() {
@@ -154,7 +156,18 @@ public class PinManager implements Serializable {
         this.selectedPin = pinFacade.findPinWithId(selectedPinId);
     }
 
+    public Pin getSelectedPin() {
+        return selectedPin;
+    }
+
+    public void setSelectedPin(Pin selectedPin) {
+        this.selectedPin = selectedPin;
+    }
+
     public String createPin() {
+        
+        User user = userFacade.find(FacesContext.getCurrentInstance().
+                        getExternalContext().getSessionMap().get("user_id"));
 
         String[] latAndLong = this.getParsedUserLoc();
 
@@ -164,13 +177,13 @@ public class PinManager implements Serializable {
         try {
             Pin pin;
             pin = new Pin();
+            pin.setUsername(user.getFirstName() + " " + user.getLastName());
             pin.setAnonymous(this.newPinAnonymous);
 
             // If the pin is not anonymous and a User is currently logged
             // in, set the associated User id.
             if (!newPinAnonymous) {
-                pin.setUserId(userFacade.find(FacesContext.getCurrentInstance().
-                        getExternalContext().getSessionMap().get("user_id")).getId());
+                pin.setUserId(user.getId());
             } else {
                 // Otherwise, set the id to a row in the User table associated
                 // with all anonymous users (i.e. users are anonymous with id
@@ -237,6 +250,11 @@ public class PinManager implements Serializable {
      */
     public String getFormattedDate(Pin pin) {
         SimpleDateFormat format = new SimpleDateFormat("MMM d");
+        return format.format(new Date(((long) pin.getTimePosted()) * 1000L));
+    }
+    
+    public String getFullFormattedDate(Pin pin) {
+        SimpleDateFormat format = new SimpleDateFormat();
         return format.format(new Date(((long) pin.getTimePosted()) * 1000L));
     }
 
