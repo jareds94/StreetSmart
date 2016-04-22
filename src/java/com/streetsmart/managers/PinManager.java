@@ -42,7 +42,8 @@ public class PinManager implements Serializable {
     private String pinDescription;
     private boolean pinAnonymous;
     private boolean pinPhotoExists;
-    private User selected;
+    private User selectedUser;
+    private Pin selectedPin;
     private List<Pin> mapMenuPins;
     private List<Pin> allPins;
     private List<Pin> pinValues;
@@ -162,7 +163,7 @@ public class PinManager implements Serializable {
             // If the pin is not anonymous and a User is currently logged
             // in, set the associated User id.
             if (!pinAnonymous) {
-                pin.setUserId(this.getSelected().getId());
+                pin.setUserId(this.getSelectedUser().getId());
             } else {
                 // Otherwise, set the id to a row in the User table associated
                 // with all anonymous users (i.e. users are anonymous with id
@@ -195,6 +196,20 @@ public class PinManager implements Serializable {
         return "";
     }
     
+    public String upvotePin(){
+        Pin pinToModify = this.getSelectedPin();
+        pinToModify.setUpvotes(pinToModify.getUpvotes()+1);
+        pinFacade.edit(pinToModify);
+        return "";
+    }
+    
+    public String downvotePin(){
+        Pin pinToModify = this.getSelectedPin();
+        pinToModify.setDownvotes(pinToModify.getDownvotes()+1);
+        pinFacade.edit(pinToModify);
+        return "";
+    }
+    
     
     public FacesMessage copyPhotoFile(UploadedFile file){
         try {
@@ -224,15 +239,25 @@ public class PinManager implements Serializable {
             "There was a problem reading the image file. Please try again with a new photo file.");
     }
 
-    public User getSelected() {
-        if (selected == null) {
-            selected = userFacade.find(FacesContext.getCurrentInstance().
+    public User getSelectedUser() {
+        if (selectedUser == null) {
+            selectedUser = userFacade.find(FacesContext.getCurrentInstance().
                     getExternalContext().getSessionMap().get("user_id"));
         }
 
-        return selected;
+        return selectedUser;
     }
+    
+    
+    public Pin getSelectedPin() {
+        if (selectedPin == null) {
+            selectedPin = pinFacade.find(FacesContext.getCurrentInstance().
+                    getExternalContext().getSessionMap().get("pin_id"));
+        }
 
+        return selectedPin;
+    }
+    
     /**
      *
      * @param pin
