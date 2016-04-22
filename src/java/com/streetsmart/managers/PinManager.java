@@ -279,11 +279,11 @@ public class PinManager implements Serializable {
                 break;
             case "pop":
                 this.filterByPopularity();
-                this.setDistanceFilterStyle("display: none");
+                this.setDistanceFilterStyle("visibility: hidden");
                 break;
             case "new":
                 this.filterByNewest();
-                this.setDistanceFilterStyle("display: none");
+                this.setDistanceFilterStyle("visibility: hidden");
                 break;
             default:
                 break;
@@ -372,7 +372,7 @@ public class PinManager implements Serializable {
      */
     public void filterByNewest() {
         allPins = pinFacade.findAllPins();
-        this.sortPinsByNewest(allPins);
+        this.sortPins(allPins, "time");
         this.setMapMenuPins(this.pinValues);
     }
     
@@ -380,7 +380,9 @@ public class PinManager implements Serializable {
      * 
      */
     public void filterByPopularity() {
-        
+        allPins = pinFacade.findAllPins();
+        this.sortPins(allPins, "popularity");
+        this.setMapMenuPins(this.pinValues);
     }
     
     /**
@@ -414,17 +416,25 @@ public class PinManager implements Serializable {
     }
     
     /**
-     * Quicksort implementation for sorting pins by newest.
+     * Quicksort implementation for sorting pins depending on the sort type.
      * 
-     * @param pins 
+     * @param pins
+     * @param sortType
      */
-    public void sortPinsByNewest(List<Pin> pins) {
+    public void sortPins(List<Pin> pins, String sortType) {
         // check for empty or null array
-        if (pins == null || pins.isEmpty()){
-          return;
+        if (pins == null || pins.isEmpty() || 
+            sortType == null || sortType.isEmpty()) {
+            return;
         }
+        
         this.pinValues = pins;
-        quicksort(0, (pinValues.size()) - 1);
+        if(sortType.equals("time")) {
+            quicksortByTimePosted(0, (pinValues.size()) - 1);           
+        }
+        else if(sortType.equals("popularity")) {
+            quicksortByPopularity(0, (pinValues.size()) - 1);
+        }
     }
 
     /**
@@ -432,19 +442,18 @@ public class PinManager implements Serializable {
      * @param low
      * @param high 
      */
-    private void quicksort(int low, int high) {
+    private void quicksortByTimePosted(int low, int high) {
         int i = low, j = high;
 
         int pivot = pinValues.get(low + (high-low)/2).getTimePosted();
 
-
         while (i <= j) {
 
-            while (pinValues.get(i).getTimePosted() < pivot) {
+            while (pinValues.get(i).getTimePosted() > pivot) {
                 i++;
             }
 
-            while (pinValues.get(j).getTimePosted() > pivot) {
+            while (pinValues.get(j).getTimePosted() < pivot) {
                 j--;
             }
 
@@ -456,15 +465,51 @@ public class PinManager implements Serializable {
         }
         
         if (low < j) {
-            quicksort(low, j);
+            quicksortByTimePosted(low, j);
         }
         if (i < high) {
-            quicksort(i, high); 
+            quicksortByTimePosted(i, high); 
+        }    
+    }
+    
+    /**
+     * 
+     * @param low
+     * @param high 
+     */
+    public void quicksortByPopularity(int low, int high) {
+        int i = low, j = high;
+
+        int pivot = pinValues.get(low + (high-low)/2).getScore();
+
+        while (i <= j) {
+
+            while (pinValues.get(i).getScore() > pivot) {
+                i++;
+            }
+
+            while (pinValues.get(j).getScore() < pivot) {
+                j--;
+            }
+
+            if (i <= j) {
+                exchange(i, j);
+                i++;
+                j--;
+            }
         }
-      
+        
+        if (low < j) {
+            quicksortByPopularity(low, j);
+        }
+        if (i < high) {
+            quicksortByPopularity(i, high); 
+        }
     }
 
     /**
+     * Generic swap for two Pin objects in a list. Helper method for
+     * quicksort implementation.
      * 
      * @param i
      * @param j 
@@ -474,7 +519,6 @@ public class PinManager implements Serializable {
         Pin temp = pinValues.get(i);
         pinValues.set(i, pinValues.get(j));
         pinValues.set(j, temp);
-
     }
     
     private File inputStreamToFile(InputStream inputStream, String childName) 

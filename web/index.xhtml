@@ -130,7 +130,6 @@
                             <div id="full-pin-comments-list">
                                 <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment">
                                 <div id="full-pin-comment">
-                                    <div id="full-pin-comment-user"><h:outputText value="#{comment.getSelectedUser().getUsername()}"/></div>
                                     <div id="full-pin-comment-msg"><h:outputText value="#{comment.getComment()}"/></div>
                                     <div id="full-pin-comment-date"><h:outputText value="#{commentsManager.getFormattedDate(comment)}"/></div>
                                 </div>
