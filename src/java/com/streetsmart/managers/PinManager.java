@@ -162,6 +162,7 @@ public class PinManager implements Serializable {
 
     public void setKeywordFilterInput(String keywordFilterInput) {
         this.keywordFilterInput = keywordFilterInput;
+    }
 
     public Pin getSelectedPin() {
         return selectedPin;
