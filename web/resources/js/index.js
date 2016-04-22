@@ -75,7 +75,9 @@ $(document).ready(function () {
         }
     });
     
-    $(".pins-list-pin-desc").dotdotdot();
+    $(".pins-list-pin-desc").each(function(i, obj) {
+        $(this).dotdotdot();
+    });
     
     /* Fired when input text field is changed corresponding to the filter by
      * keyword */

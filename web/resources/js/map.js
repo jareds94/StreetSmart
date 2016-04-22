@@ -208,7 +208,7 @@ function initialize() {
                     photoFile = "resources/images/profile-picture-" + (curPin.id % 3) + ".png";
                 }
                 else if (curPin.photo){
-                    photoFile = "StreetSmartPhotoStorage/" + curPin.id.toString() + ".png";
+                    photoFile = "StreetSmartPhotoStorage/" + "p_" + curPin.id.toString() + ".png";
                 }
                 else if (!curPin.photo){
                     photoFile = "resources/images/profile-picture-" + (curPin.id % 3) + ".png";
