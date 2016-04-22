@@ -140,8 +140,8 @@ function initialize() {
                 
                 // Inject current pin id into hidden text field
                 // Click hidden button to submit hidden form
-                $("#commentInput").val(self.args.marker_id);
-                $("#commentSubmit").click();
+                $("#hidden-comment\\:commentInput").val(self.args.marker_id);
+                $("#hidden-comment\\:commentSubmit").click();
                 
 
                 // Show pin details

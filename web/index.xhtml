@@ -6,7 +6,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:body>
         <ui:composition template="template/siteTemplate.xhtml">
             <!-- Page title -->
@@ -119,19 +120,26 @@
                         <hr class="full-pin-divider" />
                         <!-- Comments -->
                         <div id="full-pin-comments-wrapper">
+                            <c:if test="#{accountManager.isLoggedIn() == true}">
                             <h:form id="comment">
                                 <h:inputTextarea id="full-pin-post-comment" 
                                                  class="input-control #{component.valid?'':'validation-failed'}"
                                                  a:placeholder="Write your comment..." required="true" 
                                                  value="#{commentsManager.comment}"/>
-                                <h:commandButton id="full-pin-post-comment-btn" class="btn" value="Post Comment" />
+                                <h:commandButton id="full-pin-post-comment-btn" class="btn" value="Post Comment"
+                                                 action="#{commentsManager.createComment()}">
+                                    <f:ajax execute="@form" render=":please-render @form"/>
+                                    
+                                </h:commandButton>
                             </h:form>
+                            </c:if>
       
+                            <h:panelGroup id="please-render" layout="block">
                             <div id="full-pin-comments-list">
                                 <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment">
                                 <div id="full-pin-comment">
-                                    <div id="full-pin-comment-user"><h:outputText value="#{comment.getSelectedUser().getUsername()}"/></div>
-                                    <div id="full-pin-comment-msg"><h:outputText value="#{comment.getComment()}"/></div>
+                                    <div id="full-pin-comment-user"><h:outputText value="#{comment.username}"/></div>
+                                    <div id="full-pin-comment-msg"><h:outputText value="#{comment.comment}"/></div>
                                     <div id="full-pin-comment-date"><h:outputText value="#{commentsManager.getFormattedDate(comment)}"/></div>
                                 </div>
                                 
@@ -139,6 +147,7 @@
                 
                                 </ui:repeat>
                             </div>
+                            </h:panelGroup>
                         </div>
                     </div>
                 </div>
@@ -162,8 +171,8 @@
                 </h:form>
                 <h:form id="hidden-comment">
                     <h:inputHidden id="commentInput" value="#{commentsManager.selectedPinId}" />
-                    <h:commandButton id="commentSubmit" style="display: none" onclick="#{commentsManager.createComment()}">
-                        <f:ajax execute="@form" render="@form"/>
+                    <h:commandButton id="commentSubmit" style="display: none">
+                        <f:ajax execute="@form" render=":please-render"/>
                     </h:commandButton>
                 </h:form>
 
