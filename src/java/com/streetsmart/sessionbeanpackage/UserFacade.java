@@ -50,6 +50,19 @@ public class UserFacade extends AbstractFacade<User> {
         }
     }
     
+    public User findByUserId(int id) {
+        if (em.createQuery("SELECT u FROM User u WHERE u.id = :id")
+                .setParameter("id", id)
+                .getResultList().isEmpty()) {
+            return null;
+        }
+        else {
+            return (User) (em.createQuery("SELECT u FROM User u WHERE u.id = :id")
+                .setParameter("id", id)
+                .getSingleResult());        
+        }
+    }
+    
     public void deleteUser(int id){
         
         User user = em.find(User.class, id);

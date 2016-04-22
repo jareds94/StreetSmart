@@ -15,6 +15,7 @@ import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -58,6 +59,9 @@ public class Comment implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "comment")
     private String comment;
+    
+    @Transient
+    private String username;
 
     public Comment() {
     }
@@ -112,6 +116,14 @@ public class Comment implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+    
+    public String getUsername() {
+        return this.username;
+    }
+    
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override

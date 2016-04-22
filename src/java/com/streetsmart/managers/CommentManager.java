@@ -65,7 +65,7 @@ public class CommentManager implements Serializable {
     private CommentFacade commentsFacade;
     
     public CommentManager(){
-        
+        selectedPinId = 0;
     }
     
     public CommentFacade getCommmentsFacade() {
@@ -76,13 +76,14 @@ public class CommentManager implements Serializable {
         this.commentsFacade = commentsFacade;
     }
     
+    
+    public void setSelectedUser(User user){
+        selectedUser = userFacade.findByUserId(userId);
+    }
+    
     public User getSelectedUser() {
-        if (selectedUser == null) {
-            selectedUser = userFacade.find(FacesContext.getCurrentInstance().
-                    getExternalContext().getSessionMap().get("user_id"));
-        }
-
-        return selectedUser;
+       selectedUser = userFacade.findByUserId(userId);
+       return selectedUser;
     }
     
     public void setSelectedPin(Pin pin){
@@ -95,7 +96,7 @@ public class CommentManager implements Serializable {
     
     public void setSelectedPinId(int id){
         this.selectedPinId = id;
-        setCommentsList(commentsFacade.findAllCommentsByPinId(this.getSelectedPin().getId()));
+        setCommentsList(commentsFacade.findAllCommentsByPinId(id));
     }
     
     public int getSelectedPinId(){
@@ -135,14 +136,17 @@ public class CommentManager implements Serializable {
             Comment currComment = new Comment();
             currComment.setPinId(selectedPinId);
             currComment.setComment(comment);
-            userId = this.getSelectedUser().getId();
+            userId = userFacade.find(FacesContext.getCurrentInstance().
+                getExternalContext().getSessionMap().get("user_id")).getId();
             currComment.setUserId(userId);
             timePosted = timestamp;
             currComment.setTimePosted(timePosted);
             commentsFacade.create(currComment);
-            return "index?faces-redirect=true";
+            comment = "";
+            return "";
 
         }catch(EJBException e){
+            System.out.println();
             //status code
         }
         return "";
@@ -154,6 +158,16 @@ public class CommentManager implements Serializable {
     
     public List<Comment> getCommentsList(){
         commentsList = commentsFacade.findAllCommentsByPinId(selectedPinId);
+        if(commentsList == null){
+            return commentsList;
+        }
+              
+        for (int i = 0; i < commentsList.size(); i++) {
+            int id = commentsList.get(i).getUserId();
+            User user = userFacade.findByUserId(id);
+            commentsList.get(i).setUsername(user.getFirstName() + user.getLastName());
+        }
+        
         return commentsList;
     }
     
