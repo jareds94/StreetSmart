@@ -77,6 +77,13 @@ $(document).ready(function () {
     
     $(".pins-list-pin-desc").dotdotdot();
     
+    /* Fired when input text field is changed corresponding to the filter by
+     * keyword */
+    $(document.body).on('change keydown keyup paste','#map-menu-filter-keyword-form\\:map-menu-filter-keyword-input',function() {
+        $("#map-menu-filter-keyword-form\\:filter-keyword-btn").click();        
+        $("#map-menu-pins-list-form\\:filterPinsByKeyword").click();
+    });
+    
     /* Fired when input text field is changed corresponding to the filter
      * by distance */
     $(document.body).on('change keydown paste','#filterForm\\:map-menu-distance-input',function() {       
