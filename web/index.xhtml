@@ -91,7 +91,7 @@
                                     <div class="pins-list-pin-img-wrapper">
                                         <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt="" />
                                     </div>
-                                    <div class="pins-list-pin-view">View full pin</div>
+                                    <div class="pins-list-pin-view" onclick="window.location='index.xhtml?id=' + #{pin.id}">View full pin</div>
                                     <div class="pins-list-pin-date">
                                         &nbsp;&nbsp;&bull;&nbsp;&nbsp;<h:outputText value="#{pinManager.getFormattedDate(pin)}"/>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
                                     </div>
