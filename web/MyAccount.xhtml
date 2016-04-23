@@ -124,7 +124,7 @@
                                 <div class="pin-title"><h:outputText value="#{pin.title}"/></div>
                                 <div class="pin-desc"><h:outputText value="#{pin.description}"/></div>
                                 <div class="pin-details">
-                                    Posted on <h:outputText class="pin-time-posted" value="#{pin.timePosted}"/>
+                                    Posted on <h:outputText class="pin-time-posted" value="#{pinManager.getFullFormattedDate(pin)}"/>
                                     &nbsp;&bull;&nbsp;
                                     <h:outputText value="#{pin.upvotes - pin.downvotes}"/> points
                                 </div>
