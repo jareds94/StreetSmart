@@ -240,7 +240,7 @@ public class PinManager implements Serializable {
             extension = extension.startsWith("image/") ? extension.subSequence(6, extension.length()).toString() : "png";
 
             in = file.getInputstream();
-            File uploadedFile = inputStreamToFile(in, pinID + ".png");
+            File uploadedFile = inputStreamToFile(in, "p_" + pinID + ".png");
             // use uploadedFile if we want to make thumbnails
             resultMsg = new FacesMessage("Success!", "File Successfully Uploaded!");
             return resultMsg;

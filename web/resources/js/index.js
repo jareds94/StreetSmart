@@ -2,6 +2,13 @@
 $(document).ready(function () {
     resizeMapComponents($(window).width(), $(window).height() - 130, 0);
     
+    // TESTING LOCAL ONLY - REMOVE WHEN DEPLOYING
+    /*
+    $("#hidden-pin-form\\:pin-id-hidden-1").val("23");
+    $("#hidden-pin-form\\:pin-id-hidden-2").val("23");
+    $("#hidden-pin-form\\:pin-id-submit").click();
+    */
+    
     // Hide home button
     $("#header-links-form\\:home-btn").hide();
     
@@ -75,7 +82,9 @@ $(document).ready(function () {
         }
     });
     
-    $(".pins-list-pin-desc").dotdotdot();
+    $(".pins-list-pin-desc").each(function(i, obj) {
+        $(this).dotdotdot();
+    });
     
     /* Fired when input text field is changed corresponding to the filter by
      * keyword */

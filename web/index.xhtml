@@ -149,13 +149,13 @@
                             <!-- Comments list -->
                             <h:panelGroup id="render-comments" layout="block">
                                 <div id="full-pin-comments-list">
-                                    <ui:repeat value="#{commentsManager.getCommentsList()}" rendered="#{commentsManager.getCommentsList().size() > 0}" var="comment">
+                                    <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment" varStatus="status">
                                     <div id="full-pin-comment">
                                         <div id="full-pin-comment-user"><h:outputText value="#{comment.username}"/></div>
                                         <div id="full-pin-comment-msg"><h:outputText value="#{comment.comment}"/></div>
                                         <div id="full-pin-comment-date"><h:outputText value="#{commentsManager.getFormattedDate(comment)}"/></div>
                                     </div>
-                                    <hr class="full-pin-comment-divider" />
+                                    <hr class="full-pin-comment-divider" style="#{status.last?'display: none':''}" />
                                     </ui:repeat>
                                 </div>
                             </h:panelGroup>
