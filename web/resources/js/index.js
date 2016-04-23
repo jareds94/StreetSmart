@@ -88,6 +88,9 @@ $(document).ready(function () {
     
     $(document.body).on('change', "#selectfilterForm\\:map-menu-sort-select", function() {
         resizeMapComponents($(window).width(), $(window).height() - 130, 0);
+        $(".pins-list-pin-desc").each(function (i, obj) {
+            $(this).dotdotdot();
+        });
     });
     
     /* Fired when input text field is changed corresponding to the filter by
