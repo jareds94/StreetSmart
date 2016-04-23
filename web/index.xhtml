@@ -142,14 +142,14 @@
                                                      value="#{commentsManager.comment}"/>
                                     <h:commandButton id="full-pin-post-comment-btn" class="btn" value="Post Comment"
                                                      action="#{commentsManager.createComment()}">
-                                        <f:ajax execute="@form" render=":please-render @form"/>
+                                        <f:ajax execute="@form" render=":render-comments @form"/>
                                     </h:commandButton>
                                 </h:form>
                             </c:if>
                             <!-- Comments list -->
                             <h:panelGroup id="render-comments" layout="block">
                                 <div id="full-pin-comments-list">
-                                    <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment">
+                                    <ui:repeat value="#{commentsManager.getCommentsList()}" rendered="#{commentsManager.getCommentsList().size() > 0}" var="comment">
                                     <div id="full-pin-comment">
                                         <div id="full-pin-comment-user"><h:outputText value="#{comment.username}"/></div>
                                         <div id="full-pin-comment-msg"><h:outputText value="#{comment.comment}"/></div>
