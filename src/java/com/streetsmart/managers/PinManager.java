@@ -4,8 +4,10 @@
  */
 package com.streetsmart.managers;
 
+import com.streetsmart.entitypackage.Photo;
 import com.streetsmart.entitypackage.Pin;
 import com.streetsmart.entitypackage.User;
+import com.streetsmart.sessionbeanpackage.PhotoFacade;
 import com.streetsmart.sessionbeanpackage.PinFacade;
 import com.streetsmart.sessionbeanpackage.UserFacade;
 import java.io.File;
@@ -14,6 +16,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -22,6 +27,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Random;
 import javax.faces.application.FacesMessage;
 import org.primefaces.model.UploadedFile;
 
@@ -48,6 +54,7 @@ public class PinManager implements Serializable {
     private String filterOption;
     private String distanceFilterStyle;
     private String keywordFilterInput;
+    private Pin pin;
 
     /**
      * The instance variable 'userFacade' is annotated with the @EJB annotation.
@@ -66,6 +73,23 @@ public class PinManager implements Serializable {
      */
     @EJB
     private PinFacade pinFacade;
+    
+     /**
+     * The instance variable 'photoFacade' is annotated with the @EJB annotation.
+     * This means that the GlassFish application server, at runtime, will inject
+     * in this instance variable a reference to the @Stateless session bean
+     * PhotoFacade.
+     */
+    @EJB
+    private PhotoFacade photoFacade;
+
+    public PhotoFacade getPhotoFacade() {
+        return photoFacade;
+    }
+
+    public void setPhotoFacade(PhotoFacade photoFacade) {
+        this.photoFacade = photoFacade;
+    }
 
     public PinManager() {
         filterDistance = "10.0";
@@ -183,7 +207,7 @@ public class PinManager implements Serializable {
         int timestamp = (int) (new Date().getTime() / 1000);
 
         try {
-            Pin pin;
+            
             pin = new Pin();
             pin.setUsername(user.getFirstName() + " " + user.getLastName());
             pin.setAnonymous(this.newPinAnonymous);
@@ -222,6 +246,110 @@ public class PinManager implements Serializable {
         }
         return "";
     }
+    
+    /**
+     * Grabs the image uploaded by the user and displays it somewhere.
+     * 1. If the user is anonymous - Grabs a random default photo from the storage
+     * 2. If the user has a profile photo but did not upload a photo on the pin - 
+     * then we will display that profile photo instead.
+     * 3. If the user has a pin photo uploaded to that pin ID - then we will use this
+     * photo instead (whether they have a profile pic or not).
+     * 4. If the user is anonymous and they have uploaded a photo - then we will 
+     * use the image that was uploaded file name
+     * @return String - file path to the photo
+     */
+    public String getImageFromPin()
+    {
+        String resultFilePath = "";
+        
+        // If the user has selected the anonymous checbox in Create Pin
+        if (this.newPinAnonymous)
+        {
+            // If the user has not uploaded any images
+            if (file.getSize() == 0) {
+                // Initialize the String array of directory path with picture names
+                String[] defaultDirectoryNames = {"default-1.png", "default-2.png", 
+                    "default-3.png","default-4.png","default-5.png"};
+
+                Random randomProfileDefaultPicture = new Random();
+
+                // Grabs the random index of the photo
+                int index = randomProfileDefaultPicture.nextInt(defaultDirectoryNames.length);
+
+                // Grabs the source of the path file
+                Path source = Paths.get(Constants.ROOT_DIRECTORY + "/" + defaultDirectoryNames[index]);
+
+                // If the files exist inside the directory
+                if (Files.exists(source))
+                {
+                    // Stores the file path onto the string variable to return
+                    resultFilePath = defaultDirectoryNames[index];
+                }
+            }
+            else
+            {
+                // Grabs the latest pin ID that was created
+                int pinID = pinFacade.findLastID();
+                
+                // Grabs the file path using the pinID
+                Path source = Paths.get(Constants.ROOT_DIRECTORY + "/p_" + pinID + ".png");
+                
+                // If the file from the source exists inside the directory
+                if (Files.exists(source))
+                {
+                    // Grabs the source file as a string and stores it inside a variable
+                    resultFilePath = "p_" + pinID + ".png";
+                } 
+            }
+        }
+        
+        else 
+        {
+            // Grabs the user name from the FacesContext
+            String user_name = (String) FacesContext.getCurrentInstance()
+                .getExternalContext().getSessionMap().get("username");
+            
+            // Finds the user from their username if they are signed in
+            User user = userFacade.findByUsername(user_name);
+            
+            // If the user has uploaded a photo onto the pin
+            // pin.getPhoto() method is a boolean value that returns true if the
+            // user has created a photo under the new pin
+            if (pin.getPhoto())
+            {
+                // Grabs the latest pin ID that was created
+                int pinID = pinFacade.findLastID();
+                
+                // Grabs the file path using the pinID
+                Path source = Paths.get(Constants.ROOT_DIRECTORY + "/p_" + pinID + ".png");
+                
+                // If the file from the source exists inside the directory
+                if (Files.exists(source))
+                {
+                    // Grabs the source file as a string and stores it inside a variable
+                    resultFilePath = "p_" + pinID + ".png";
+                }
+            }
+            
+            // If the user has a default photo AND they have not uploaded a picture
+            // Then we will use their default photo as the image on the sidebar
+            else if (!pin.getPhoto())
+            {
+                // Grabs the source directory of that file
+                Path source = Paths.get(Constants.ROOT_DIRECTORY + "u_" + user.getId() + ".png");
+                
+                // Only stores the file source in the variable if it exists
+                if (Files.exists(source))
+                {
+                    resultFilePath = "u_" + user.getId() + ".png";
+                }
+            }
+            
+        }
+        
+        return resultFilePath;
+    }
+    
 
     public FacesMessage copyPhotoFile(UploadedFile file) {
         try {
@@ -240,7 +368,7 @@ public class PinManager implements Serializable {
             extension = extension.startsWith("image/") ? extension.subSequence(6, extension.length()).toString() : "png";
 
             in = file.getInputstream();
-            File uploadedFile = inputStreamToFile(in, "p_" + pinID + ".png");
+            inputStreamToFile(in, "p_" + pinID + ".png");
             // use uploadedFile if we want to make thumbnails
             resultMsg = new FacesMessage("Success!", "File Successfully Uploaded!");
             return resultMsg;
