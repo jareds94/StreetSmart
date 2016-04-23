@@ -188,7 +188,7 @@
    --------------------- */
 
 #map-menu-full-pin {
-    display: none;
+    /*display: none;*/
     position: absolute;
     left: 0px;
     top: 0px;
@@ -276,7 +276,7 @@
     color: #777777;
     float: left;
     clear: both;
-    margin-top: 13px;
+    margin-top: 10px;
 }
 
 .full-pin-divider {

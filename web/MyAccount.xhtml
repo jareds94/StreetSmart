@@ -26,82 +26,93 @@
             <!-- Page content -->
             <ui:define name="editableContent">
                 <!-- Account information -->
-                <div id="account-details-wrapper">
-                    <div class="title">My Account Profile</div>
-                    <h:form id="account-form">
-                        <!-- Account info fields -->
-                        <table id="account-details-table">
-                            <tr>
-                                <td class="label">
-                                    <h:outputText value="First Name:"/>
-                                </td>
-                                <td class="value">
-                                    <h:inputText id="first-name" label="First Name"
-                                                 styleClass="input-control #{component.valid?'':'validation-failed'}"
-                                                 value="#{accountManager.selected.firstName}" required="true"
-                                                 requiredMessage="First Name is required." />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label">
-                                    <h:outputText value="Last Name:"/>
-                                </td>
-                                <td class="value">
-                                    <h:inputText id="last-name" label="Last Name"
-                                                 styleClass="input-control #{component.valid?'':'validation-failed'}"
-                                                 value="#{accountManager.selected.lastName}" required="true"
-                                                 requiredMessage="Last Name is required." />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label">
-                                    <h:outputText value="Email:"/>
-                                </td>
-                                <td class="value">
-                                    <h:inputText id="email" label="Email"
-                                                 styleClass="input-control #{component.valid?'':'validation-failed'}"
-                                                 value="#{accountManager.selected.email}" required="true"
-                                                 requiredMessage="Email is required." />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label">
-                                    <h:outputText value="Password:"/>
-                                </td>
-                                <td class="value">
-                                    <h:inputSecret id="password" label="Password"
-                                                   styleClass="input-control #{component.valid?'':'validation-failed'}" 
-                                                   value="#{accountManager.selected.password}"
-                                                   required="true" requiredMessage="Password is required.">
-                                        <f:validator validatorId="passwordValidator"/> 
-                                    </h:inputSecret>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="label">
-                                    <h:outputText value="Confirm Password:"/>
-                                </td>
-                                <td class="value hidden-td">
-                                    <h:inputSecret id="confirm-password" label="Confirm Password"
-                                                   styleClass="input-control #{component.valid?'':'validation-failed'}"
-                                                   required="true" requiredMessage="Confirm Password is required."/>
-                                </td>
-                            </tr>
-                        </table>
-                        <!-- Error message output -->
-                        <div id="messages-wrapper">
-                            <p:messages id="msgs" showIcon="false"/>
-                            <h:outputLabel id="form-error-message" class="error-message" 
-                                           value="#{accountManager.statusMessage}"/>
-                        </div>
-                        <!-- Buttons -->
-                        <h:commandButton id="edit-account-btn" class="btn noupdate" value="Edit Profile" type="button" />
-                        <h:commandButton id="delete-account-btn" class="btn noupdate" value="Delete Account" type="button" />
-                        <p:commandButton id="edit-account-save-btn" class="btn noupdate" value="Save"
-                                         action="#{accountManager.updateAccount()}" update="@(form :not(.noupdate))"
-                                         oncomplete="if (!args.validationFailed) window.location.reload();" />
-                        <h:button id="edit-account-cancel-btn" class="btn noupdate" value="Cancel" outcome="MyAccount.xhtml" />
-                    </h:form>
+                <div id="account-info-wrapper">
+                    <div id="account-details-wrapper">
+                        <div class="title">My Account Profile</div>
+                        <h:form id="account-form">
+                            <!-- Account info fields -->
+                            <table id="account-details-table">
+                                <tr>
+                                    <td class="label">
+                                        <h:outputText value="First Name:"/>
+                                    </td>
+                                    <td class="value">
+                                        <h:inputText id="first-name" label="First Name"
+                                                     styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                                     value="#{accountManager.selected.firstName}" required="true"
+                                                     requiredMessage="First Name is required." />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">
+                                        <h:outputText value="Last Name:"/>
+                                    </td>
+                                    <td class="value">
+                                        <h:inputText id="last-name" label="Last Name"
+                                                     styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                                     value="#{accountManager.selected.lastName}" required="true"
+                                                     requiredMessage="Last Name is required." />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">
+                                        <h:outputText value="Email:"/>
+                                    </td>
+                                    <td class="value">
+                                        <h:inputText id="email" label="Email"
+                                                     styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                                     value="#{accountManager.selected.email}" required="true"
+                                                     requiredMessage="Email is required." />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">
+                                        <h:outputText value="Password:"/>
+                                    </td>
+                                    <td class="value">
+                                        <h:inputSecret id="password" label="Password"
+                                                       styleClass="input-control #{component.valid?'':'validation-failed'}" 
+                                                       value="#{accountManager.selected.password}"
+                                                       required="true" requiredMessage="Password is required.">
+                                            <f:validator validatorId="passwordValidator"/> 
+                                        </h:inputSecret>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">
+                                        <h:outputText value="Confirm Password:"/>
+                                    </td>
+                                    <td class="value hidden-td">
+                                        <h:inputSecret id="confirm-password" label="Confirm Password"
+                                                       styleClass="input-control #{component.valid?'':'validation-failed'}"
+                                                       required="true" requiredMessage="Confirm Password is required."/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!-- Error message output -->
+                            <div id="messages-wrapper">
+                                <p:messages id="msgs" showIcon="false"/>
+                                <h:outputLabel id="form-error-message" class="error-message" 
+                                               value="#{accountManager.statusMessage}"/>
+                            </div>
+                            <!-- Buttons -->
+                            <h:commandButton id="edit-account-btn" class="btn noupdate" value="Edit Profile" type="button" />
+                            <h:commandButton id="delete-account-btn" class="btn noupdate" value="Delete Account" type="button" />
+                            <p:commandButton id="edit-account-save-btn" class="btn noupdate" value="Save"
+                                             action="#{accountManager.updateAccount()}" update="@(form :not(.noupdate))"
+                                             oncomplete="if (!args.validationFailed) window.location.reload();" />
+                            <h:button id="edit-account-cancel-btn" class="btn noupdate" value="Cancel" outcome="MyAccount.xhtml" />
+                        </h:form>
+                    </div>
+                    <div id="account-photo-wrapper">
+                        <div id="account-photo-pic-wrapper">
+                            <h:graphicImage id="account-photo-pic" class=""
+                                            value="StreetSmartPhotoStorage/#{accountManager.userPhoto()}"
+                                            alt="Profile Picture"/>
+                        </div><br/>
+                        <input id="account-photo-edit-btn" class="btn" type="button" 
+                               value="Edit Photo"/>
+                    </div>
                 </div>
                 
                 <!-- Pins -->
@@ -124,6 +135,35 @@
                 
                 <!-- Page bottom fix -->
                 <div id="page-bottom-padding">&nbsp;</div>
+                
+                <!-- This div will appear as a dialog box when the user clicks the 
+                "change photo" button -->
+                <div id="photo-dialog" title="Change Profile Photo">
+                    <h:form id="photo-dialog-form" enctype="multipart/form-data">
+                        <!-- Instructions and upload button -->
+                        <div id="photo-upload-area">
+                            Use the 'Choose File' button below to select a photo from your 
+                            computer and then use the 'Upload Photo' button to change 
+                            your picture.
+                            <p:fileUpload id="browse-button" mode="simple"
+                                          value="#{fileManager.file}"/>
+                            <h:outputText id="upload-message" value="#{fileManager.message}"/>
+                        </div>
+                        <!-- Divider -->
+                        <hr/>
+                        <!-- Upload / close button -->
+                        <h:commandButton id="close-button" class="btn" 
+                                         value="Cancel" action="#{fileManager.cancel()}"
+                                         onclick="closeDialogs()">
+                            <f:ajax execute="@form" render="@form"/>
+                        </h:commandButton>
+                        <h:commandButton id="upload-button" class="btn" 
+                                         value="Upload Photo" action="#{fileManager.upload()}">
+                            <f:ajax execute="@form" render="@form"/>
+                            <p:ajax delay="800" update=":account-photo-pic"/>
+                        </h:commandButton>
+                    </h:form>
+                </div>
                 
                 <!-- This div will appear as a dialog box when the user clicks the 
                      "delete account" button -->

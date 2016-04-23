@@ -265,6 +265,8 @@ public class AccountManager implements Serializable {
     
     public String assignUserDefaultPhoto(int user_id)
     {
+        String ret = "";
+        
         try {
             // Assigns the new name for the user's default photo
             String newNameForPhoto = "u_" + user_id + ".png";
@@ -289,6 +291,7 @@ public class AccountManager implements Serializable {
                 // Since we are not using a new directory, we will use the same
                 // Root Directory with a new photo name.
                 Path newSource = Paths.get(Constants.ROOT_DIRECTORY + "/" + newNameForPhoto);
+                ret = newSource.getFileName().toString();
                 
                 // Copies the photo with the new file name
                 Files.copy(source, newSource);
@@ -298,7 +301,7 @@ public class AccountManager implements Serializable {
             e.printStackTrace();
         }
         
-        return "Nope.";
+        return ret;
     }
 
     public String updateAccount() {
@@ -418,5 +421,6 @@ public class AccountManager implements Serializable {
             return assignUserDefaultPhoto(user.getId());
         }
         return photoList.get(0).getThumbnailName();
+        //return Constants.ROOT_DIRECTORY + "/" + photoList.get(0).getThumbnailName();
     }
 }
