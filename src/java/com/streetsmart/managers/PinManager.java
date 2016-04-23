@@ -33,6 +33,9 @@ import org.primefaces.model.UploadedFile;
  */
 public class PinManager implements Serializable {
 
+    private static final String HIDDEN = "visibility: hidden";
+    private static final String NOT_DISPLAYED = "display: none";
+    
     // Instance Variables (Properties) for Pins 
     private UploadedFile file;
     private String newPinTitle;
@@ -42,12 +45,12 @@ public class PinManager implements Serializable {
     private int selectedPinId;
     private Pin selectedPin;
     private List<Pin> mapMenuPins;
-    private List<Pin> allPins;
     private List<Pin> pinValues;
     private String filterDistance;
     private String filterOption;
     private String distanceFilterStyle;
     private String keywordFilterInput;
+    private String keywordFilterStyle;
 
     /**
      * The instance variable 'userFacade' is annotated with the @EJB annotation.
@@ -69,10 +72,13 @@ public class PinManager implements Serializable {
 
     public PinManager() {
         filterDistance = "10.0";
-        distanceFilterStyle = "visibility: hidden";
+        distanceFilterStyle = NOT_DISPLAYED;
+        keywordFilterStyle = NOT_DISPLAYED;
         keywordFilterInput = "";
+        // Set to initially filter by popularity.
+        filterOption = "pop";
         selectedPin = new Pin();
-        selectedPin.setTimePosted(0);
+        selectedPin.setTimePosted(0); 
     }
 
     public PinFacade getPinFacade() {
@@ -140,7 +146,7 @@ public class PinManager implements Serializable {
         try {
             Double.parseDouble(filterDistance);
         } catch (NumberFormatException | NullPointerException e) {
-            filterDistance = "10.0";
+            this.filterDistance = "10.0";
             return;
         }
 
@@ -172,6 +178,14 @@ public class PinManager implements Serializable {
         this.selectedPin = selectedPin;
     }
 
+    public String getKeywordFilterStyle() {
+        return keywordFilterStyle;
+    }
+
+    public void setKeywordFilterStyle(String keywordFilterStyle) {
+        this.keywordFilterStyle = keywordFilterStyle;
+    }
+    
     public String createPin() {
         
         User user = userFacade.find(FacesContext.getCurrentInstance().
@@ -282,19 +296,27 @@ public class PinManager implements Serializable {
         if (filterOption == null || filterOption.isEmpty()) {
             return;
         }
+        
         switch (filterOption) {
             case "dist":
                 this.filterByDistance();
                 this.setDistanceFilterStyle("");
+                this.setKeywordFilterStyle(HIDDEN);
                 break;
             case "pop":
                 this.filterByPopularity();
-                this.setDistanceFilterStyle("visibility: hidden");
+                this.setDistanceFilterStyle(HIDDEN);
+                this.setKeywordFilterStyle(HIDDEN);
                 break;
             case "new":
                 this.filterByNewest();
-                this.setDistanceFilterStyle("visibility: hidden");
+                this.setDistanceFilterStyle(HIDDEN);
+                this.setKeywordFilterStyle(HIDDEN);
                 break;
+            case "key":
+                //this.filterByKeyword();
+                this.setDistanceFilterStyle(HIDDEN);
+                this.setKeywordFilterStyle("");
             default:
                 break;
         }
@@ -327,14 +349,15 @@ public class PinManager implements Serializable {
      */
     public void filterByKeyword() {
 
+        List<Pin> keywordPins;
         if (keywordFilterInput == null || keywordFilterInput.isEmpty()) {
+            mapMenuPins = pinFacade.findAll();
+            return;           
+        } else if (keywordFilterInput.length() < 3) {            
             return;
-        } else if (keywordFilterInput.length() < 3) {
-            this.setFilterOption(this.filterOption);
-            return;
+        } else {
+            keywordPins = mapMenuPins;
         }
-        
-        List<Pin> keywordPins = mapMenuPins;
 
         // We want to find all pins in MapMenuPins matching the keyword so:
         for (int i = 0; i < keywordPins.size(); i++) {
@@ -344,7 +367,7 @@ public class PinManager implements Serializable {
                 keywordPins.remove(pin);
             }
         }      
-        mapMenuPins = keywordPins;
+        this.setMapMenuPins(keywordPins);
     }
 
     /**
@@ -352,41 +375,51 @@ public class PinManager implements Serializable {
      */
     public void filterByDistance() {
         String[] currentUserLoc = this.getParsedUserLoc();
-        Double filterDistance = Double.parseDouble(this.filterDistance);
+        Double filterDist = Double.parseDouble(this.filterDistance);
 
         if (currentUserLoc != null) {
             float userLat = Float.valueOf(currentUserLoc[0]);
             float userLong = Float.valueOf(currentUserLoc[1]);
-            allPins = pinFacade.findAllPins();
-
-            for (int i = 0; i < allPins.size(); i++) {
-                Pin pin = allPins.get(i);
+            
+            List<Pin> distancePins;
+            distancePins = pinFacade.findAll();
+            
+            for (int i = 0; i < distancePins.size(); i++) {
+                Pin pin = distancePins.get(i);
                 double distanceInMiles = this.getDistanceFromLatLongInMiles(userLat, userLong,
                         pin.getLatitude(), pin.getLongitude());
-                if (!(distanceInMiles <= filterDistance)) {
-                    allPins.remove(i);
+                if (!(distanceInMiles <= filterDist)) {
+                    distancePins.remove(i);
                 }
             }
-            this.setMapMenuPins(allPins);
+            this.setMapMenuPins(distancePins);
         }
     }
 
     /**
      *
      */
-    public void filterByNewest() {
-        allPins = pinFacade.findAllPins();
-        this.sortPins(allPins, "time");
+    public void filterByNewest() {  
+        
+        this.sortPins(pinFacade.findAll(), "time");
         this.setMapMenuPins(this.pinValues);
     }
 
     /**
      *
      */
-    public void filterByPopularity() {
-        allPins = pinFacade.findAllPins();
-        this.sortPins(allPins, "popularity");
+    public void filterByPopularity() {       
+
+        this.sortPins(pinFacade.findAll(), "popularity");
         this.setMapMenuPins(this.pinValues);
+    }
+    
+    /**
+     * Pre populates variables for faster filtering and sets the initial state
+     * of the side menu to filter all pins by popularity.
+     */
+    public void prePopulateMenu() {
+        this.filterByPopularity();       
     }
 
     /**
@@ -397,7 +430,7 @@ public class PinManager implements Serializable {
      * @param long2
      * @return
      */
-    private double getDistanceFromLatLongInMiles(float lat1, float long1,
+    public double getDistanceFromLatLongInMiles(float lat1, float long1,
             float lat2, float long2) {
         double R = 3958.756; // Mean radius of the earth in miles
         double dLat = deg2rad(lat2 - lat1);
@@ -425,7 +458,7 @@ public class PinManager implements Serializable {
      * @param pins
      * @param sortType
      */
-    public void sortPins(List<Pin> pins, String sortType) {
+    private void sortPins(List<Pin> pins, String sortType) {
         // check for empty or null array
         if (pins == null || pins.isEmpty()
                 || sortType == null || sortType.isEmpty()) {
@@ -480,7 +513,7 @@ public class PinManager implements Serializable {
      * @param low
      * @param high
      */
-    public void quicksortByPopularity(int low, int high) {
+    private void quicksortByPopularity(int low, int high) {
         int i = low, j = high;
 
         int pivot = pinValues.get(low + (high - low) / 2).getScore();
@@ -518,7 +551,6 @@ public class PinManager implements Serializable {
      * @param j
      */
     private void exchange(int i, int j) {
-
         Pin temp = pinValues.get(i);
         pinValues.set(i, pinValues.get(j));
         pinValues.set(j, temp);

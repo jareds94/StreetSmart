@@ -40,7 +40,6 @@ public class AccountManager implements Serializable {
     private int security_question;
     private String security_answer;
     private String statusMessage;
-    
     private String userLoc;
         
     private Map<String, Object> security_questions;
@@ -72,7 +71,9 @@ public class AccountManager implements Serializable {
      */
     @EJB
     private PhotoFacade photoFacade;
-
+    
+    private float userLat;
+    private float userLong;
 
     /**
      * Creates a new instance of AccountManager
@@ -212,6 +213,14 @@ public class AccountManager implements Serializable {
         this.userLoc = userLoc;
         FacesContext.getCurrentInstance().getExternalContext().
                 getSessionMap().put("userLoc", this.userLoc);
+        
+        String location;
+        String[] temp;
+        location = userLoc.replace("(", "");
+        location = location.replace(")", "");
+        temp = location.split(", ");               
+        this.setUserLat(Float.parseFloat(temp[0]));
+        this.setUserLong(Float.parseFloat(temp[1]));
     }
     
     public List<Pin> getPostedPins() {
@@ -384,4 +393,22 @@ public class AccountManager implements Serializable {
         }
         return photoList.get(0).getThumbnailName();
     }
+
+    public double getUserLat() {
+        return userLat;
+    }
+
+    public void setUserLat(float userLat) {
+        this.userLat = userLat;
+    }
+
+    public double getUserLong() {
+        return userLong;
+    }
+
+    public void setUserLong(float userLong) {
+        this.userLong = userLong;
+    }
+    
+    
 }
