@@ -6,6 +6,7 @@ package com.streetsmart.entitypackage;
 
 import com.streetsmart.managers.Constants;
 import java.io.Serializable;
+import javax.faces.context.FacesContext;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -126,7 +127,13 @@ public class Photo implements Serializable {
     }
 
     public String getFilename() {
-        return getId() + "." + getExtension();
+        
+        int user_id = (int) FacesContext.getCurrentInstance()
+                    .getExternalContext().getSessionMap().get("user_id");
+
+        String newName = "u_" + user_id;
+        
+        return newName + "." + getExtension();
     }
     
     public String getThumbnailName() {
