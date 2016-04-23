@@ -81,9 +81,6 @@ $(document).ready(function () {
             $("#map-menu-change-loc-btn").click();
         }
     });
-    
-
-    $(".pins-list-pin-desc").each(function (i, obj) {
 
     $(".pins-list-pin-desc").each(function(i, obj) {
         $(this).dotdotdot();
@@ -161,5 +158,7 @@ function resizeMapComponents(width, height, delay) {
         // Reposition dialogs
         $("#enter-loc-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
         $("#create-pin-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
+        $("#photo-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
+        $("#delete-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
     }, delay);
-}});
+}
