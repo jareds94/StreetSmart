@@ -142,7 +142,7 @@
                                                      value="#{commentsManager.comment}"/>
                                     <h:commandButton id="full-pin-post-comment-btn" class="btn" value="Post Comment"
                                                      action="#{commentsManager.createComment()}">
-                                        <f:ajax execute="@form" render=":please-render @form"/>
+                                        <f:ajax execute="@form" render=":render-comments @form"/>
                                     </h:commandButton>
                                 </h:form>
                             </c:if>
