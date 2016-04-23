@@ -88,7 +88,7 @@ $(document).ready(function () {
     
     /* Fired when input text field is changed corresponding to the filter by
      * keyword */
-    $(document.body).on('change keyup paste','#map-menu-filter-keyword-form\\:map-menu-filter-keyword-input',function() {
+    $(document.body).on('keyup paste','#map-menu-filter-keyword-form\\:map-menu-filter-keyword-input',function() {
         $("#map-menu-filter-keyword-form\\:filter-keyword-btn").click();        
         $("#map-menu-pins-list-form\\:filterPinsByKeyword").click();
         $(".pins-list-pin-desc").each(function (i, obj) {

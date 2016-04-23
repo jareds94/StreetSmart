@@ -415,8 +415,6 @@ public class PinManager implements Serializable {
         List<Pin> keywordPins;
         if (keywordFilterInput == null || keywordFilterInput.isEmpty()) {
             mapMenuPins = pinFacade.findAll();
-            return;           
-        } else if (keywordFilterInput.length() < 3) {            
             return;
         } else {
             keywordPins = mapMenuPins;
