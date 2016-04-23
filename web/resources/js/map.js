@@ -220,7 +220,7 @@ function initialize() {
                     map,
                     {marker_id: curPin.id},
                     photoFile,
-                    curPin.description,
+                    curPin.title,
                     expand
                 );
             }
