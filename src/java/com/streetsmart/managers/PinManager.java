@@ -250,6 +250,20 @@ public class PinManager implements Serializable {
         return new FacesMessage("Upload failure!",
                 "There was a problem reading the image file. Please try again with a new photo file.");
     }
+    
+    public String upvotePin(){
+        Pin pinToUpdate = this.getSelectedPin();
+        pinToUpdate.setUpvotes(pinToUpdate.getUpvotes()+1);
+        pinFacade.edit(pinToUpdate);
+        return "";
+    }
+    
+    public String downvotePin(){
+        Pin pinToUpdate = this.getSelectedPin();
+        pinToUpdate.setDownvotes(pinToUpdate.getDownvotes()+1);
+        pinFacade.edit(pinToUpdate);
+        return "";
+    }
 
     /**
      *
