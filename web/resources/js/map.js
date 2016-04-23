@@ -207,13 +207,13 @@ function initialize() {
                 var expand = getUrlParameter("id") === curPin.id.toString();
                 var photoFile;
                 if (curPin.anonymous){
-                    photoFile = "resources/images/profile-picture-" + (curPin.id % 3) + ".png";
+                    photoFile = "StreetSmartPhotoStorage/default-" + Math.floor((Math.random() * 5) + 1) + ".png";
                 }
                 else if (curPin.photo){
                     photoFile = "StreetSmartPhotoStorage/" + "p_" + curPin.id.toString() + ".png";
                 }
                 else if (!curPin.photo){
-                    photoFile = "resources/images/profile-picture-" + (curPin.id % 3) + ".png";
+                    photoFile = "StreetSmartPhotoStorage/" + "u_" + curPin.userId.toString() + ".png";
                 }
                 overlay = new CustomMarker(
                     new google.maps.LatLng(curPin.latitude, curPin.longitude),
