@@ -420,7 +420,7 @@ public class AccountManager implements Serializable {
         if (photoList.isEmpty()) {
             return assignUserDefaultPhoto(user.getId());
         }
-        return photoList.get(0).getThumbnailName();
-        //return Constants.ROOT_DIRECTORY + "/" + photoList.get(0).getThumbnailName();
+        //return photoList.get(0).getThumbnailName();
+        return photoList.get(0).getFilename();
     }
 }

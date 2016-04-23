@@ -82,11 +82,19 @@ public class FileManager {
      * @return Profile.xhtml or nothing
      */
 
-    public String upload() {
+    public String upload() 
+    {    
+        boolean hasBeenUploaded = false;
+        
         if (file.getSize() != 0) {
-            copyFile(file);
-            message = "";
-            return "MyAccount?faces-redirect=true";
+            hasBeenUploaded = copyFile(file);
+            if (hasBeenUploaded)
+            {
+                return "MyAccount?faces-redirect=true";
+            }
+            message = "File is not an image, please"
+                        + " try uploading again.";
+            return "";
         } else {
             message = "You need to upload a file first.";
             return "";
@@ -97,43 +105,82 @@ public class FileManager {
         message = "";
         return "MyAccount?faces-redirect=true";
     }
-
-    public FacesMessage copyFile(UploadedFile file) {
+    
+    /**
+     * Copies the file onto the Photo table as the extension "png" explicitly.
+     * This method checks whether the file is an image, if it is then give the
+     * file an extension of "png" whether the user has uploaded a gif, jpg, etc.
+     * If the file is NOT an image, then just return false and display a meaningful
+     * error message onto the dialog box.
+     * @param file
+     * @return true if the user has successfully uploaded their photo, or false
+     * if they have not.
+     */
+    public boolean copyFile(UploadedFile file) {
         try {
+            
+            // Deletes the photo from the database first, so we can save space
             deletePhoto();
             
+            // Initializes the file input stream for the photo
             InputStream in = file.getInputstream();
             
+            // Grabs the tempfile from the folder
             File tempFile = inputStreamToFile(in, Constants.TEMP_FILE);
             in.close();
-
+            
             FacesMessage resultMsg;
-
+            
+            // Gets the user's user_name while they are logged on
             String user_name = (String) FacesContext.getCurrentInstance()
                     .getExternalContext().getSessionMap().get("username");
-
+            
+            // Grabs the actual user and store it inside the User object
             User user = userFacade.findByUsername(user_name);
-
+            
             // Insert photo record into database
+            // First, gets the content type of the file
             String extension = file.getContentType();
-            extension = extension.startsWith("image/") ? extension.subSequence(6, extension.length()).toString() : "png";
-            List<Photo> photoList = photoFacade.findPhotosByUserID(user.getId());
-            if (!photoList.isEmpty()) {
-                photoFacade.remove(photoList.get(0));
+            
+            // Stores the extension type inside a string variable
+            String extensionType = extension.split("/")[0];
+            
+            // Checks whether the file being uploaded is an image or not
+            if (extensionType.equals("image"))
+            {
+                // If it is an image, then force the extension to be a png
+                extension = "png";
+                
+                // Grabs the list of photos that are from the logged in user
+                List<Photo> photoList = photoFacade.findPhotosByUserID(user.getId());
+                if (!photoList.isEmpty()) {
+                    // Deletes the photo from the list if it is not emptied
+                    photoFacade.remove(photoList.get(0));
+                }
+                
+                // Creates a new photo instance based on the user id and the file extension
+                photoFacade.create(new Photo(extension, user));
+                
+                // Finds the photo that was just created
+                Photo photo = photoFacade.findPhotosByUserID(user.getId()).get(0);
+                
+                // Places that file with the correct file name inside of the 
+                // StreetSmartPhotoStorage folder
+                in = file.getInputstream();
+                inputStreamToFile(in, photo.getFilename());
+                
+                return true;
             }
-
-            photoFacade.create(new Photo(extension, user));
-            Photo photo = photoFacade.findPhotosByUserID(user.getId()).get(0);
-            in = file.getInputstream();
-            File uploadedFile = inputStreamToFile(in, photo.getFilename());
-            //saveThumbnail(uploadedFile, photo);
-            resultMsg = new FacesMessage("Success!", "File Successfully Uploaded!");
-            return resultMsg;
+            else
+            {
+                return false;
+            }
+           
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new FacesMessage("Upload failure!",
-            "There was a problem reading the image file. Please try again with a new photo file.");
+     
+        return false;
     }
 
     private File inputStreamToFile(InputStream inputStream, String childName)
