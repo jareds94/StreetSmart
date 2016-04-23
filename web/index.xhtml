@@ -48,12 +48,13 @@
                             <h:selectOneMenu id="map-menu-sort-select" class="input-control" value="#{pinManager.filterOption}">
                                 <f:selectItem itemValue="pop" itemLabel="Popularity" />
                                 <f:selectItem itemValue="new" itemLabel="Newest" />
-                                <f:selectItem itemValue="dist" itemLabel="Distance" />                                                            
-                                <f:ajax render=":filterForm :map-menu-pins-list-form"/>
-                            </h:selectOneMenu>
+                                <f:selectItem itemValue="dist" itemLabel="Distance" /> 
+                                <f:selectItem itemValue="key" itemLabel="Keyword" />
+                                <f:ajax render=":filterForm :map-menu-pins-list-form :map-menu-filter-keyword-form"/>
+                            </h:selectOneMenu>             
                         </h:form>
                         <!-- Filter by keyword -->
-                        <h:form id="map-menu-filter-keyword-form">
+                        <h:form id="map-menu-filter-keyword-form" style="#{pinManager.keywordFilterStyle}">
                             <h:inputText id="map-menu-filter-keyword-input" class="input-control" 
                                          a:placeholder="Filter by keyword" value="#{pinManager.keywordFilterInput}"/>
                             <h:commandButton id="filter-keyword-btn" style="display: none">
@@ -72,6 +73,12 @@
                             <h:commandButton id="filterBtn" style="display: none">
                                 <f:ajax execute="@form" render=":map-menu-pins-list-form"/>
                             </h:commandButton>
+                            <!-- Sends initial front-end filter data to the backend and
+                                 pre populates backend filtering fields on click. Clicked
+                                 by javascript on document ready.-->
+                            <h:commandButton id="pre-populate-btn" style="display: none" action="#{pinManager.prePopulateMenu()}">
+                                <f:ajax execute=":selectfilterForm" render=":map-menu-pins-list-form :selectfilterForm"/>
+                            </h:commandButton>
                         </h:form>
                     </div>
                     <br/>
@@ -85,7 +92,13 @@
                                             <h:outputText value="#{pin.title}"/>
                                         </div>
                                         <div class="pins-list-pin-desc">
-                                            <h:outputText value="#{pin.description}"/>
+                                            <h:outputText value="#{pin.description}"/>                 
+                                        </div>
+                                        <div class ="pins-list-pin-distance-desc" style="#{pinManager.distanceFilterStyle}">
+                                            <h:outputText value="#{pinManager.getDistanceFromLatLongInMiles(accountManager.userLat, accountManager.userLong, pin.latitude, pin.longitude)}">
+                                                <f:convertNumber type="number" minFractionDigits="2" pattern="#0.00"/>
+                                            </h:outputText>
+                                            <h:outputText value=" miles away"/>
                                         </div>
                                     </div>
                                     <div class="pins-list-pin-img-wrapper">
@@ -131,7 +144,7 @@
                                     <!--<img id="full-pin-downvote" src="resources/images/downvote.png" alt="Downvote" />-->
                                 </div>
                                 <div id="full-pin-pic-wrapper">
-                                    <img id="full-pin-pic" src="resources/images/profile-picture-2.png" alt="Pin Picture"/>
+                                    <h:graphicImage id="full-pin-pic" value="StreetSmartPhotoStorage/#{pinManager.getImageFromPin()}" alt="Pin Picture"/>
                                 </div>
                             </div>
                             <div id="full-pin-title"><h:outputText value="#{pinManager.selectedPin.title}" /></div>
@@ -142,8 +155,7 @@
                         <!-- Comments -->
                         <div id="full-pin-comments-wrapper">
                             <!-- Post a comment (only show if signed in) -->
-                            <c:if test="#{accountManager.isLoggedIn() == true}">
-                                <h:form id="comment">
+                                <h:form id="comment" rendered="#{accountManager.isLoggedIn() == true}">
                                     <h:inputTextarea id="full-pin-post-comment" 
                                                      class="input-control #{component.valid?'':'validation-failed'}"
                                                      a:placeholder="Write your comment..." required="true" 
@@ -153,18 +165,24 @@
                                         <f:ajax execute="@form" render=":render-comments @form"/>
                                     </h:commandButton>
                                 </h:form>
-                            </c:if>
                             <!-- Comments list -->
                             <h:panelGroup id="render-comments" layout="block">
                                 <div id="full-pin-comments-list">
-                                    <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment" varStatus="status">
-                                    <div id="full-pin-comment">
-                                        <div id="full-pin-comment-user"><h:outputText value="#{comment.username}"/></div>
-                                        <div id="full-pin-comment-msg"><h:outputText value="#{comment.comment}"/></div>
-                                        <div id="full-pin-comment-date"><h:outputText value="#{commentsManager.getFormattedDate(comment)}"/></div>
-                                    </div>
-                                    <hr class="full-pin-comment-divider" style="#{status.last?'display: none':''}" />
-                                    </ui:repeat>
+                                    <c:choose>
+                                        <c:when test="#{!empty commentsManager.commentsList}">
+                                            <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment" varStatus="status">
+                                                <div id="full-pin-comment">
+                                                    <div id="full-pin-comment-user"><h:outputText value="#{comment.username}"/></div>
+                                                    <div id="full-pin-comment-msg"><h:outputText value="#{comment.comment}"/></div>
+                                                    <div id="full-pin-comment-date"><h:outputText value="#{commentsManager.getFormattedDate(comment)}"/></div>
+                                                </div>
+                                                <hr class="full-pin-comment-divider" style="#{status.last?'display: none':''}" />
+                                            </ui:repeat>
+                                        </c:when>
+                                        <c:when test="#{empty commentsManager.commentsList}">
+                                           <h:outputText value="No comments to display."/>
+                                        </c:when>
+                                    </c:choose> 
                                 </div>
                             </h:panelGroup>
                         </div>

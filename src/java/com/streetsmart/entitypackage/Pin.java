@@ -86,6 +86,8 @@ public class Pin implements Serializable {
         upvotes = 0;
         downvotes = 0;
         score = 0;
+        anonymous = false;
+        photo = false;
     }
 
     public int getScore() {

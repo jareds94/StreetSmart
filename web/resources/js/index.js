@@ -3,9 +3,11 @@ $(document).ready(function () {
     resizeMapComponents($(window).width(), $(window).height() - 130, 0);
     
     // TESTING LOCAL ONLY - REMOVE WHEN DEPLOYING
+    /*
     $("#hidden-pin-form\\:pin-id-hidden-1").val("23");
     $("#hidden-pin-form\\:pin-id-hidden-2").val("23");
     $("#hidden-pin-form\\:pin-id-submit").click();
+    */
     
     // Hide home button
     $("#header-links-form\\:home-btn").hide();
@@ -80,30 +82,39 @@ $(document).ready(function () {
         }
     });
     
+
+    $(".pins-list-pin-desc").each(function (i, obj) {
+
     $(".pins-list-pin-desc").each(function(i, obj) {
         $(this).dotdotdot();
     });
     
     /* Fired when input text field is changed corresponding to the filter by
      * keyword */
-    $(document.body).on('change keydown keyup paste','#map-menu-filter-keyword-form\\:map-menu-filter-keyword-input',function() {
+    $(document.body).on('change keyup paste','#map-menu-filter-keyword-form\\:map-menu-filter-keyword-input',function() {
         $("#map-menu-filter-keyword-form\\:filter-keyword-btn").click();        
         $("#map-menu-pins-list-form\\:filterPinsByKeyword").click();
+        $(".pins-list-pin-desc").each(function (i, obj) {
+            $(this).dotdotdot();
+        });
     });
     
     /* Fired when input text field is changed corresponding to the filter
      * by distance */
-    $(document.body).on('change keydown paste','#filterForm\\:map-menu-distance-input',function() {       
+    $(document.body).on('change keyup paste','#filterForm\\:map-menu-distance-input',function() {       
         /* Send the updated input text field's property to the backend. */
-        $("#filterForm\\:filterBtn").click();      
+        $("#filterForm\\:filterBtn").click(); 
         /* Click the hidden command button to populate menuPinsListHidden's
          * value field. */  
         $("#map-menu-pins-list-form\\:filterPinsByDistance").click();
-    });  
-    
-    $(document.body).on('focusout','#filterForm\\:map-menu-distance-input',function(event) {       
-        
-    }); 
+        $(".pins-list-pin-desc").each(function (i, obj) {
+            $(this).dotdotdot();
+        });
+    });   
+    // Clicks a hidden commmand button which pre populates the back end
+    // with filtered pin data. Makes it so the menu displays filtered pins
+    // by popularity by default.
+    $("#filterForm\\:pre-populate-btn").click();
 });
 
 // Fired when window is resized by the user
@@ -151,4 +162,4 @@ function resizeMapComponents(width, height, delay) {
         $("#enter-loc-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
         $("#create-pin-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
     }, delay);
-}
+}});

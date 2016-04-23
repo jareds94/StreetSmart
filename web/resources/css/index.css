@@ -179,6 +179,15 @@
     clear: both;
 }
 
+.pins-list-pin-distance-desc {
+    width: 175px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    margin-bottom: 5px;
+    padding-top: 20px;
+}
+
 /* ---------------
    END MENU REGION 
    --------------- */
@@ -188,7 +197,7 @@
    --------------------- */
 
 #map-menu-full-pin {
-    /*display: none;*/
+    display: none;
     position: absolute;
     left: 0px;
     top: 0px;

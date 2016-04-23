@@ -39,6 +39,9 @@ import org.primefaces.model.UploadedFile;
  */
 public class PinManager implements Serializable {
 
+    private static final String HIDDEN = "visibility: hidden";
+    private static final String NOT_DISPLAYED = "display: none";
+    
     // Instance Variables (Properties) for Pins 
     private UploadedFile file;
     private String newPinTitle;
@@ -48,12 +51,12 @@ public class PinManager implements Serializable {
     private int selectedPinId;
     private Pin selectedPin;
     private List<Pin> mapMenuPins;
-    private List<Pin> allPins;
     private List<Pin> pinValues;
     private String filterDistance;
     private String filterOption;
     private String distanceFilterStyle;
     private String keywordFilterInput;
+    private String keywordFilterStyle;
     private Pin pin;
 
     /**
@@ -93,10 +96,13 @@ public class PinManager implements Serializable {
 
     public PinManager() {
         filterDistance = "10.0";
-        distanceFilterStyle = "visibility: hidden";
+        distanceFilterStyle = NOT_DISPLAYED;
+        keywordFilterStyle = NOT_DISPLAYED;
         keywordFilterInput = "";
+        // Set to initially filter by popularity.
+        filterOption = "pop";
         selectedPin = new Pin();
-        selectedPin.setTimePosted(0);
+        selectedPin.setTimePosted(0); 
     }
 
     public PinFacade getPinFacade() {
@@ -164,7 +170,7 @@ public class PinManager implements Serializable {
         try {
             Double.parseDouble(filterDistance);
         } catch (NumberFormatException | NullPointerException e) {
-            filterDistance = "10.0";
+            this.filterDistance = "10.0";
             return;
         }
 
@@ -196,6 +202,14 @@ public class PinManager implements Serializable {
         this.selectedPin = selectedPin;
     }
 
+    public String getKeywordFilterStyle() {
+        return keywordFilterStyle;
+    }
+
+    public void setKeywordFilterStyle(String keywordFilterStyle) {
+        this.keywordFilterStyle = keywordFilterStyle;
+    }
+    
     public String createPin() {
         
         User user = userFacade.find(FacesContext.getCurrentInstance().
@@ -248,108 +262,29 @@ public class PinManager implements Serializable {
     }
     
     /**
-     * Grabs the image uploaded by the user and displays it somewhere.
-     * 1. If the user is anonymous - Grabs a random default photo from the storage
-     * 2. If the user has a profile photo but did not upload a photo on the pin - 
-     * then we will display that profile photo instead.
-     * 3. If the user has a pin photo uploaded to that pin ID - then we will use this
-     * photo instead (whether they have a profile pic or not).
-     * 4. If the user is anonymous and they have uploaded a photo - then we will 
-     * use the image that was uploaded file name
-     * @return String - file path to the photo
+     * Grabs the file name for the pin associated image.
      */
     public String getImageFromPin()
     {
-        String resultFilePath = "";
-        
-        // If the user has selected the anonymous checbox in Create Pin
-        if (this.newPinAnonymous)
+        if (Files.exists(Paths.get(Constants.ROOT_DIRECTORY + "/p_" + selectedPin.getId() + ".png")))
         {
-            // If the user has not uploaded any images
-            if (file.getSize() == 0) {
-                // Initialize the String array of directory path with picture names
-                String[] defaultDirectoryNames = {"default-1.png", "default-2.png", 
-                    "default-3.png","default-4.png","default-5.png"};
-
-                Random randomProfileDefaultPicture = new Random();
-
-                // Grabs the random index of the photo
-                int index = randomProfileDefaultPicture.nextInt(defaultDirectoryNames.length);
-
-                // Grabs the source of the path file
-                Path source = Paths.get(Constants.ROOT_DIRECTORY + "/" + defaultDirectoryNames[index]);
-
-                // If the files exist inside the directory
-                if (Files.exists(source))
-                {
-                    // Stores the file path onto the string variable to return
-                    resultFilePath = defaultDirectoryNames[index];
-                }
+            return "p_" + selectedPin.getId() + ".png";
+        }
+        else
+        {
+            if (!selectedPin.getAnonymous()) {
+                return "u_" + selectedPin.getUserId() + ".png";
             }
             else
             {
-                // Grabs the latest pin ID that was created
-                int pinID = pinFacade.findLastID();
-                
-                // Grabs the file path using the pinID
-                Path source = Paths.get(Constants.ROOT_DIRECTORY + "/p_" + pinID + ".png");
-                
-                // If the file from the source exists inside the directory
-                if (Files.exists(source))
-                {
-                    // Grabs the source file as a string and stores it inside a variable
-                    resultFilePath = "p_" + pinID + ".png";
-                } 
+                String[] defaults = {"default-1.png", "default-2.png", 
+                    "default-3.png","default-4.png","default-5.png"};
+                Random r = new Random();
+                int index = r.nextInt(defaults.length);
+                return defaults[index];
             }
         }
-        
-        else 
-        {
-            // Grabs the user name from the FacesContext
-            String user_name = (String) FacesContext.getCurrentInstance()
-                .getExternalContext().getSessionMap().get("username");
-            
-            // Finds the user from their username if they are signed in
-            User user = userFacade.findByUsername(user_name);
-            
-            // If the user has uploaded a photo onto the pin
-            // pin.getPhoto() method is a boolean value that returns true if the
-            // user has created a photo under the new pin
-            if (pin.getPhoto())
-            {
-                // Grabs the latest pin ID that was created
-                int pinID = pinFacade.findLastID();
-                
-                // Grabs the file path using the pinID
-                Path source = Paths.get(Constants.ROOT_DIRECTORY + "/p_" + pinID + ".png");
-                
-                // If the file from the source exists inside the directory
-                if (Files.exists(source))
-                {
-                    // Grabs the source file as a string and stores it inside a variable
-                    resultFilePath = "p_" + pinID + ".png";
-                }
-            }
-            
-            // If the user has a default photo AND they have not uploaded a picture
-            // Then we will use their default photo as the image on the sidebar
-            else if (!pin.getPhoto())
-            {
-                // Grabs the source directory of that file
-                Path source = Paths.get(Constants.ROOT_DIRECTORY + "u_" + user.getId() + ".png");
-                
-                // Only stores the file source in the variable if it exists
-                if (Files.exists(source))
-                {
-                    resultFilePath = "u_" + user.getId() + ".png";
-                }
-            }
-            
-        }
-        
-        return resultFilePath;
     }
-    
 
     public FacesMessage copyPhotoFile(UploadedFile file) {
         try {
@@ -424,19 +359,27 @@ public class PinManager implements Serializable {
         if (filterOption == null || filterOption.isEmpty()) {
             return;
         }
+        
         switch (filterOption) {
             case "dist":
                 this.filterByDistance();
                 this.setDistanceFilterStyle("");
+                this.setKeywordFilterStyle(HIDDEN);
                 break;
             case "pop":
                 this.filterByPopularity();
-                this.setDistanceFilterStyle("visibility: hidden");
+                this.setDistanceFilterStyle(HIDDEN);
+                this.setKeywordFilterStyle(HIDDEN);
                 break;
             case "new":
                 this.filterByNewest();
-                this.setDistanceFilterStyle("visibility: hidden");
+                this.setDistanceFilterStyle(HIDDEN);
+                this.setKeywordFilterStyle(HIDDEN);
                 break;
+            case "key":
+                //this.filterByKeyword();
+                this.setDistanceFilterStyle(HIDDEN);
+                this.setKeywordFilterStyle("");
             default:
                 break;
         }
@@ -469,14 +412,15 @@ public class PinManager implements Serializable {
      */
     public void filterByKeyword() {
 
+        List<Pin> keywordPins;
         if (keywordFilterInput == null || keywordFilterInput.isEmpty()) {
+            mapMenuPins = pinFacade.findAll();
+            return;           
+        } else if (keywordFilterInput.length() < 3) {            
             return;
-        } else if (keywordFilterInput.length() < 3) {
-            this.setFilterOption(this.filterOption);
-            return;
+        } else {
+            keywordPins = mapMenuPins;
         }
-        
-        List<Pin> keywordPins = mapMenuPins;
 
         // We want to find all pins in MapMenuPins matching the keyword so:
         for (int i = 0; i < keywordPins.size(); i++) {
@@ -486,7 +430,7 @@ public class PinManager implements Serializable {
                 keywordPins.remove(pin);
             }
         }      
-        mapMenuPins = keywordPins;
+        this.setMapMenuPins(keywordPins);
     }
 
     /**
@@ -494,41 +438,51 @@ public class PinManager implements Serializable {
      */
     public void filterByDistance() {
         String[] currentUserLoc = this.getParsedUserLoc();
-        Double filterDistance = Double.parseDouble(this.filterDistance);
+        Double filterDist = Double.parseDouble(this.filterDistance);
 
         if (currentUserLoc != null) {
             float userLat = Float.valueOf(currentUserLoc[0]);
             float userLong = Float.valueOf(currentUserLoc[1]);
-            allPins = pinFacade.findAllPins();
-
-            for (int i = 0; i < allPins.size(); i++) {
-                Pin pin = allPins.get(i);
+            
+            List<Pin> distancePins;
+            distancePins = pinFacade.findAll();
+            
+            for (int i = 0; i < distancePins.size(); i++) {
+                Pin pin = distancePins.get(i);
                 double distanceInMiles = this.getDistanceFromLatLongInMiles(userLat, userLong,
                         pin.getLatitude(), pin.getLongitude());
-                if (!(distanceInMiles <= filterDistance)) {
-                    allPins.remove(i);
+                if (!(distanceInMiles <= filterDist)) {
+                    distancePins.remove(i);
                 }
             }
-            this.setMapMenuPins(allPins);
+            this.setMapMenuPins(distancePins);
         }
     }
 
     /**
      *
      */
-    public void filterByNewest() {
-        allPins = pinFacade.findAllPins();
-        this.sortPins(allPins, "time");
+    public void filterByNewest() {  
+        
+        this.sortPins(pinFacade.findAll(), "time");
         this.setMapMenuPins(this.pinValues);
     }
 
     /**
      *
      */
-    public void filterByPopularity() {
-        allPins = pinFacade.findAllPins();
-        this.sortPins(allPins, "popularity");
+    public void filterByPopularity() {       
+
+        this.sortPins(pinFacade.findAll(), "popularity");
         this.setMapMenuPins(this.pinValues);
+    }
+    
+    /**
+     * Pre populates variables for faster filtering and sets the initial state
+     * of the side menu to filter all pins by popularity.
+     */
+    public void prePopulateMenu() {
+        this.filterByPopularity();       
     }
 
     /**
@@ -539,7 +493,7 @@ public class PinManager implements Serializable {
      * @param long2
      * @return
      */
-    private double getDistanceFromLatLongInMiles(float lat1, float long1,
+    public double getDistanceFromLatLongInMiles(float lat1, float long1,
             float lat2, float long2) {
         double R = 3958.756; // Mean radius of the earth in miles
         double dLat = deg2rad(lat2 - lat1);
@@ -567,7 +521,7 @@ public class PinManager implements Serializable {
      * @param pins
      * @param sortType
      */
-    public void sortPins(List<Pin> pins, String sortType) {
+    private void sortPins(List<Pin> pins, String sortType) {
         // check for empty or null array
         if (pins == null || pins.isEmpty()
                 || sortType == null || sortType.isEmpty()) {
@@ -622,7 +576,7 @@ public class PinManager implements Serializable {
      * @param low
      * @param high
      */
-    public void quicksortByPopularity(int low, int high) {
+    private void quicksortByPopularity(int low, int high) {
         int i = low, j = high;
 
         int pivot = pinValues.get(low + (high - low) / 2).getScore();
@@ -660,7 +614,6 @@ public class PinManager implements Serializable {
      * @param j
      */
     private void exchange(int i, int j) {
-
         Pin temp = pinValues.get(i);
         pinValues.set(i, pinValues.get(j));
         pinValues.set(j, temp);
