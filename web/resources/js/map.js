@@ -181,6 +181,8 @@ function initialize() {
         if (this.expand) {
             this.div.firstChild.click();
         }
+        
+        removeUrlParameter("id");
     };
 
     // Remove pin from map
@@ -208,7 +210,7 @@ function initialize() {
                     photoFile = "resources/images/profile-picture-" + (curPin.id % 3) + ".png";
                 }
                 else if (curPin.photo){
-                    photoFile = "StreetSmartPhotoStorage/" + curPin.id.toString() + ".png";
+                    photoFile = "StreetSmartPhotoStorage/" + "p_" + curPin.id.toString() + ".png";
                 }
                 else if (!curPin.photo){
                     photoFile = "resources/images/profile-picture-" + (curPin.id % 3) + ".png";
@@ -315,17 +317,37 @@ function setMapCenter(latlng, offsetx, offsety, pan) {
     }
 }
 
-var getUrlParameter = function getUrlParameter(sParam) {
-    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName,
+function getUrlParameter(parameter) {
+    var pageURL = decodeURIComponent(window.location.search.substring(1)),
+        urlVariables = pageURL.split('&'),
+        parameterName,
         i;
 
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
+    for (i = 0; i < urlVariables.length; i++) {
+        parameterName = urlVariables[i].split('=');
 
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? true : sParameterName[1];
+        if (parameterName[0] === parameter) {
+            return parameterName[1] === undefined ? true : parameterName[1];
         }
     }
 };
+
+function removeUrlParameter(parameter) {
+    var url = document.location.href;
+    var urlparts= url.split('?');
+
+    if (urlparts.length >= 2)
+    {
+        var urlBase = urlparts.shift(); 
+        var queryString = urlparts.join("?"); 
+
+        var prefix = encodeURIComponent(parameter) + '=';
+        var pars = queryString.split(/[&;]/g);
+        for (var i = pars.length; i-- > 0;)               
+            if (pars[i].lastIndexOf(prefix, 0) !== -1)   
+                pars.splice(i, 1);
+        url = urlBase + '?' + pars.join('&');
+        window.history.pushState('', document.title, url);
+    }
+    return url;
+}

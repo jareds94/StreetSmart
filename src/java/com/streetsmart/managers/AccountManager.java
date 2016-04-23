@@ -10,10 +10,15 @@ import com.streetsmart.entitypackage.User;
 import com.streetsmart.sessionbeanpackage.PhotoFacade;
 import com.streetsmart.sessionbeanpackage.PinFacade;
 import com.streetsmart.sessionbeanpackage.UserFacade;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
@@ -22,6 +27,7 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Named;
+import org.primefaces.model.UploadedFile;
  
 @Named(value = "accountManager")
 @SessionScoped
@@ -234,7 +240,7 @@ public class AccountManager implements Serializable {
         
         // Check to see if a user already exists with the username given.
         User aUser = userFacade.findByUsername(username);
-        
+
         if (aUser != null) {
             username = "";
             statusMessage = "Username already exists! Please select a different one!";
@@ -251,7 +257,10 @@ public class AccountManager implements Serializable {
                 user.setEmail(email);
                 user.setUsername(username);                
                 user.setPassword(password);
-                userFacade.create(user);                
+                userFacade.create(user); 
+               
+                assignUserDefaultPhoto(user.getId());
+                 
             } catch (EJBException e) {
                 username = "";
                 statusMessage = "Something went wrong while creating your account!";
@@ -261,6 +270,47 @@ public class AccountManager implements Serializable {
             return "index";
         }
         return "";
+    }
+    
+    public String assignUserDefaultPhoto(int user_id)
+    {
+        String ret = "";
+        
+        try {
+            // Assigns the new name for the user's default photo
+            String newNameForPhoto = "u_" + user_id + ".png";
+
+            // Initialize the String array of directory path with picture names
+            String[] defaultDirectoryNames = {Constants.ROOT_DIRECTORY + "/default-1.png", 
+            Constants.ROOT_DIRECTORY + "/default-2.png", Constants.ROOT_DIRECTORY + "/default-3.png",
+            Constants.ROOT_DIRECTORY + "/default-4.png", Constants.ROOT_DIRECTORY + "/default-5.png"};
+            
+            Random randomProfileDefaultPicture = new Random();
+            
+            // Grabs the random index of the photo
+            int index = randomProfileDefaultPicture.nextInt(defaultDirectoryNames.length);
+            
+            // Grabs the source of the path file
+            Path source = Paths.get(defaultDirectoryNames[index]);
+            
+            // If the files exist inside the directory
+            if (Files.exists(source))
+            {
+                // Creates a new source path for the file to be created in. 
+                // Since we are not using a new directory, we will use the same
+                // Root Directory with a new photo name.
+                Path newSource = Paths.get(Constants.ROOT_DIRECTORY + "/" + newNameForPhoto);
+                ret = newSource.getFileName().toString();
+                
+                // Copies the photo with the new file name
+                Files.copy(source, newSource);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return ret;
     }
 
     public String updateAccount() {
@@ -362,18 +412,6 @@ public class AccountManager implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "/index.xhtml?faces-redirect=true";
     }
-   
-//    public String userPhoto() {
-//        String user_name = (String) FacesContext.getCurrentInstance()
-//                .getExternalContext().getSessionMap().get("username");
-//        User user = userFacade.findByUsername(user_name);
-//        List<Pin> photoList = pinFacade.findPhotosByUserID(user.getId());
-//        if (photoList.isEmpty()) {
-//            return "defaultUserPhoto.png";
-//        }
-//        return photoList.get(0).getThumbnailName();
-//    }
-
     /* Added methods */
         
     /* Check session map for username to see if anyone is logged in */
@@ -389,9 +427,10 @@ public class AccountManager implements Serializable {
         User user = userFacade.findByUsername(user_name);
         List<Photo> photoList = photoFacade.findPhotosByUserID(user.getId());
         if (photoList.isEmpty()) {
-            return "defaultUserPhoto.png";
+            return assignUserDefaultPhoto(user.getId());
         }
         return photoList.get(0).getThumbnailName();
+        //return Constants.ROOT_DIRECTORY + "/" + photoList.get(0).getThumbnailName();
     }
 
     public double getUserLat() {

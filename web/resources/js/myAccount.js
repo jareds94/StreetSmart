@@ -44,4 +44,8 @@ $(document).ready(function () {
         $("#account-form\\:edit-account-save-btn").show();
         $("#account-form\\:edit-account-cancel-btn").show();
     });
+    
+    $("#account-photo-edit-btn").bind("click", function(e) {
+        $("#photo-dialog").dialog("open");
+    });
 });

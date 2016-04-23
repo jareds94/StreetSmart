@@ -104,7 +104,7 @@
                                     <div class="pins-list-pin-img-wrapper">
                                         <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt="" />
                                     </div>
-                                    <div class="pins-list-pin-view">View full pin</div>
+                                    <div class="pins-list-pin-view" onclick="window.location='index.xhtml?id=' + #{pin.id}">View full pin</div>
                                     <div class="pins-list-pin-date">
                                         &nbsp;&nbsp;&bull;&nbsp;&nbsp;<h:outputText value="#{pinManager.getFormattedDate(pin)}"/>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
                                     </div>
@@ -131,9 +131,17 @@
                         <h:panelGroup id="render-full-pin" layout="block">
                             <div id="full-pin-top-wrapper">
                                 <div id="full-pin-vote-wrapper">
-                                    <img id="full-pin-upvote" src="resources/images/upvote.png" alt="Upvote" />
-                                    <div id="full-pin-votes"><h:outputText value="#{pinManager.selectedPin.score}" /></div>
-                                    <img id="full-pin-downvote" src="resources/images/downvote.png" alt="Downvote" />
+                                    <!--<img id="full-pin-upvote" src="resources/images/upvote.png" alt="Upvote" />-->
+                                    <h:commandButton id="full-pin-upvote" image="resources/images/upvote.png" action="#{pinManager.upvotePin()}">
+                                        <f:ajax execute="@form" render=":render-full-pin-votes @form" />
+                                    </h:commandButton>
+                                    <h:panelGroup id="render-full-pin-votes" layout="block">
+                                        <div id="full-pin-votes"><h:outputText value="#{pinManager.selectedPin.score}" /></div>
+                                    </h:panelGroup>
+                                    <h:commandButton id="full-pin-downvote" image="resources/images/downvote.png" action="#{pinManager.downvotePin()}">
+                                        <f:ajax execute="@form" render=":render-full-pin-votes @form" />
+                                    </h:commandButton>
+                                    <!--<img id="full-pin-downvote" src="resources/images/downvote.png" alt="Downvote" />-->
                                 </div>
                                 <div id="full-pin-pic-wrapper">
                                     <img id="full-pin-pic" src="resources/images/profile-picture-2.png" alt="Pin Picture"/>
@@ -147,29 +155,34 @@
                         <!-- Comments -->
                         <div id="full-pin-comments-wrapper">
                             <!-- Post a comment (only show if signed in) -->
-                            <c:if test="#{accountManager.isLoggedIn() == true}">
-                                <h:form id="comment">
+                                <h:form id="comment" rendered="#{accountManager.isLoggedIn() == true}">
                                     <h:inputTextarea id="full-pin-post-comment" 
                                                      class="input-control #{component.valid?'':'validation-failed'}"
                                                      a:placeholder="Write your comment..." required="true" 
                                                      value="#{commentsManager.comment}"/>
                                     <h:commandButton id="full-pin-post-comment-btn" class="btn" value="Post Comment"
                                                      action="#{commentsManager.createComment()}">
-                                        <f:ajax execute="@form" render=":please-render @form"/>
+                                        <f:ajax execute="@form" render=":render-comments @form"/>
                                     </h:commandButton>
                                 </h:form>
-                            </c:if>
                             <!-- Comments list -->
                             <h:panelGroup id="render-comments" layout="block">
                                 <div id="full-pin-comments-list">
-                                    <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment">
-                                    <div id="full-pin-comment">
-                                        <div id="full-pin-comment-user"><h:outputText value="#{comment.username}"/></div>
-                                        <div id="full-pin-comment-msg"><h:outputText value="#{comment.comment}"/></div>
-                                        <div id="full-pin-comment-date"><h:outputText value="#{commentsManager.getFormattedDate(comment)}"/></div>
-                                    </div>
-                                    <hr class="full-pin-comment-divider" />
-                                    </ui:repeat>
+                                    <c:choose>
+                                        <c:when test="#{!empty commentsManager.commentsList}">
+                                            <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment" varStatus="status">
+                                                <div id="full-pin-comment">
+                                                    <div id="full-pin-comment-user"><h:outputText value="#{comment.username}"/></div>
+                                                    <div id="full-pin-comment-msg"><h:outputText value="#{comment.comment}"/></div>
+                                                    <div id="full-pin-comment-date"><h:outputText value="#{commentsManager.getFormattedDate(comment)}"/></div>
+                                                </div>
+                                                <hr class="full-pin-comment-divider" style="#{status.last?'display: none':''}" />
+                                            </ui:repeat>
+                                        </c:when>
+                                        <c:when test="#{empty commentsManager.commentsList}">
+                                           <h:outputText value="No comments to display."/>
+                                        </c:when>
+                                    </c:choose> 
                                 </div>
                             </h:panelGroup>
                         </div>

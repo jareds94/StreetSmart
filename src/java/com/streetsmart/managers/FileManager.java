@@ -26,7 +26,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.imageio.ImageIO;
-import org.imgscalr.Scalr;
 import org.primefaces.model.UploadedFile;
 
 @ManagedBean(name = "fileManager")
@@ -89,7 +88,7 @@ public class FileManager {
             message = "";
             return "MyAccount?faces-redirect=true";
         } else {
-            message = "You need to upload a file first!";
+            message = "You need to upload a file first.";
             return "";
         }
     }
@@ -127,7 +126,7 @@ public class FileManager {
             Photo photo = photoFacade.findPhotosByUserID(user.getId()).get(0);
             in = file.getInputstream();
             File uploadedFile = inputStreamToFile(in, photo.getFilename());
-            saveThumbnail(uploadedFile, photo);
+            //saveThumbnail(uploadedFile, photo);
             resultMsg = new FacesMessage("Success!", "File Successfully Uploaded!");
             return resultMsg;
         } catch (IOException e) {
@@ -155,16 +154,16 @@ public class FileManager {
         return targetFile;
     }
 
-    private void saveThumbnail(File inputFile, Photo inputPhoto) {
-        try {
-            BufferedImage original = ImageIO.read(inputFile);
-            BufferedImage thumbnail = Scalr.resize(original, Constants.THUMBNAIL_SZ);
-            ImageIO.write(thumbnail, inputPhoto.getExtension(),
-                new File(Constants.ROOT_DIRECTORY, inputPhoto.getThumbnailName()));
-        } catch (IOException ex) {
-            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+//    private void saveThumbnail(File inputFile, Photo inputPhoto) {
+//        try {
+//            BufferedImage original = ImageIO.read(inputFile);
+//            //BufferedImage thumbnail = Scalr.resize(original, Constants.THUMBNAIL_SZ);
+//            //ImageIO.write(thumbnail, inputPhoto.getExtension(),
+//               // new File(Constants.ROOT_DIRECTORY, inputPhoto.getThumbnailName()));
+//        } catch (IOException ex) {
+//            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
 
     public void deletePhoto() {
         FacesMessage resultMsg;

@@ -197,7 +197,7 @@
    --------------------- */
 
 #map-menu-full-pin {
-    display: none;
+    /*display: none;*/
     position: absolute;
     left: 0px;
     top: 0px;
@@ -284,7 +284,8 @@
     font-size: 13px;
     color: #777777;
     float: left;
-    margin-top: 13px;
+    clear: both;
+    margin-top: 10px;
 }
 
 .full-pin-divider {
@@ -319,14 +320,14 @@
     font-size: 14px;
     padding: 8px 10px 8px 10px;
     background-color: #5090e0;
-    float: right;
-    margin: -5px 11px 0 0;
+    float: left;
+    margin: -5px 11px 15px 125px;
 }
 
 #full-pin-comments-list {
     float: left;
     clear: both;
-    margin-top: 15px;
+    margin-top: 0px;
 }
 
 #full-pin-comment-user {
@@ -336,7 +337,7 @@
 
 #full-pin-comment-msg {
     font-size: 14px;
-    margin: 3px 0 3px 0;
+    margin: 3px 0 5px 0;
 }
 
 #full-pin-comment-date {
@@ -573,17 +574,4 @@
 /* Wtf is this and how did it come to be */
 #JSFFrameId {
     display: none;
-}
-
-/* Scroll bar fixes for OSX. We want it to always show so that the user knows
-   the div is scrollable 
-   TODO: Test that this works */
-::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 7px;
-}
-::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: rgba(0,0,0,.5);
-    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
