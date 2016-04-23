@@ -365,16 +365,19 @@ public class PinManager implements Serializable {
                 this.filterByDistance();
                 this.setDistanceFilterStyle("");
                 this.setKeywordFilterStyle(HIDDEN);
+                this.setKeywordFilterInput("");
                 break;
             case "pop":
                 this.filterByPopularity();
                 this.setDistanceFilterStyle(HIDDEN);
                 this.setKeywordFilterStyle(HIDDEN);
+                this.setKeywordFilterInput("");
                 break;
             case "new":
                 this.filterByNewest();
                 this.setDistanceFilterStyle(HIDDEN);
                 this.setKeywordFilterStyle(HIDDEN);
+                this.setKeywordFilterInput("");
                 break;
             case "key":
                 //this.filterByKeyword();
