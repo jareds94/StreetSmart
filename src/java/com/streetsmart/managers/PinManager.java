@@ -261,6 +261,14 @@ public class PinManager implements Serializable {
         return "";
     }
     
+    public void deletePin(Pin pin) {
+        try {
+            pinFacade.remove(pin);
+        } catch (EJBException e) {
+            // TODO: do something
+        }
+    }
+    
     /**
      * Grabs the file name for the pin associated image.
      */
@@ -274,6 +282,28 @@ public class PinManager implements Serializable {
         {
             if (!selectedPin.getAnonymous()) {
                 return "u_" + selectedPin.getUserId() + ".png";
+            }
+            else
+            {
+                String[] defaults = {"default-1.png", "default-2.png", 
+                    "default-3.png","default-4.png","default-5.png"};
+                Random r = new Random();
+                int index = r.nextInt(defaults.length);
+                return defaults[index];
+            }
+        }
+    }
+    
+    public String getImageFromPin(Pin pin)
+    {
+        if (Files.exists(Paths.get(Constants.ROOT_DIRECTORY + "/p_" + pin.getId() + ".png")))
+        {
+            return "p_" + pin.getId() + ".png";
+        }
+        else
+        {
+            if (!pin.getAnonymous()) {
+                return "u_" + pin.getUserId() + ".png";
             }
             else
             {

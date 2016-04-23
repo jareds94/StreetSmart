@@ -121,9 +121,16 @@
                     <h:form id="pins-list-form">
                         <ui:repeat value="#{accountManager.postedPins}" var="pin">
                             <div class="pin-wrapper">
-                                <div class="pin-title"><h:outputText value="#{pin.title}"/></div>
-                                <div class="pin-desc"><h:outputText value="#{pin.description}"/></div>
+                                <div class="pin-photo-wrapper">
+                                    <h:graphicImage class="pin-photo" value="StreetSmartPhotoStorage/#{pinManager.getImageFromPin(pin)}" />
+                                </div>
+                                <div class="pin-text-wrapper">
+                                    <div class="pin-title"><h:outputText value="#{pin.title}"/></div>
+                                    <div class="pin-desc"><h:outputText value="#{pin.description}"/></div>
+                                </div>
                                 <div class="pin-details">
+                                    <h:commandLink class="pin-delete" action="#{pinManager.deletePin(pin)}">Delete pin</h:commandLink>
+                                    &nbsp;&bull;&nbsp;
                                     Posted on <h:outputText class="pin-time-posted" value="#{pinManager.getFullFormattedDate(pin)}"/>
                                     &nbsp;&bull;&nbsp;
                                     <h:outputText value="#{pin.upvotes - pin.downvotes}"/> points
