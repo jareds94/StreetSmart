@@ -108,16 +108,53 @@
     margin-bottom: 30px;
 }
 
+#account-photo-pic-wrapper {
+    height: 109px;
+    width: 109px;
+    margin-top: 50px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.pin-photo-wrapper {
+    float: left;
+    height: 45px;
+    width: 45px;
+    margin: 3px 10px 0 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.pin-photo {
+    display: inline;
+    margin: 0 auto;
+    height: 100%;
+    width: auto;
+}
+
+.pin-text-wrapper {
+    float: left;
+}
+
 .pin-title {
     font-size: 20px;
 }
 
 .pin-desc {
     font-size: 16px;
-    margin: 7px 0 7px 0;
+    margin: 7px 0 11px 0;
+}
+
+.pin-delete {
+    cursor: pointer;
+    color: #5090e0;
+    text-decoration: none;
 }
 
 .pin-details {
+    clear: both;
     font-size: 14px;
     color: #999999;
 }
