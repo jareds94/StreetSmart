@@ -142,8 +142,7 @@
                         <!-- Comments -->
                         <div id="full-pin-comments-wrapper">
                             <!-- Post a comment (only show if signed in) -->
-                            <c:if test="#{accountManager.isLoggedIn() == true}">
-                                <h:form id="comment">
+                                <h:form id="comment" rendered="#{accountManager.isLoggedIn() == true}">
                                     <h:inputTextarea id="full-pin-post-comment" 
                                                      class="input-control #{component.valid?'':'validation-failed'}"
                                                      a:placeholder="Write your comment..." required="true" 
@@ -153,18 +152,24 @@
                                         <f:ajax execute="@form" render=":render-comments @form"/>
                                     </h:commandButton>
                                 </h:form>
-                            </c:if>
                             <!-- Comments list -->
                             <h:panelGroup id="render-comments" layout="block">
                                 <div id="full-pin-comments-list">
-                                    <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment" varStatus="status">
-                                    <div id="full-pin-comment">
-                                        <div id="full-pin-comment-user"><h:outputText value="#{comment.username}"/></div>
-                                        <div id="full-pin-comment-msg"><h:outputText value="#{comment.comment}"/></div>
-                                        <div id="full-pin-comment-date"><h:outputText value="#{commentsManager.getFormattedDate(comment)}"/></div>
-                                    </div>
-                                    <hr class="full-pin-comment-divider" style="#{status.last?'display: none':''}" />
-                                    </ui:repeat>
+                                    <c:choose>
+                                        <c:when test="#{!empty commentsManager.commentsList}">
+                                            <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment" varStatus="status">
+                                                <div id="full-pin-comment">
+                                                    <div id="full-pin-comment-user"><h:outputText value="#{comment.username}"/></div>
+                                                    <div id="full-pin-comment-msg"><h:outputText value="#{comment.comment}"/></div>
+                                                    <div id="full-pin-comment-date"><h:outputText value="#{commentsManager.getFormattedDate(comment)}"/></div>
+                                                </div>
+                                                <hr class="full-pin-comment-divider" style="#{status.last?'display: none':''}" />
+                                            </ui:repeat>
+                                        </c:when>
+                                        <c:when test="#{empty commentsManager.commentsList}">
+                                           <h:outputText value="No comments to display."/>
+                                        </c:when>
+                                    </c:choose> 
                                 </div>
                             </h:panelGroup>
                         </div>
