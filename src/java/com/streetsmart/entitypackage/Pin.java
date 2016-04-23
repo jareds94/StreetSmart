@@ -83,6 +83,7 @@ public class Pin implements Serializable {
     private String username;
       
     public Pin() {
+        id = 1;
         upvotes = 0;
         downvotes = 0;
         score = 0;

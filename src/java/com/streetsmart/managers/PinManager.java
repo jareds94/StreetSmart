@@ -364,7 +364,7 @@ public class PinManager implements Serializable {
      * @return
      */
     public String getFormattedDate(Pin pin) {
-        SimpleDateFormat format = new SimpleDateFormat("MMM d");
+        SimpleDateFormat format = new SimpleDateFormat("M/d");
         return format.format(new Date(((long) pin.getTimePosted()) * 1000L));
     }
     
@@ -394,24 +394,24 @@ public class PinManager implements Serializable {
             case "dist":
                 this.filterByDistance();
                 this.setDistanceFilterStyle("");
-                this.setKeywordFilterStyle(HIDDEN);
+                this.setKeywordFilterStyle(NOT_DISPLAYED);
                 this.setKeywordFilterInput("");
                 break;
             case "pop":
                 this.filterByPopularity();
-                this.setDistanceFilterStyle(HIDDEN);
-                this.setKeywordFilterStyle(HIDDEN);
+                this.setDistanceFilterStyle(NOT_DISPLAYED);
+                this.setKeywordFilterStyle(NOT_DISPLAYED);
                 this.setKeywordFilterInput("");
                 break;
             case "new":
                 this.filterByNewest();
-                this.setDistanceFilterStyle(HIDDEN);
-                this.setKeywordFilterStyle(HIDDEN);
+                this.setDistanceFilterStyle(NOT_DISPLAYED);
+                this.setKeywordFilterStyle(NOT_DISPLAYED);
                 this.setKeywordFilterInput("");
                 break;
             case "key":
                 //this.filterByKeyword();
-                this.setDistanceFilterStyle(HIDDEN);
+                this.setDistanceFilterStyle(NOT_DISPLAYED);
                 this.setKeywordFilterStyle("");
             default:
                 break;

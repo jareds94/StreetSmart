@@ -151,7 +151,7 @@ function resizeMapComponents(width, height, delay) {
         }
         
         // Resize pins list height
-        $("#map-menu-pins-list").height(height - 320);
+        $("#map-menu-pins-list").height(height - 280);
         
         // Resize comments list height
         $("#full-pin-comments-wrapper").height(height - 340);

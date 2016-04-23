@@ -87,7 +87,7 @@
                         <h:form id="map-menu-pins-list-form">
                             <c:choose>
                                 <c:when test="#{!empty pinManager.mapMenuPins}">
-                                <ui:repeat value="#{pinManager.mapMenuPins}" var="pin">
+                                <ui:repeat value="#{pinManager.mapMenuPins}" var="pin" varStatus="status">
                                     <div class="pins-list-pin-wrapper">                              
                                         <div class="pins-list-pin-text-wrapper">
                                             <div class="pins-list-pin-title">
@@ -96,26 +96,26 @@
                                             <div class="pins-list-pin-desc">
                                                 <h:outputText value="#{pin.description}"/>                 
                                             </div>
-                                            <div class ="pins-list-pin-distance-desc" style="#{pinManager.distanceFilterStyle}">
-                                                <h:outputText value="#{pinManager.getDistanceFromLatLongInMiles(accountManager.userLat, accountManager.userLong, pin.latitude, pin.longitude)}">
-                                                    <f:convertNumber type="number" minFractionDigits="2" pattern="#0.00"/>
-                                                </h:outputText>
-                                                <h:outputText value=" miles away"/>
-                                            </div>
                                         </div>
                                         <div class="pins-list-pin-img-wrapper">
-                                            <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt="" />
+                                            <h:graphicImage class="pins-list-pin-img" value="StreetSmartPhotoStorage/#{pinManager.getImageFromPin(pin)}" alt="" />
                                         </div>
-                                        <div class="pins-list-pin-view" onclick="window.location='index.xhtml?id=' + #{pin.id}">View full pin</div>
+                                        <div class="pins-list-pin-view" onclick="window.location='index.xhtml?id=' + #{pin.id}">View pin</div>
                                         <div class="pins-list-pin-date">
-                                            &nbsp;&nbsp;&bull;&nbsp;&nbsp;<h:outputText value="#{pinManager.getFormattedDate(pin)}"/>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
+                                            &nbsp;&bull;&nbsp;<h:outputText value="#{pinManager.getFormattedDate(pin)}"/>&nbsp;&bull;&nbsp;
                                         </div>
                                         <div class="pins-list-pin-votes">
                                             <h:outputText value="#{pin.upvotes - pin.downvotes} points"/>
-                                        </div>   
+                                        </div>
+                                        <div class="pins-list-pin-distance-desc" style="#{pinManager.distanceFilterStyle}">
+                                            &nbsp;&bull;
+                                            <h:outputText value="#{pinManager.getDistanceFromLatLongInMiles(accountManager.userLat, accountManager.userLong, pin.latitude, pin.longitude)}">
+                                                <f:convertNumber type="number" minFractionDigits="2" pattern="#0.00"/>
+                                            </h:outputText>
+                                            <h:outputText value=" mi"/>
+                                        </div>
                                     </div>
-
-                                    <hr class="pins-list-pin-divider"/>
+                                    <hr class="pins-list-pin-divider" style="#{status.last?'display: none':''}"/>
                                 </ui:repeat>
                                 <h:commandButton id="filterPinsByDistance" style="display: none" action="#{pinManager.filterByDistance()}">
                                     <f:ajax execute="@form" render="@form"/>
