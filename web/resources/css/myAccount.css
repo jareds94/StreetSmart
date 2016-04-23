@@ -2,11 +2,15 @@
    START ACCOUNT DETAILS REGION 
    ---------------------------- */
 
-#account-details-wrapper {
-    width: 560px;
+#account-info-wrapper {
+    width: 540px;
     margin: 0 auto;
     margin-top: 60px;
     overflow: hidden;
+}
+
+#account-details-wrapper {
+    float: left;
 }
 
 #account-details-table {
@@ -61,6 +65,31 @@
     background-color: #999999;
 }
 
+#account-photo-wrapper {
+    float: right;
+}
+
+#account-photo-pic-wrapper {
+    height: 109px;
+    width: 109px;
+    margin-top: 50px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+#account-photo-pic {
+    float: left;
+    display: inline;
+    margin: 0 auto;
+    height: 100%;
+    width: auto;
+}
+
+#account-photo-edit-btn {
+    padding: 10px 20px 10px 20px;
+}
+
 /* --------------------------
    END ACCOUNT DETAILS REGION 
    -------------------------- */
@@ -100,6 +129,44 @@
 /* -------------------
    START DIALOG REGION
    ------------------- */
+
+#photo-dialog {
+    display: none;
+}
+
+#photo-upload-area {
+    margin-top: 5px;
+    height: 145px;
+    font-family: "Franklin Gothic Book" !important;
+}
+
+#photo-dialog-form\:upload-message {
+    font-size: 16px;
+    color: #ba2a2a;
+    font-family: "Franklin Gothic Book" !important;
+}
+
+#photo-dialog-form\:browse-button {
+    width: 100%;
+    margin: 25px 0 22px 0;
+    font-size: 14px;
+    font-family: "Franklin Gothic Book" !important;
+}
+
+#photo-dialog-form\:upload-button {
+    float: right;
+    width: 150px;
+    margin: 5px 10px 0 0;
+    font-family: "Franklin Gothic Book" !important;
+}
+
+#photo-dialog-form\:close-button {
+    float: right;
+    width: 85px;
+    margin-top: 5px;
+    background-color: #999;
+    font-family: "Franklin Gothic Book" !important;
+}
 
 #delete-dialog {
     display: none;

@@ -88,7 +88,7 @@ public class FileManager {
             message = "";
             return "MyAccount?faces-redirect=true";
         } else {
-            message = "You need to upload a file first!";
+            message = "You need to upload a file first.";
             return "";
         }
     }

@@ -50,12 +50,23 @@ $(function () {
         draggable: false,
         modal: true
     });
+    
+    // Dialog properties
+    $("#photo-dialog").dialog({
+        autoOpen: false,
+        height: 286,
+        width: 420,
+        resizable: false,
+        draggable: false,
+        modal: true
+    });
 });
 
 function closeDialogs() {
     $("#create-pin-dialog").dialog("close");
     $("#enter-loc-dialog").dialog("close");
     $("#delete-dialog").dialog("close");
+    $("#photo-dialog").dialog("close");
     
     setTimeout(function() {
         // Reset fields
