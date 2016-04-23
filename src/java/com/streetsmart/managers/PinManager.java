@@ -425,8 +425,8 @@ public class PinManager implements Serializable {
         // We want to find all pins in MapMenuPins matching the keyword so:
         for (int i = 0; i < keywordPins.size(); i++) {
             Pin pin = keywordPins.get(i);
-            if (!pin.getTitle().contains(keywordFilterInput)
-                    && !pin.getDescription().contains(keywordFilterInput)) {
+            if (!pin.getTitle().toLowerCase().contains(keywordFilterInput.toLowerCase())
+                    && !pin.getDescription().toLowerCase().contains(keywordFilterInput.toLowerCase())) {
                 keywordPins.remove(pin);
             }
         }      
