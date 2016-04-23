@@ -166,9 +166,6 @@ function resizeMapComponents(width, height, delay) {
         }
         $("#map-menu-pins-list").height(height - pinsListHeight);
         
-        // Resize comments list height
-        $("#full-pin-comments-wrapper").height(height - 340);
-        
         // Reposition dialogs
         $("#enter-loc-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
         $("#create-pin-dialog").dialog("option", "position", {my: "center", at: "center", of: window});

@@ -134,8 +134,10 @@ function initialize() {
                 parent = div;
                 selectedPin = $(this);
                 selectedPin.siblings().show();
-                panes.overlayImage.removeChild(div);
-                panes.floatPane.appendChild(div);
+                if (div.parentNode === panes.overlayImage) {
+                    panes.overlayImage.removeChild(div);
+                    panes.floatPane.appendChild(div);
+                }
                 
                 // Send the current pin id to the backend
                 $("#hidden-pin-form\\:pin-id-hidden-1").val(self.args.marker_id);

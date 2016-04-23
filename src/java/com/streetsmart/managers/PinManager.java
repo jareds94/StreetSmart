@@ -223,7 +223,6 @@ public class PinManager implements Serializable {
         try {
             
             pin = new Pin();
-            pin.setUsername(user.getFirstName() + " " + user.getLastName());
             pin.setAnonymous(this.newPinAnonymous);
 
             // If the pin is not anonymous and a User is currently logged
@@ -247,14 +246,18 @@ public class PinManager implements Serializable {
             pin.setTimePosted(timestamp);
             pin.setType("Some_pin_type");
             pin.setReports(0);
-            pinFacade.create(pin);
             if (file.getSize() != 0) {
                 pin.setPhoto(true);
                 copyPhotoFile(file);
             } else {
                 pin.setPhoto(false);
             }
-            return "index?faces-redirect=true";
+            pinFacade.create(pin);
+            this.newPinTitle = "";
+            this.newPinDescription = "";
+            this.newPinPhotoExists = false;
+            this.newPinAnonymous = false;
+            return "index?faces-redirect=true&id=" + pin.getId();
         } catch (EJBException e) {
             //TODO: Print useful error message somehow
         }
@@ -267,6 +270,16 @@ public class PinManager implements Serializable {
         } catch (EJBException e) {
             // TODO: do something
         }
+    }
+    
+    public String getUsernameFromPin(Pin pin) {
+        if (pin == null) return "";
+        if (pin.getAnonymous()) return "Anonymous";
+        User user = userFacade.findByUserId(pin.getUserId());
+        if (user == null) return "";
+        String username = user.getFirstName() + " " + user.getLastName();
+        pin.setUsername(username);
+        return username;
     }
     
     /**
