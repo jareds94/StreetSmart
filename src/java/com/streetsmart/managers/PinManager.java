@@ -262,108 +262,29 @@ public class PinManager implements Serializable {
     }
     
     /**
-     * Grabs the image uploaded by the user and displays it somewhere.
-     * 1. If the user is anonymous - Grabs a random default photo from the storage
-     * 2. If the user has a profile photo but did not upload a photo on the pin - 
-     * then we will display that profile photo instead.
-     * 3. If the user has a pin photo uploaded to that pin ID - then we will use this
-     * photo instead (whether they have a profile pic or not).
-     * 4. If the user is anonymous and they have uploaded a photo - then we will 
-     * use the image that was uploaded file name
-     * @return String - file path to the photo
+     * Grabs the file name for the pin associated image.
      */
     public String getImageFromPin()
     {
-        String resultFilePath = "";
-        
-        // If the user has selected the anonymous checbox in Create Pin
-        if (this.newPinAnonymous)
+        if (Files.exists(Paths.get(Constants.ROOT_DIRECTORY + "/p_" + selectedPin.getId() + ".png")))
         {
-            // If the user has not uploaded any images
-            if (file.getSize() == 0) {
-                // Initialize the String array of directory path with picture names
-                String[] defaultDirectoryNames = {"default-1.png", "default-2.png", 
-                    "default-3.png","default-4.png","default-5.png"};
-
-                Random randomProfileDefaultPicture = new Random();
-
-                // Grabs the random index of the photo
-                int index = randomProfileDefaultPicture.nextInt(defaultDirectoryNames.length);
-
-                // Grabs the source of the path file
-                Path source = Paths.get(Constants.ROOT_DIRECTORY + "/" + defaultDirectoryNames[index]);
-
-                // If the files exist inside the directory
-                if (Files.exists(source))
-                {
-                    // Stores the file path onto the string variable to return
-                    resultFilePath = defaultDirectoryNames[index];
-                }
+            return "p_" + selectedPin.getId() + ".png";
+        }
+        else
+        {
+            if (!selectedPin.getAnonymous()) {
+                return "u_" + selectedPin.getUserId() + ".png";
             }
             else
             {
-                // Grabs the latest pin ID that was created
-                int pinID = pinFacade.findLastID();
-                
-                // Grabs the file path using the pinID
-                Path source = Paths.get(Constants.ROOT_DIRECTORY + "/p_" + pinID + ".png");
-                
-                // If the file from the source exists inside the directory
-                if (Files.exists(source))
-                {
-                    // Grabs the source file as a string and stores it inside a variable
-                    resultFilePath = "p_" + pinID + ".png";
-                } 
+                String[] defaults = {"default-1.png", "default-2.png", 
+                    "default-3.png","default-4.png","default-5.png"};
+                Random r = new Random();
+                int index = r.nextInt(defaults.length);
+                return defaults[index];
             }
         }
-        
-        else 
-        {
-            // Grabs the user name from the FacesContext
-            String user_name = (String) FacesContext.getCurrentInstance()
-                .getExternalContext().getSessionMap().get("username");
-            
-            // Finds the user from their username if they are signed in
-            User user = userFacade.findByUsername(user_name);
-            
-            // If the user has uploaded a photo onto the pin
-            // pin.getPhoto() method is a boolean value that returns true if the
-            // user has created a photo under the new pin
-            if (pin.getPhoto())
-            {
-                // Grabs the latest pin ID that was created
-                int pinID = pinFacade.findLastID();
-                
-                // Grabs the file path using the pinID
-                Path source = Paths.get(Constants.ROOT_DIRECTORY + "/p_" + pinID + ".png");
-                
-                // If the file from the source exists inside the directory
-                if (Files.exists(source))
-                {
-                    // Grabs the source file as a string and stores it inside a variable
-                    resultFilePath = "p_" + pinID + ".png";
-                }
-            }
-            
-            // If the user has a default photo AND they have not uploaded a picture
-            // Then we will use their default photo as the image on the sidebar
-            else if (!pin.getPhoto())
-            {
-                // Grabs the source directory of that file
-                Path source = Paths.get(Constants.ROOT_DIRECTORY + "u_" + user.getId() + ".png");
-                
-                // Only stores the file source in the variable if it exists
-                if (Files.exists(source))
-                {
-                    resultFilePath = "u_" + user.getId() + ".png";
-                }
-            }
-            
-        }
-        
-        return resultFilePath;
     }
-    
 
     public FacesMessage copyPhotoFile(UploadedFile file) {
         try {

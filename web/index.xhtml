@@ -144,7 +144,7 @@
                                     <!--<img id="full-pin-downvote" src="resources/images/downvote.png" alt="Downvote" />-->
                                 </div>
                                 <div id="full-pin-pic-wrapper">
-                                    <img id="full-pin-pic" src="resources/images/profile-picture-2.png" alt="Pin Picture"/>
+                                    <h:graphicImage id="full-pin-pic" value="StreetSmartPhotoStorage/#{pinManager.getImageFromPin()}" alt="Pin Picture"/>
                                 </div>
                             </div>
                             <div id="full-pin-title"><h:outputText value="#{pinManager.selectedPin.title}" /></div>
