@@ -161,18 +161,68 @@ public class CommentManager implements Serializable {
         if(commentsList == null){
             return commentsList;
         }
-              
+            
         for (int i = 0; i < commentsList.size(); i++) {
             int id = commentsList.get(i).getUserId();
             User user = userFacade.findByUserId(id);
             commentsList.get(i).setUsername(user.getFirstName() + " " + user.getLastName());
         }
         
+        quicksortByTimePosted(0, (commentsList.size()) - 1);
+
         return commentsList;
     }
     
+    /**
+     *
+     * @param low
+     * @param high
+     */
+    private void quicksortByTimePosted(int low, int high) {
+        int i = low, j = high;
+
+        int pivot = commentsList.get(low + (high - low) / 2).getTimePosted();
+
+        while (i <= j) {
+
+            while (commentsList.get(i).getTimePosted() > pivot) {
+                i++;
+            }
+
+            while (commentsList.get(j).getTimePosted() < pivot) {
+                j--;
+            }
+
+            if (i <= j) {
+                exchange(i, j);
+                i++;
+                j--;
+            }
+        }
+
+        if (low < j) {
+            quicksortByTimePosted(low, j);
+        }
+        if (i < high) {
+            quicksortByTimePosted(i, high);
+        }
+    }
     
-        /**
+     /**
+     * Generic swap for two Pin objects in a list. Helper method for quicksort
+     * implementation.
+     *
+     * @param i
+     * @param j
+     */
+    private void exchange(int i, int j) {
+
+        Comment temp = commentsList.get(i);
+        commentsList.set(i, commentsList.get(j));
+        commentsList.set(j, temp);
+    }
+    
+    /**
      *
      * @param comment
      * @return
