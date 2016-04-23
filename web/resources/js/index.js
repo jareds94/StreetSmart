@@ -86,6 +86,10 @@ $(document).ready(function () {
         $(this).dotdotdot();
     });
     
+    $(document.body).on('change', "#selectfilterForm\\:map-menu-sort-select", function() {
+        resizeMapComponents($(window).width(), $(window).height() - 130, 0);
+    });
+    
     /* Fired when input text field is changed corresponding to the filter by
      * keyword */
     $(document.body).on('keyup paste','#map-menu-filter-keyword-form\\:map-menu-filter-keyword-input',function() {
@@ -151,7 +155,13 @@ function resizeMapComponents(width, height, delay) {
         }
         
         // Resize pins list height
-        $("#map-menu-pins-list").height(height - 280);
+        var pinsListHeight = 237;
+        if ($("#selectfilterForm\\:map-menu-sort-select").find(":selected").text() === "Keyword") {
+            pinsListHeight = 285;
+        } else if ($("#selectfilterForm\\:map-menu-sort-select").find(":selected").text() === "Distance") {
+            pinsListHeight = 270;
+        }
+        $("#map-menu-pins-list").height(height - pinsListHeight);
         
         // Resize comments list height
         $("#full-pin-comments-wrapper").height(height - 340);
