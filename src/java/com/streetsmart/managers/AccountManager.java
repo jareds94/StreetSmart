@@ -503,11 +503,11 @@ public class AccountManager implements Serializable {
        sb.append(firstName);
        sb.append("!\n\n");
        
-       sb.append("StreetSmart is your one stop location for everything that's going on around you.");
+       sb.append("StreetSmart is your one stop location for everything that's going on around you. ");
        sb.append("With an account at StreetSmart, you can create a pin at anywhere in the world for a concert you attended,");
-       sb.append("a restaurant that you loved, or anything else you think people around the world should know about.");
-       sb.append("You'll also be to comment, upvote or downvote on other user's pins if you agree or disagree with their pin");
-       sb.append("We hope you enjoy StreetSmart! If you have questions, comments or concerns, please feel free to contact us at streetsmartservice@gmail.com");
+       sb.append("a restaurant that you loved, or anything else you think people around the world should know about. ");
+       sb.append("You'll also be to comment, upvote or downvote on other user's pins if you agree or disagree with their pin. ");
+       sb.append("We hope you enjoy StreetSmart! If you have questions, comments or concerns, please feel free to contact us at streetsmartservice@gmail.com.");
        
        return sb.toString();
        
