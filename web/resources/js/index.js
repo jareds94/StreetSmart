@@ -8,6 +8,10 @@ $(document).ready(function () {
     $("#hidden-pin-form\\:pin-id-hidden-2").val("23");
     $("#hidden-pin-form\\:pin-id-submit").click();
     */
+   
+//   $("#full-pin-upvote").bind("click", function(){
+//      $(this).prop("disabled", true); 
+//   });
     
     // Hide home button
     $("#header-links-form\\:home-btn").hide();
