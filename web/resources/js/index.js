@@ -86,9 +86,16 @@ $(document).ready(function () {
         $(this).dotdotdot();
     });
     
+    $(document.body).on('change', "#selectfilterForm\\:map-menu-sort-select", function() {
+        resizeMapComponents($(window).width(), $(window).height() - 130, 0);
+        $(".pins-list-pin-desc").each(function (i, obj) {
+            $(this).dotdotdot();
+        });
+    });
+    
     /* Fired when input text field is changed corresponding to the filter by
      * keyword */
-    $(document.body).on('change keyup paste','#map-menu-filter-keyword-form\\:map-menu-filter-keyword-input',function() {
+    $(document.body).on('keyup paste','#map-menu-filter-keyword-form\\:map-menu-filter-keyword-input',function() {
         $("#map-menu-filter-keyword-form\\:filter-keyword-btn").click();        
         $("#map-menu-pins-list-form\\:filterPinsByKeyword").click();
         $(".pins-list-pin-desc").each(function (i, obj) {
@@ -151,10 +158,13 @@ function resizeMapComponents(width, height, delay) {
         }
         
         // Resize pins list height
-        $("#map-menu-pins-list").height(height - 320);
-        
-        // Resize comments list height
-        $("#full-pin-comments-wrapper").height(height - 340);
+        var pinsListHeight = 237;
+        if ($("#selectfilterForm\\:map-menu-sort-select").find(":selected").text() === "Keyword") {
+            pinsListHeight = 285;
+        } else if ($("#selectfilterForm\\:map-menu-sort-select").find(":selected").text() === "Distance") {
+            pinsListHeight = 270;
+        }
+        $("#map-menu-pins-list").height(height - pinsListHeight);
         
         // Reposition dialogs
         $("#enter-loc-dialog").dialog("option", "position", {my: "center", at: "center", of: window});

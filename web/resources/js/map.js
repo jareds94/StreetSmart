@@ -134,8 +134,10 @@ function initialize() {
                 parent = div;
                 selectedPin = $(this);
                 selectedPin.siblings().show();
-                panes.overlayImage.removeChild(div);
-                panes.floatPane.appendChild(div);
+                if (div.parentNode === panes.overlayImage) {
+                    panes.overlayImage.removeChild(div);
+                    panes.floatPane.appendChild(div);
+                }
                 
                 // Send the current pin id to the backend
                 $("#hidden-pin-form\\:pin-id-hidden-1").val(self.args.marker_id);
@@ -207,20 +209,20 @@ function initialize() {
                 var expand = getUrlParameter("id") === curPin.id.toString();
                 var photoFile;
                 if (curPin.anonymous){
-                    photoFile = "resources/images/profile-picture-" + (curPin.id % 3) + ".png";
+                    photoFile = "StreetSmartPhotoStorage/default-" + Math.floor((Math.random() * 5) + 1) + ".png";
                 }
                 else if (curPin.photo){
                     photoFile = "StreetSmartPhotoStorage/" + "p_" + curPin.id.toString() + ".png";
                 }
                 else if (!curPin.photo){
-                    photoFile = "resources/images/profile-picture-" + (curPin.id % 3) + ".png";
+                    photoFile = "StreetSmartPhotoStorage/" + "u_" + curPin.userId.toString() + ".png";
                 }
                 overlay = new CustomMarker(
                     new google.maps.LatLng(curPin.latitude, curPin.longitude),
                     map,
                     {marker_id: curPin.id},
                     photoFile,
-                    curPin.description,
+                    curPin.title,
                     expand
                 );
             }

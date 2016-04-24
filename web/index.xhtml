@@ -85,42 +85,49 @@
                     <!-- Listed pins -->
                     <div id="map-menu-pins-list">
                         <h:form id="map-menu-pins-list-form">
-                            <ui:repeat value="#{pinManager.mapMenuPins}" var="pin">
-                                <div class="pins-list-pin-wrapper">                              
-                                    <div class="pins-list-pin-text-wrapper">
-                                        <div class="pins-list-pin-title">
-                                            <h:outputText value="#{pin.title}"/>
+                            <c:choose>
+                                <c:when test="#{!empty pinManager.mapMenuPins}">
+                                <ui:repeat value="#{pinManager.mapMenuPins}" var="pin" varStatus="status">
+                                    <div class="pins-list-pin-wrapper">                              
+                                        <div class="pins-list-pin-text-wrapper">
+                                            <div class="pins-list-pin-title">
+                                                <h:outputText value="#{pin.title}"/>
+                                            </div>
+                                            <div class="pins-list-pin-desc">
+                                                <h:outputText value="#{pin.description}"/>                 
+                                            </div>
                                         </div>
-                                        <div class="pins-list-pin-desc">
-                                            <h:outputText value="#{pin.description}"/>                 
+                                        <div class="pins-list-pin-img-wrapper">
+                                            <h:graphicImage class="pins-list-pin-img" value="StreetSmartPhotoStorage/#{pinManager.getImageFromPin(pin)}" alt="" />
                                         </div>
-                                        <div class ="pins-list-pin-distance-desc" style="#{pinManager.distanceFilterStyle}">
+                                        <div class="pins-list-pin-view" onclick="window.location='index.xhtml?id=' + #{pin.id}">View pin</div>
+                                        <div class="pins-list-pin-date">
+                                            &nbsp;&bull;&nbsp;<h:outputText value="#{pinManager.getFormattedDate(pin)}"/>&nbsp;&bull;&nbsp;
+                                        </div>
+                                        <div class="pins-list-pin-votes">
+                                            <h:outputText value="#{pin.upvotes - pin.downvotes} points"/>
+                                        </div>
+                                        <div class="pins-list-pin-distance-desc" style="#{pinManager.distanceFilterStyle}">
+                                            &nbsp;&bull;
                                             <h:outputText value="#{pinManager.getDistanceFromLatLongInMiles(accountManager.userLat, accountManager.userLong, pin.latitude, pin.longitude)}">
                                                 <f:convertNumber type="number" minFractionDigits="2" pattern="#0.00"/>
                                             </h:outputText>
-                                            <h:outputText value=" miles away"/>
+                                            <h:outputText value=" mi"/>
                                         </div>
                                     </div>
-                                    <div class="pins-list-pin-img-wrapper">
-                                        <img class="pins-list-pin-img" src="resources/images/profile-picture-2.png" alt="" />
-                                    </div>
-                                    <div class="pins-list-pin-view" onclick="window.location='index.xhtml?id=' + #{pin.id}">View full pin</div>
-                                    <div class="pins-list-pin-date">
-                                        &nbsp;&nbsp;&bull;&nbsp;&nbsp;<h:outputText value="#{pinManager.getFormattedDate(pin)}"/>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
-                                    </div>
-                                    <div class="pins-list-pin-votes">
-                                        <h:outputText value="#{pin.upvotes - pin.downvotes} points"/>
-                                    </div>   
-                                </div>
-                                
-                                <hr class="pins-list-pin-divider"/>
-                            </ui:repeat>
-                            <h:commandButton id="filterPinsByDistance" style="display: none" action="#{pinManager.filterByDistance()}">
-                                <f:ajax execute="@form" render="@form"/>
-                            </h:commandButton>
-                            <h:commandButton id="filterPinsByKeyword" style="display: none" action="#{pinManager.filterByKeyword()}">
-                                <f:ajax execute="@form" render="@form"/>
-                            </h:commandButton>                            
+                                    <hr class="pins-list-pin-divider" style="#{status.last?'display: none':''}"/>
+                                </ui:repeat>
+                                <h:commandButton id="filterPinsByDistance" style="display: none" action="#{pinManager.filterByDistance()}">
+                                    <f:ajax execute="@form" render="@form"/>
+                                </h:commandButton>
+                                <h:commandButton id="filterPinsByKeyword" style="display: none" action="#{pinManager.filterByKeyword()}">
+                                    <f:ajax execute="@form" render="@form"/>
+                                </h:commandButton>
+                                </c:when>
+                                <c:when test="#{empty pinManager.mapMenuPins}">
+                                    <h:outputText value="No pins to display."/>
+                                </c:when>
+                            </c:choose>
                         </h:form>
                     </div>
                     <!-- End of listed pins area -->
@@ -149,7 +156,7 @@
                             </div>
                             <div id="full-pin-title"><h:outputText value="#{pinManager.selectedPin.title}" /></div>
                             <div id="full-pin-desc"><h:outputText value="#{pinManager.selectedPin.description}" /></div>
-                            <div id="full-pin-details">By <h:outputText value="#{pinManager.selectedPin.username}" /> on <h:outputText value="#{pinManager.getFullFormattedDate(pinManager.selectedPin)}" /></div>
+                            <div id="full-pin-details">By <h:outputText value="#{pinManager.getUsernameFromPin(pinManager.selectedPin)}" /> on <h:outputText value="#{pinManager.getFullFormattedDate(pinManager.selectedPin)}" /></div>
                         </h:panelGroup>
                         <hr class="full-pin-divider" />
                         <!-- Comments -->

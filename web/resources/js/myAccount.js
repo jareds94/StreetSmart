@@ -17,19 +17,6 @@ $(document).ready(function () {
         $("#pins-list-wrapper").append(div);
     }
     
-    // Fix time display for each pin
-    $(".pin-time-posted").each(function(i, obj) {
-        var timestamp = $(this).text();
-        var d = new Date(0);
-        d.setUTCSeconds(timestamp);
-        
-        var monthNames = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
-        var formatted = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
-        $(this).text(formatted);
-    });
-    
     $("#account-form\\:edit-account-btn").bind("click", function(e) {
         // Enable fields
         $("#account-form\\:first-name").prop("disabled", false);

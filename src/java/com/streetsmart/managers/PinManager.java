@@ -223,7 +223,6 @@ public class PinManager implements Serializable {
         try {
             
             pin = new Pin();
-            pin.setUsername(user.getFirstName() + " " + user.getLastName());
             pin.setAnonymous(this.newPinAnonymous);
 
             // If the pin is not anonymous and a User is currently logged
@@ -247,18 +246,40 @@ public class PinManager implements Serializable {
             pin.setTimePosted(timestamp);
             pin.setType("Some_pin_type");
             pin.setReports(0);
-            pinFacade.create(pin);
             if (file.getSize() != 0) {
                 pin.setPhoto(true);
                 copyPhotoFile(file);
             } else {
                 pin.setPhoto(false);
             }
-            return "index?faces-redirect=true";
+            pinFacade.create(pin);
+            this.newPinTitle = "";
+            this.newPinDescription = "";
+            this.newPinPhotoExists = false;
+            this.newPinAnonymous = false;
+            return "index?faces-redirect=true&id=" + pin.getId();
         } catch (EJBException e) {
             //TODO: Print useful error message somehow
         }
         return "";
+    }
+    
+    public void deletePin(Pin pin) {
+        try {
+            pinFacade.remove(pin);
+        } catch (EJBException e) {
+            // TODO: do something
+        }
+    }
+    
+    public String getUsernameFromPin(Pin pin) {
+        if (pin == null) return "";
+        if (pin.getAnonymous()) return "Anonymous";
+        User user = userFacade.findByUserId(pin.getUserId());
+        if (user == null) return "";
+        String username = user.getFirstName() + " " + user.getLastName();
+        pin.setUsername(username);
+        return username;
     }
     
     /**
@@ -274,6 +295,28 @@ public class PinManager implements Serializable {
         {
             if (!selectedPin.getAnonymous()) {
                 return "u_" + selectedPin.getUserId() + ".png";
+            }
+            else
+            {
+                String[] defaults = {"default-1.png", "default-2.png", 
+                    "default-3.png","default-4.png","default-5.png"};
+                Random r = new Random();
+                int index = r.nextInt(defaults.length);
+                return defaults[index];
+            }
+        }
+    }
+    
+    public String getImageFromPin(Pin pin)
+    {
+        if (Files.exists(Paths.get(Constants.ROOT_DIRECTORY + "/p_" + pin.getId() + ".png")))
+        {
+            return "p_" + pin.getId() + ".png";
+        }
+        else
+        {
+            if (!pin.getAnonymous()) {
+                return "u_" + pin.getUserId() + ".png";
             }
             else
             {
@@ -334,12 +377,12 @@ public class PinManager implements Serializable {
      * @return
      */
     public String getFormattedDate(Pin pin) {
-        SimpleDateFormat format = new SimpleDateFormat("MMM d");
+        SimpleDateFormat format = new SimpleDateFormat("M/d");
         return format.format(new Date(((long) pin.getTimePosted()) * 1000L));
     }
     
     public String getFullFormattedDate(Pin pin) {
-        SimpleDateFormat format = new SimpleDateFormat();
+        SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy");
         return format.format(new Date(((long) pin.getTimePosted()) * 1000L));
     }
 
@@ -364,21 +407,24 @@ public class PinManager implements Serializable {
             case "dist":
                 this.filterByDistance();
                 this.setDistanceFilterStyle("");
-                this.setKeywordFilterStyle(HIDDEN);
+                this.setKeywordFilterStyle(NOT_DISPLAYED);
+                this.setKeywordFilterInput("");
                 break;
             case "pop":
                 this.filterByPopularity();
-                this.setDistanceFilterStyle(HIDDEN);
-                this.setKeywordFilterStyle(HIDDEN);
+                this.setDistanceFilterStyle(NOT_DISPLAYED);
+                this.setKeywordFilterStyle(NOT_DISPLAYED);
+                this.setKeywordFilterInput("");
                 break;
             case "new":
                 this.filterByNewest();
-                this.setDistanceFilterStyle(HIDDEN);
-                this.setKeywordFilterStyle(HIDDEN);
+                this.setDistanceFilterStyle(NOT_DISPLAYED);
+                this.setKeywordFilterStyle(NOT_DISPLAYED);
+                this.setKeywordFilterInput("");
                 break;
             case "key":
                 //this.filterByKeyword();
-                this.setDistanceFilterStyle(HIDDEN);
+                this.setDistanceFilterStyle(NOT_DISPLAYED);
                 this.setKeywordFilterStyle("");
             default:
                 break;
@@ -415,8 +461,6 @@ public class PinManager implements Serializable {
         List<Pin> keywordPins;
         if (keywordFilterInput == null || keywordFilterInput.isEmpty()) {
             mapMenuPins = pinFacade.findAll();
-            return;           
-        } else if (keywordFilterInput.length() < 3) {            
             return;
         } else {
             keywordPins = mapMenuPins;

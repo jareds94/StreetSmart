@@ -66,8 +66,8 @@
     border-top: 1px solid #dddddd;
 }
 
-#map-menu-filter-keyword {
-    margin-top: 10px;
+#map-menu-filter-keyword-form\:map-menu-filter-keyword-input {
+    margin: 2px 0 25px 0;
     width: 238px;
     float: left;
     border-radius: 3px;
@@ -92,13 +92,15 @@
 #filterForm\:map-menu-distance-input {
     width: 50px;
     padding: 5px;
+    margin-bottom: 25px;
 }
 
 #map-menu-pins-list {
+    width: 260px;
     float: left;
     clear: both;
-    overflow-y: scroll;
-    margin-top: 20px;
+    overflow-y: auto;
+    margin-top: 5px;
 }
 
 .pins-list-pin-wrapper {
@@ -116,6 +118,7 @@
 
 .pins-list-pin-title {
     width: 165px;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 18px;
@@ -168,6 +171,12 @@
     color: #777777;
 }
 
+.pins-list-pin-distance-desc {
+    float: left;
+    font-size: 13px;
+    color: #777777;
+}
+
 .pins-list-pin-divider {
     display: block;
     width: 230px;
@@ -177,15 +186,6 @@
     border-top: 1px solid #cccccc;
     float: left;
     clear: both;
-}
-
-.pins-list-pin-distance-desc {
-    width: 175px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 14px;
-    margin-bottom: 5px;
-    padding-top: 20px;
 }
 
 /* ---------------
@@ -205,6 +205,10 @@
     padding: 20px;
     background-color: #f8f8f8;
     z-index: 4;
+}
+
+#render-full-pin {
+    overflow: hidden;
 }
 
 #full-pin-close {
@@ -303,7 +307,7 @@
     width: 260px;
     float: left;
     clear: both;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 #comment\:full-pin-post-comment {
@@ -513,7 +517,6 @@
 .pin-wrapper {
     position: absolute;
     height: 50px;
-    width: 280px;
 }
 
 .pin-pic-wrapper {
@@ -540,13 +543,13 @@
     display: none;
     height: 27px;
     width: auto;
-    max-width: 200px;
+    max-width: 170px;
     font-size: 14px;
     padding: 9px 8px 0 8px;
     margin-top: 4px;
+    float: left;
     background-color: white;
     border-radius: 3px;
-    float: left;
     box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
     white-space: nowrap;
     overflow: hidden;

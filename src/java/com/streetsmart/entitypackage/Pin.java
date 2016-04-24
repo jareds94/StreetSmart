@@ -4,7 +4,9 @@
  */
 package com.streetsmart.entitypackage;
 
+import com.streetsmart.sessionbeanpackage.UserFacade;
 import java.io.Serializable;
+import javax.ejb.EJB;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -79,10 +81,13 @@ public class Pin implements Serializable {
     private Integer userId;
     @Transient
     private int score;
+    
     @Transient
     private String username;
       
     public Pin() {
+        id = 0;
+        userId = 0;
         upvotes = 0;
         downvotes = 0;
         score = 0;
@@ -100,6 +105,7 @@ public class Pin implements Serializable {
     }
 
     public String getUsername() {
+        if (this.anonymous == true) return "Anonymous";
         return username;
     }
 
