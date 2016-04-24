@@ -245,10 +245,10 @@ public class CommentManager implements Serializable {
         Pin pin = pinFacade.findPinWithId(selectedPinId);
         User postedUser = userFacade.findByUserId(pin.getUserId());
         String emailAddress = postedUser.getEmail();
+        User commentedUser = userFacade.findByUserId(userId);
+    
 
-        String body = selectedPin.getTitle() + System.getProperty("line.separator")
-             + selectedPin.getDescription() + System.getProperty("line.separator")
-        + comment;
+        String body = emailToString(pin, commentedUser);
         String host = "smtp.gmail.com";
         String user = "streetsmartservice@gmail.com";
         String pass = "StreetSmart";
@@ -264,10 +264,10 @@ public class CommentManager implements Serializable {
 
         try {
             Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress("streetsmartservice@gmail.com", "Street Smart"));
+            msg.setFrom(new InternetAddress("streetsmartservice@gmail.com", "StreetSmart"));
             msg.addRecipient(Message.RecipientType.TO,
                     new InternetAddress(emailAddress, postedUser.getFirstName()));
-            msg.setSubject("Someone just commented on your pin");
+            msg.setSubject("Someone just commented on your pin!");
             msg.setText(body);
             Transport.send(msg, user, pass);
 
@@ -277,6 +277,32 @@ public class CommentManager implements Serializable {
             // ...
         }
 
+    }
+    
+    public String emailToString(Pin pin, User commentedUser){
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append(commentedUser.getFirstName());
+        sb.append(" just commented on your pin ");
+        sb.append("\"");
+        sb.append(pin.getTitle());
+        sb.append("\"");
+        sb.append(":");
+        sb.append("\n");
+        sb.append("\n");
+        
+        SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy");
+        String time = format.format(new Date(((long) timePosted) * 1000L));
+        sb.append(time);
+        sb.append(" ");
+        sb.append(commentedUser.getFirstName());
+        sb.append(" ");
+        sb.append(commentedUser.getLastName());
+        sb.append(": ");
+        sb.append(comment);
+        
+        return sb.toString();
+        
     }
 
 }
