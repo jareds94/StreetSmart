@@ -18,7 +18,10 @@ import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
@@ -27,6 +30,13 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ComponentSystemEvent;
 import javax.inject.Named;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import org.primefaces.model.UploadedFile;
  
 @Named(value = "accountManager")
@@ -258,13 +268,17 @@ public class AccountManager implements Serializable {
                 user.setUsername(username);                
                 user.setPassword(password);
                 userFacade.create(user); 
-               
+                sendEmail();
                 assignUserDefaultPhoto(user.getId());
                  
             } catch (EJBException e) {
                 username = "";
                 statusMessage = "Something went wrong while creating your account!";
                 return "";
+            } catch (MessagingException ex) {
+                Logger.getLogger(AccountManager.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(AccountManager.class.getName()).log(Level.SEVERE, null, ex);
             }
             initializeSessionMap();
             return "index?faces-redirect=true";
@@ -448,6 +462,58 @@ public class AccountManager implements Serializable {
     public void setUserLong(float userLong) {
         this.userLong = userLong;
     }
+    
+   public void sendEmail() throws MessagingException, IOException {
+       
+        String body = emailToString();
+        String host = "smtp.gmail.com";
+        String user = "streetsmartservice@gmail.com";
+        String pass = "StreetSmart";
+        Properties props = new Properties();
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.user", user);
+        props.put("mail.smtp.password", pass);
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        Session session = Session.getDefaultInstance(props, null);
+
+
+        try {
+            Message msg = new MimeMessage(session);
+            msg.setFrom(new InternetAddress("streetsmartservice@gmail.com", "StreetSmart"));
+            msg.addRecipient(Message.RecipientType.TO,
+                    new InternetAddress(email, firstName));
+            msg.setSubject(firstName + ", thanks for joining StreetSmart!");
+            msg.setText(body);
+            Transport.send(msg, user, pass);
+
+        } catch (AddressException e) {
+            // ...
+        } catch (MessagingException e) {
+            // ...
+        }
+
+    }
+   
+   public String emailToString(){
+       
+       StringBuilder sb = new StringBuilder();
+       sb.append("Welcome to StreetSmart, ");
+       sb.append(firstName);
+       sb.append("!\n\n");
+       
+       sb.append("StreetSmart is your one stop location for everything that's going on around you. ");
+       sb.append("With an account at StreetSmart, you can create a pin at anywhere in the world for a concert you attended,");
+       sb.append("a restaurant that you loved, or anything else you think people around the world should know about. ");
+       sb.append("You'll also be to comment, upvote or downvote on other user's pins if you agree or disagree with their pin. ");
+       sb.append("We hope you enjoy StreetSmart! If you have questions, comments or concerns, please feel free to contact us at streetsmartservice@gmail.com.");
+       
+       return sb.toString();
+       
+       
+       
+   }
     
     
 }
