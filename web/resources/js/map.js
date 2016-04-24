@@ -349,7 +349,7 @@ function removeUrlParameter(parameter) {
         for (var i = pars.length; i-- > 0;)               
             if (pars[i].lastIndexOf(prefix, 0) !== -1)   
                 pars.splice(i, 1);
-        url = urlBase + '?' + pars.join('&');
+        url = urlBase + pars.join('&');
         window.history.pushState('', document.title, url);
     }
     return url;
