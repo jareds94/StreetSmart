@@ -139,13 +139,13 @@
                             <div id="full-pin-top-wrapper">
                                 <div id="full-pin-vote-wrapper">
                                     <!--<img id="full-pin-upvote" src="resources/images/upvote.png" alt="Upvote" />-->
-                                    <h:commandButton id="full-pin-upvote" image="resources/images/upvote.png" action="#{pinManager.upvotePin()}">
+                                    <h:commandButton id="full-pin-upvote" rendered="#{accountManager.isLoggedIn() == true}" onclick="this.disabled=true" image="resources/images/upvote.png" action="#{pinManager.upvotePin()}">
                                         <f:ajax execute="@form" render=":render-full-pin-votes @form" />
                                     </h:commandButton>
                                     <h:panelGroup id="render-full-pin-votes" layout="block">
                                         <div id="full-pin-votes"><h:outputText value="#{pinManager.selectedPin.score}" /></div>
                                     </h:panelGroup>
-                                    <h:commandButton id="full-pin-downvote" image="resources/images/downvote.png" action="#{pinManager.downvotePin()}">
+                                    <h:commandButton id="full-pin-downvote" rendered="#{accountManager.isLoggedIn() == true}" onclick="this.disabled=true" image="resources/images/downvote.png" action="#{pinManager.downvotePin()}">
                                         <f:ajax execute="@form" render=":render-full-pin-votes @form" />
                                     </h:commandButton>
                                     <!--<img id="full-pin-downvote" src="resources/images/downvote.png" alt="Downvote" />-->

@@ -246,13 +246,15 @@ public class PinManager implements Serializable {
             pin.setTimePosted(timestamp);
             pin.setType("Some_pin_type");
             pin.setReports(0);
+            pinFacade.create(pin);
             if (file.getSize() != 0) {
                 pin.setPhoto(true);
+                pinFacade.edit(pin);
                 copyPhotoFile(file);
             } else {
                 pin.setPhoto(false);
+                pinFacade.edit(pin);
             }
-            pinFacade.create(pin);
             this.newPinTitle = "";
             this.newPinDescription = "";
             this.newPinPhotoExists = false;
