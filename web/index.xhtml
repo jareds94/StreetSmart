@@ -107,7 +107,7 @@
                                         <div class="pins-list-pin-votes">
                                             <h:outputText value="#{pin.upvotes - pin.downvotes} points"/>
                                         </div>
-                                        <div class="pins-list-pin-distance-desc" style="#{pinManager.distanceFilterStyle}">
+                                        <div class="pins-list-pin-distance-desc">
                                             &nbsp;&bull;
                                             <h:outputText value="#{pinManager.getDistanceFromLatLongInMiles(accountManager.userLat, accountManager.userLong, pin.latitude, pin.longitude)}">
                                                 <f:convertNumber type="number" minFractionDigits="2" pattern="#0.00"/>
