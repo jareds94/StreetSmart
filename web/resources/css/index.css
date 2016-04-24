@@ -521,13 +521,14 @@
 .pin-wrapper {
     position: absolute;
     height: 50px;
+    white-space: nowrap;
 }
 
 .pin-pic-wrapper {
+    display: inline-block;
     height: 40px;
     width: 40px;
     margin: 3px 6px 0 0;
-    float: left;
     position: relative;
     overflow: hidden;
     border-radius: 50%;
@@ -535,9 +536,8 @@
 }
 
 .pin-pic {
-    float: left;
+    display: inline-block;
     cursor: pointer;
-    display: inline;
     margin: 0 auto;
     height: 100%;
     width: auto;
@@ -553,7 +553,6 @@
     font-size: 14px;
     padding: 9px 8px 0 8px;
     margin-top: 4px;
-    float: left;
     background-color: white;
     border-radius: 3px;
     box-shadow: 2px 2px 2px rgba(0,0,0,0.2);
@@ -571,9 +570,8 @@
     border-color: rgba(255, 255, 255, 0);
     border-right-color: #ffffff;
     border-width: 7px;
-    float: left;
     margin-left: -10px;
-    margin-top: 15px;
+    margin-bottom: 10px;
 }
 
 /* ------------------
