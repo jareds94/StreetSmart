@@ -224,18 +224,7 @@ public class PinManager implements Serializable {
             
             pin = new Pin();
             pin.setAnonymous(this.newPinAnonymous);
-
-            // If the pin is not anonymous and a User is currently logged
-            // in, set the associated User id.
-            if (!newPinAnonymous) {
-                pin.setUserId(user.getId());
-            } else {
-                // Otherwise, set the id to a row in the User table associated
-                // with all anonymous users (i.e. users are anonymous with id
-                // = 1)
-                pin.setUserId(1);
-            }
-
+            pin.setUserId(user.getId());
             pin.setDescription(this.newPinDescription);
             pin.setDownvotes(0);
             pin.setUpvotes(0);
