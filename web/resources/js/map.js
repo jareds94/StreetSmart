@@ -182,6 +182,7 @@ function initialize() {
         
         if (this.expand) {
             this.div.firstChild.click();
+            this.expand = false;
         }
         
         removeUrlParameter("id");
