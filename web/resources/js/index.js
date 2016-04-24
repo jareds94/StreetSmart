@@ -86,15 +86,11 @@ $(document).ready(function () {
         }
     });
 
-    $(".pins-list-pin-desc").each(function(i, obj) {
-        $(this).dotdotdot();
-    });
+    addDotDotDot();
     
     $(document.body).on('change', "#selectfilterForm\\:map-menu-sort-select", function() {
         resizeMapComponents($(window).width(), $(window).height() - 130, 0);
-        $(".pins-list-pin-desc").each(function (i, obj) {
-            $(this).dotdotdot();
-        });
+        addDotDotDot();
     });
     
     /* Fired when input text field is changed corresponding to the filter by
@@ -102,9 +98,7 @@ $(document).ready(function () {
     $(document.body).on('keyup paste','#map-menu-filter-keyword-form\\:map-menu-filter-keyword-input',function() {
         $("#map-menu-filter-keyword-form\\:filter-keyword-btn").click();        
         $("#map-menu-pins-list-form\\:filterPinsByKeyword").click();
-        $(".pins-list-pin-desc").each(function (i, obj) {
-            $(this).dotdotdot();
-        });
+        addDotDotDot();
     });
     
     /* Fired when input text field is changed corresponding to the filter
@@ -115,9 +109,7 @@ $(document).ready(function () {
         /* Click the hidden command button to populate menuPinsListHidden's
          * value field. */  
         $("#map-menu-pins-list-form\\:filterPinsByDistance").click();
-        $(".pins-list-pin-desc").each(function (i, obj) {
-            $(this).dotdotdot();
-        });
+        addDotDotDot();
     });   
     // Clicks a hidden commmand button which pre populates the back end
     // with filtered pin data. Makes it so the menu displays filtered pins
@@ -176,4 +168,12 @@ function resizeMapComponents(width, height, delay) {
         $("#photo-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
         $("#delete-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
     }, delay);
+}
+
+function addDotDotDot() {
+    setTimeout(function() {
+        $(".pins-list-pin-desc").each(function (i, obj) {
+            $(this).dotdotdot();
+        });
+    }, 500);
 }

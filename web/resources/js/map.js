@@ -210,7 +210,7 @@ function initialize() {
                 var expand = getUrlParameter("id") === curPin.id.toString();
                 var photoFile;
                 if (curPin.anonymous){
-                    photoFile = "StreetSmartPhotoStorage/default-" + Math.floor((Math.random() * 5) + 1) + ".png";
+                    photoFile = "StreetSmartPhotoStorage/" + "p_" + curPin.id.toString() + ".png";
                 }
                 else if (curPin.photo){
                     photoFile = "StreetSmartPhotoStorage/" + "p_" + curPin.id.toString() + ".png";

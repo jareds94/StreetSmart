@@ -224,18 +224,7 @@ public class PinManager implements Serializable {
             
             pin = new Pin();
             pin.setAnonymous(this.newPinAnonymous);
-
-            // If the pin is not anonymous and a User is currently logged
-            // in, set the associated User id.
-            if (!newPinAnonymous) {
-                pin.setUserId(user.getId());
-            } else {
-                // Otherwise, set the id to a row in the User table associated
-                // with all anonymous users (i.e. users are anonymous with id
-                // = 1)
-                pin.setUserId(1);
-            }
-
+            pin.setUserId(user.getId());
             pin.setDescription(this.newPinDescription);
             pin.setDownvotes(0);
             pin.setUpvotes(0);
@@ -252,8 +241,15 @@ public class PinManager implements Serializable {
                 pinFacade.edit(pin);
                 copyPhotoFile(file);
             } else {
-                pin.setPhoto(false);
-                pinFacade.edit(pin);
+                if (pin.getAnonymous()){
+                    pin.setPhoto(true);
+                    pinFacade.edit(pin);
+                    assignPinDefaultPhoto();
+                }
+                else {
+                    pin.setPhoto(false);
+                    pinFacade.edit(pin);
+                }
             }
             this.newPinTitle = "";
             this.newPinDescription = "";
@@ -295,17 +291,7 @@ public class PinManager implements Serializable {
         }
         else
         {
-            if (!selectedPin.getAnonymous()) {
-                return "u_" + selectedPin.getUserId() + ".png";
-            }
-            else
-            {
-                String[] defaults = {"default-1.png", "default-2.png", 
-                    "default-3.png","default-4.png","default-5.png"};
-                Random r = new Random();
-                int index = r.nextInt(defaults.length);
-                return defaults[index];
-            }
+            return "u_" + selectedPin.getUserId() + ".png";
         }
     }
     
@@ -317,17 +303,7 @@ public class PinManager implements Serializable {
         }
         else
         {
-            if (!pin.getAnonymous()) {
-                return "u_" + pin.getUserId() + ".png";
-            }
-            else
-            {
-                String[] defaults = {"default-1.png", "default-2.png", 
-                    "default-3.png","default-4.png","default-5.png"};
-                Random r = new Random();
-                int index = r.nextInt(defaults.length);
-                return defaults[index];
-            }
+            return "u_" + pin.getUserId() + ".png";
         }
     }
 
@@ -357,6 +333,47 @@ public class PinManager implements Serializable {
         }
         return new FacesMessage("Upload failure!",
                 "There was a problem reading the image file. Please try again with a new photo file.");
+    }
+    
+    public String assignPinDefaultPhoto()
+    {
+        String ret = "";
+        
+        try {
+            // Assigns the new name for the user's default photo
+            String newNameForPhoto = "p_" +  pinFacade.findLastID() + ".png";
+
+            // Initialize the String array of directory path with picture names
+            String[] defaultDirectoryNames = {Constants.ROOT_DIRECTORY + "/default-1.png", 
+            Constants.ROOT_DIRECTORY + "/default-2.png", Constants.ROOT_DIRECTORY + "/default-3.png",
+            Constants.ROOT_DIRECTORY + "/default-4.png", Constants.ROOT_DIRECTORY + "/default-5.png"};
+            
+            Random randomProfileDefaultPicture = new Random();
+            
+            // Grabs the random index of the photo
+            int index = randomProfileDefaultPicture.nextInt(defaultDirectoryNames.length);
+            
+            // Grabs the source of the path file
+            Path source = Paths.get(defaultDirectoryNames[index]);
+            
+            // If the files exist inside the directory
+            if (Files.exists(source))
+            {
+                // Creates a new source path for the file to be created in. 
+                // Since we are not using a new directory, we will use the same
+                // Root Directory with a new photo name.
+                Path newSource = Paths.get(Constants.ROOT_DIRECTORY + "/" + newNameForPhoto);
+                ret = newSource.getFileName().toString();
+                
+                // Copies the photo with the new file name
+                Files.copy(source, newSource);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return ret;
     }
     
     public String upvotePin(){
