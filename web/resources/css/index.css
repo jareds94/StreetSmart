@@ -149,6 +149,8 @@
     margin: 0 auto;
     height: 100%;
     width: auto;
+    min-width: 50px;
+    min-height: 50px;
 }
 
 .pins-list-pin-view {
@@ -269,6 +271,8 @@
     margin: 0 auto;
     height: 100%;
     width: auto;
+    min-width: 100px;
+    min-height: 100px;
 }
 
 #full-pin-title {
@@ -537,6 +541,8 @@
     margin: 0 auto;
     height: 100%;
     width: auto;
+    min-width: 40px;
+    min-height: 40px;
 }
 
 .pin-text { 

@@ -291,17 +291,7 @@ public class PinManager implements Serializable {
         }
         else
         {
-            if (!selectedPin.getAnonymous()) {
-                return "u_" + selectedPin.getUserId() + ".png";
-            }
-            else
-            {
-                String[] defaults = {"default-1.png", "default-2.png", 
-                    "default-3.png","default-4.png","default-5.png"};
-                Random r = new Random();
-                int index = r.nextInt(defaults.length);
-                return defaults[index];
-            }
+            return "u_" + selectedPin.getUserId() + ".png";
         }
     }
     
@@ -313,17 +303,7 @@ public class PinManager implements Serializable {
         }
         else
         {
-            if (!pin.getAnonymous()) {
-                return "u_" + pin.getUserId() + ".png";
-            }
-            else
-            {
-                String[] defaults = {"default-1.png", "default-2.png", 
-                    "default-3.png","default-4.png","default-5.png"};
-                Random r = new Random();
-                int index = r.nextInt(defaults.length);
-                return defaults[index];
-            }
+            return "u_" + pin.getUserId() + ".png";
         }
     }
 

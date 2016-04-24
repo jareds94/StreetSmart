@@ -84,6 +84,8 @@
     margin: 0 auto;
     height: 100%;
     width: auto;
+    min-width: 109px;
+    min-height: 109px;
 }
 
 #account-photo-edit-btn {
@@ -132,6 +134,8 @@
     margin: 0 auto;
     height: 100%;
     width: auto;
+    min-width: 45px;
+    min-height: 45px;
 }
 
 .pin-text-wrapper {
