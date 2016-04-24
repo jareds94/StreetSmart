@@ -115,7 +115,7 @@ function initialize() {
             text.className = "pin-text";
             text.textContent = this.text;
             div.appendChild(text);
-
+            
             if (typeof (self.args.marker_id) !== 'undefined') {
                 div.dataset.marker_id = self.args.marker_id;
             }
@@ -129,11 +129,13 @@ function initialize() {
                 if (selectedPin !== null && selectedPin !== undefined) {
                     panes.floatPane.removeChild(parent);
                     panes.overlayImage.appendChild(parent);
-                    selectedPin.siblings().hide();
+                    selectedPin.siblings().css('display', 'none');
                 }
                 parent = div;
                 selectedPin = $(this);
-                selectedPin.siblings().show();
+                selectedPin.css('display', 'none');
+                selectedPin.css('display', 'inline-block');
+                selectedPin.siblings().css('display', 'inline-block');
                 if (div.parentNode === panes.overlayImage) {
                     panes.overlayImage.removeChild(div);
                     panes.floatPane.appendChild(div);

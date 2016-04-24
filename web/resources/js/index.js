@@ -50,7 +50,7 @@ $(document).ready(function () {
     
     // Close pin details menu
     $("#full-pin-close").bind("click", function (e) {
-        selectedPin.siblings().hide();
+        selectedPin.siblings().css('display', 'none');
         selectedPin = null;
         
         $("#map-menu-full-pin").removeClass("open");
