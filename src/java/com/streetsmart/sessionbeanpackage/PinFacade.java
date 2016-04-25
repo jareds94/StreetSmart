@@ -62,6 +62,12 @@ public class PinFacade extends AbstractFacade<Pin> {
                 .getSingleResult());        
     }
     
+    
+    /**
+     * Finds the id of the most recently added pin.
+     * Helps to add elements to pin at creation.
+     * @return 
+     */
     public int findLastID() {
         List<Pin> allPins = findAll();
         
