@@ -91,6 +91,7 @@ function enterLocSubmit() {
             $("#hidden-loc-form\\:user-loc-submit").click();
             map.setCenter(userLoc);
             drawUserLocMarker();
+            $("#selectfilterForm\\:map-menu-sort-select").val("pop").change();
         } else {
             $("#enter-loc-form\\:loc").css("background-color", "#f7e2e2");
         }

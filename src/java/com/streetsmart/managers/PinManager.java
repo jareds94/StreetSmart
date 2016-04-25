@@ -101,7 +101,7 @@ public class PinManager implements Serializable {
         keywordFilterStyle = NOT_DISPLAYED;
         keywordFilterInput = "";
         // Set to initially filter by popularity.
-        filterOption = "pop";
+        filterOption = "new";
         selectedPin = new Pin();
         selectedPin.setTimePosted(0); 
     }

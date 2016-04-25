@@ -47,6 +47,7 @@ function initialize() {
         userLoc = new google.maps.LatLng(split[0], split[1]);
         map.setCenter(userLoc);
         drawUserLocMarker();
+        $("#selectfilterForm\\:map-menu-sort-select").val("pop").change();
     } else {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -56,9 +57,9 @@ function initialize() {
                 };
                 $("#hidden-loc-form\\:user-loc-hidden").val("(" + userLoc.lat + ", " + userLoc.lng + ")");
                 $("#hidden-loc-form\\:user-loc-submit").click();
-                
                 map.setCenter(userLoc);
                 drawUserLocMarker();
+                $("#selectfilterForm\\:map-menu-sort-select").val("pop").change();
             }, function() {
                 locationError = true;
                 if ($("#map-loading").css("display") === "none") {
