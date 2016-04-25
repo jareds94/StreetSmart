@@ -1,3 +1,13 @@
+/*
+ * Created by Jared Schwalbe on 2016.04.06  * 
+ * Copyright © 2016 Jared Schwalbe. All rights reserved. * 
+ */
+
+/*
+ * These styles are applied to all pages. Most of them are for the template
+ * but some of them are for shared classes like .btn, .error-message, etc.
+ */
+
 @font-face {
     font-family: 'Franklin Gothic Book';
     src: url(../fonts/FRABK.ttf);

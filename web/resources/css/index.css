@@ -1,3 +1,8 @@
+/*
+ * Created by Jared Schwalbe on 2016.04.04  * 
+ * Copyright © 2016 Jared Schwalbe. All rights reserved. * 
+ */
+
 #map {
     width: 100%;
     min-width: 650px;
@@ -578,7 +583,6 @@
    END MAP PIN REGION
    ------------------ */
 
-/* Wtf is this and how did it come to be */
 #JSFFrameId {
     display: none;
 }

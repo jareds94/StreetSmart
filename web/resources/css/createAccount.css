@@ -1,3 +1,8 @@
+/*
+ * Created by Jared Schwalbe on 2016.04.06  * 
+ * Copyright © 2016 Jared Schwalbe. All rights reserved. * 
+ */
+
 #create-account-wrapper {
     width: 460px;
     margin: 0 auto;
@@ -84,11 +89,13 @@
     width: 440px;
 }
 
+/* Fix for PrimeFaces wanting to mess with the font-weight */
 .ui-state-hover,
 .ui-state-focus {
     font-weight: normal !important;
 }
 
+/* Placeholder for where the password_panel will be moved to */
 #password_panel-wrapper {
     display: none;
     margin-left: -10px;
