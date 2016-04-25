@@ -72,7 +72,7 @@ function initialize() {
     $("#selectfilterForm\\:map-menu-sort-select").val("dist").change();
     setTimeout(function() {
         $("#selectfilterForm\\:map-menu-sort-select").val("pop").change();
-    }, 100);
+    }, 200);
     
     
     //#region CustomMarker
