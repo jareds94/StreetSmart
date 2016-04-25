@@ -4,7 +4,7 @@
  */
 
 /*
- * Fired when the DOM is finished loading. All of this fixes the styles for the 
+ * Fires when the DOM is finished loading. All of this fixes the styles for the 
  * password field because of the feedback on password strength uses stupid,
  * ugly PrimeFaces.
  */

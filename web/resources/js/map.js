@@ -1,11 +1,19 @@
+/*
+ * Created by Jared Schwalbe on 2016.04.05  * 
+ * Copyright © 2016 Jared Schwalbe. All rights reserved. * 
+ */
+
 // Global variables
 var map;
 var userLoc;
 var selectedPin;
 var parent;
 
-// Called when map loads
+/*
+ * Fires when the Google Maps Map is initialized.
+ */
 function initialize() {
+    // Function level variables
     map = null;
     userLoc = null;
     var locationError = false;
@@ -20,7 +28,7 @@ function initialize() {
         }
     ];
 
-    // Create map
+    // Create map (center on drillfield until we get the user's location)
     map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 37.2277411, lng: -80.422268},
         zoom: 15,
@@ -33,34 +41,45 @@ function initialize() {
         // Hide loading overlay
         $("#map-loading").hide();
         
+        // Open the enter location dialog if we couldn't get their location
         if (locationError && !locationDialogOpen) {
             $("#enter-loc-dialog").dialog("open");
         }
     });
     
     // Initialize map by centering on current location and showing location dot
+    // First check here is to see if we've already saved their location
     if ($("#hidden-loc-form\\:user-loc-hidden").val() !== "") {
+        // Parse stored user location
         var value = $("#hidden-loc-form\\:user-loc-hidden").val();
         value = value.replace("(", "");
         value = value.replace(")", "");
         var split = value.split(", ");
+        // Set user location, center on it, and display the location marker
         userLoc = new google.maps.LatLng(split[0], split[1]);
         map.setCenter(userLoc);
         drawUserLocMarker();
+        // Temporary fix for distances in sidebar not working until location is set
         $("#selectfilterForm\\:map-menu-sort-select").val("pop").change();
     } else {
+        // Try HTML5 geolocation
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
+                // Get user's location in lat and long
                 userLoc = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
+                // Send the location to the backend
                 $("#hidden-loc-form\\:user-loc-hidden").val("(" + userLoc.lat + ", " + userLoc.lng + ")");
                 $("#hidden-loc-form\\:user-loc-submit").click();
+                // Center map on location and show the location marker
                 map.setCenter(userLoc);
                 drawUserLocMarker();
+                // Temporary fix for distances in sidebar not working until location is set
                 $("#selectfilterForm\\:map-menu-sort-select").val("pop").change();
             }, function() {
+                // HTML5 geolocation failed - show dialog to enter location manually
                 locationError = true;
                 if ($("#map-loading").css("display") === "none") {
                     $("#enter-loc-dialog").dialog("open");
@@ -70,11 +89,20 @@ function initialize() {
         }
     }
     
-    //#region CustomMarker
-
-    // TODO: put this in it's own file
+    
+    // ---------------------------
+    // #region CustomMarker Object
+    // ---------------------------
 
     // CustomMarker constructor
+    // NOTE: Modified from a stack overflow answer.
+    // 
+    // @param latlng google.maps.LatLng object
+    // @param map google.maps.Map object
+    // @param args other arguments (just using this for marker_id)
+    // @param imgsrc path to image for pin
+    // @param text string to be display next to pin
+    // @param expand boolean if the pin should be clicked immediately
     function CustomMarker(latlng, map, args, imgsrc, text, expand) {
         this.latlng = latlng;
         this.args = args;
@@ -121,22 +149,27 @@ function initialize() {
                 div.dataset.marker_id = self.args.marker_id;
             }
             
+            // Add pin to the overlayImage pane
             var panes = this.getPanes();
             panes.overlayImage.appendChild(div);
 
-            // Listender for clicking the pin icon on the map
+            // Fires when the pin image wrapper is clicked
             google.maps.event.addDomListener(div.firstChild, "click", function (event) {
-                // Update selectedPin
+                // Clear selectedPin and hide text
                 if (selectedPin !== null && selectedPin !== undefined) {
                     panes.floatPane.removeChild(parent);
                     panes.overlayImage.appendChild(parent);
                     selectedPin.siblings().css('display', 'none');
                 }
+                // Set selected pin & its parent node
                 parent = div;
                 selectedPin = $(this);
+                // Weird bug has the pin image on the wrong side of the text
                 selectedPin.css('display', 'none');
                 selectedPin.css('display', 'inline-block');
+                // Show text
                 selectedPin.siblings().css('display', 'inline-block');
+                // Add the pin to the floatPane (higher z-index than overlayImage)
                 if (div.parentNode === panes.overlayImage) {
                     panes.overlayImage.removeChild(div);
                     panes.floatPane.appendChild(div);
@@ -183,11 +216,13 @@ function initialize() {
             div.style.top = (point.y - 22) + 'px';
         }
         
+        // Click the pin immediately
         if (this.expand) {
             this.div.firstChild.click();
             this.expand = false;
         }
         
+        // Remove the id param from the URL as this causes problems later
         removeUrlParameter("id");
     };
 
@@ -199,7 +234,9 @@ function initialize() {
         }
     };
 
-    //#endregion
+    // ------------------------------
+    // #endregion CustomMarker Object
+    // ------------------------------
     
     
     // Grab pins from rest api
@@ -208,9 +245,12 @@ function initialize() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             var data = xhr.responseText;
             var jsonResult = JSON.parse(data);
-            for (var i = 0; i < jsonResult.length; i++){
+            // Loop through all objects from the JSON results
+            for (var i = 0; i < jsonResult.length; i++) {
                 var curPin = jsonResult[i];
+                // Check if this pin should be expanded
                 var expand = getUrlParameter("id") === curPin.id.toString();
+                // Determine what the photo source is
                 var photoFile;
                 if (curPin.anonymous){
                     photoFile = "StreetSmartPhotoStorage/" + "p_" + curPin.id.toString() + ".png";
@@ -221,6 +261,7 @@ function initialize() {
                 else if (!curPin.photo){
                     photoFile = "StreetSmartPhotoStorage/" + "u_" + curPin.userId.toString() + ".png";
                 }
+                // Create the new overlay object
                 overlay = new CustomMarker(
                     new google.maps.LatLng(curPin.latitude, curPin.longitude),
                     map,
@@ -235,35 +276,11 @@ function initialize() {
     // Change endpoint to venus when venus works.
     xhr.open('GET', 'http://jupiter.cs.vt.edu/StreetSmartREST-1.0/webresources/com.mycompany.streetsmartrest.pin', true);
     xhr.send(null);
-   
-   // Pins for testing
-   /*
-   overlay = new CustomMarker(
-        new google.maps.LatLng(37.2277411, -80.422268),
-        map,
-        {marker_id: 1},
-        "resources/images/profile-picture-0.png",
-        "Ultimate frisbee on the drillfield"
-    );
-        
-    overlay = new CustomMarker(
-        new google.maps.LatLng(37.2327411, -80.420268),
-        map,
-        {marker_id: 2},
-        "resources/images/profile-picture-1.png",
-        "Studying all night"
-    );
-    
-    overlay = new CustomMarker(
-        new google.maps.LatLng(37.2157411, -80.421268),
-        map,
-        {marker_id: 3},
-        "resources/images/profile-picture-2.png",
-        "Free ice cream"
-    );
-    */
 }
 
+/*
+ * Draws the location marker on the map at the current user location.
+ */
 function drawUserLocMarker() {
     // Current location marker
     var myLocMarker = "resources/images/currlocmarker.png";
@@ -277,13 +294,18 @@ function drawUserLocMarker() {
     myloc.setPosition(userLoc);
 }
 
-// Display a message at the top of the map
+/*
+ * Display a message at the top of the map.
+ */
 function showMapMessage(message, displayTime) {
+    // Show the wrapper and hide the message until we fade it in
     $("#map-message-wrapper").show();
     $("#map-message").css("opacity", "0");
     $("#map-message").css("visibility", "visible");
+    // Set the text and fade the message in
     $("#map-message").text(message);
     $("#map-message").fadeTo(400, 1, function () {});
+    // After [displayTime] fade the message out
     setTimeout(function () {
         $("#map-message").fadeTo(400, 0, function () {});
         setTimeout(function () {
@@ -294,28 +316,40 @@ function showMapMessage(message, displayTime) {
     }, displayTime);
 }
 
-// Sets the map center
+/*
+ * Sets the map center.
+ * @param latlng google.maps.LatLng object
+ * @param offsetx how many pixels to offset the center by in the horizontal direction
+ * @param offsety how many pixels to offset the center by in the vertical direction
+ * @param pan boolean if the map should pan instead of jumping
+ */
 function setMapCenter(latlng, offsetx, offsety, pan) {
     var center = latlng;
     
+    // Offset the center
     if (offsetx !== 0 || offsety !== 0) {
+        // Grab the map scale and bounds
         var scale = Math.pow(2, map.getZoom());
         var nw = new google.maps.LatLng(
             map.getBounds().getNorthEast().lat(),
             map.getBounds().getSouthWest().lng()
         );
 
+        // Convert to pixels
         var worldCoordinateCenter = map.getProjection().fromLatLngToPoint(latlng);
         var pixelOffset = new google.maps.Point((offsetx / scale) || 0, (offsety / scale) || 0);
 
+        // Calculate new center
         var worldCoordinateNewCenter = new google.maps.Point(
             worldCoordinateCenter.x - pixelOffset.x,
             worldCoordinateCenter.y + pixelOffset.y
         );
 
+        // New center
         center = map.getProjection().fromPointToLatLng(worldCoordinateNewCenter);
     }
     
+    // Set map to center on the new center location
     if (pan) {
         map.panTo(center);
     } else {
@@ -323,22 +357,33 @@ function setMapCenter(latlng, offsetx, offsety, pan) {
     }
 }
 
+/*
+ * Grabs the value from the specified parameter name in the URL.
+ * NOTE: Modified from a stack overflow answer.
+ */
 function getUrlParameter(parameter) {
+    // Grab url and split up parameters
     var pageURL = decodeURIComponent(window.location.search.substring(1)),
         urlVariables = pageURL.split('&'),
         parameterName,
         i;
 
+    // For each param, check if it's the one we're requesting and return the value
     for (i = 0; i < urlVariables.length; i++) {
         parameterName = urlVariables[i].split('=');
-
         if (parameterName[0] === parameter) {
             return parameterName[1] === undefined ? true : parameterName[1];
         }
     }
 };
 
+/*
+ * Removes the specified parameter from the URL and pushes the new state to 
+ * the location bar.
+ * NOTE: Modified from a stack overflow answer.
+ */
 function removeUrlParameter(parameter) {
+    // Grab the url and params
     var url = document.location.href;
     var urlparts= url.split('?');
 
@@ -347,12 +392,14 @@ function removeUrlParameter(parameter) {
         var urlBase = urlparts.shift(); 
         var queryString = urlparts.join("?"); 
 
+        // Calculate new URL by removing correct param
         var prefix = encodeURIComponent(parameter) + '=';
         var pars = queryString.split(/[&;]/g);
         for (var i = pars.length; i-- > 0;)               
             if (pars[i].lastIndexOf(prefix, 0) !== -1)   
                 pars.splice(i, 1);
         url = urlBase + pars.join('&');
+        // Push the modified url to the location bar
         window.history.pushState('', document.title, url);
     }
     return url;

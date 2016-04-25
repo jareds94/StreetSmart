@@ -1,22 +1,30 @@
-// Fired when DOM is finished loading
+/*
+ * Created by Jared Schwalbe on 2016.04.05  * 
+ * Copyright © 2016 Jared Schwalbe. All rights reserved. * 
+ */
+
+/*
+ * Fires when the DOM is finished loading.
+ */
 $(document).ready(function () {
+    // Resize the UI to the window size
     resizeMapComponents($(window).width(), $(window).height() - 130, 0);
-    
-    // TESTING LOCAL ONLY - REMOVE WHEN DEPLOYING
-    /*
-    $("#hidden-pin-form\\:pin-id-hidden-1").val("23");
-    $("#hidden-pin-form\\:pin-id-hidden-2").val("23");
-    $("#hidden-pin-form\\:pin-id-submit").click();
-    */
-   
-//   $("#full-pin-upvote").bind("click", function(){
-//      $(this).prop("disabled", true); 
-//   });
     
     // Hide home button
     $("#header-links-form\\:home-btn").hide();
+
+    // Open the create pin dialog
+    $(".add-pin-button").on("click", function () {
+        // Cheap way to check if the user is signed in
+        if ($("#header-links-form").text().indexOf("Sign In") >= 0) {
+            // Don't allow pins to be created when not signed in
+            showMapMessage("You must sign in to create a pin.", 5000);
+        } else {
+            $("#create-pin-dialog").dialog("open");
+        }
+    });
     
-    // Open menu
+    // Open menu when clicking the hamburger icon
     $("#show-menu").bind("click", function (e) {
         $("#map-menu").addClass("open");
 
@@ -32,7 +40,7 @@ $(document).ready(function () {
         }, 200);
     });
     
-    // Close menu
+    // Close menu when clicking the close button
     $("#map-menu-close").bind("click", function (e) {
         $("#map-menu").removeClass("open");
         
@@ -50,20 +58,24 @@ $(document).ready(function () {
     
     // Close pin details menu
     $("#full-pin-close").bind("click", function (e) {
+        // Hide title popup next to pin on map
         selectedPin.siblings().css('display', 'none');
         selectedPin = null;
         
+        // Hide the pin details menu
         $("#map-menu-full-pin").removeClass("open");
         $("#map-menu-full-pin").hide();
     });
     
     // Change location button
     $("#map-menu-change-loc-btn").bind("click", function (e) {
+        // Parse the address entered to get the geographic coordinates
         var address = $("#map-menu-change-loc").val();
         if (address !== null && address !== "") {
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode({'address': address}, function (results, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
+                    // Update new map center
                     setMapCenter(results[0].geometry.location, 0, 0, false);
                     // Clear style changes made from error
                     $("#map-menu-change-loc").css("background-color", "#ffffff");
@@ -75,54 +87,64 @@ $(document).ready(function () {
                 }
             });
         } else {
+            // If nothing is in the input field, center on current location
             setMapCenter(userLoc, 0, 0, false);
         }
     });
     
-    // Trigger change location on enter
+    // Trigger change location on enter key
     $("#map-menu-change-loc").keyup(function(event){
         if (event.keyCode === 13){
             $("#map-menu-change-loc-btn").click();
         }
     });
 
+    // Add "..." to overflow on pins list descriptions
     addDotDotDot();
     
     $(document.body).on('change', "#selectfilterForm\\:map-menu-sort-select", function() {
+        // Force a UI resize to account for new list height
         resizeMapComponents($(window).width(), $(window).height() - 130, 0);
+        // Add "..." to overflow on pins list descriptions
         addDotDotDot();
     });
     
-    /* Fired when input text field is changed corresponding to the filter by
-     * keyword */
+    // Fires when input text field is changed corresponding to the filter by keyword
     $(document.body).on('keyup paste','#map-menu-filter-keyword-form\\:map-menu-filter-keyword-input',function() {
+        // Send inputted string to the backend
         $("#map-menu-filter-keyword-form\\:filter-keyword-btn").click();        
         $("#keyword-form\\:filterPinsByKeyword").click();
+        // Add "..." to overflow on pins list descriptions
         addDotDotDot();
     });
     
-    /* Fired when input text field is changed corresponding to the filter
-     * by distance */
+    // Fires when input text field is changed corresponding to the filter by distance
     $(document.body).on('keyup paste','#filterForm\\:map-menu-distance-input',function() {       
-        /* Send the updated input text field's property to the backend. */
+        // Send the updated input text field's property to the backend
         $("#filterForm\\:filterBtn").click(); 
-        /* Click the hidden command button to populate menuPinsListHidden's
-         * value field. */  
+        // Click the hidden command button to populate menuPinsListHidden's value field
         $("#distance-form\\:filterPinsByDistance").click();
+        // Add "..." to overflow on pins list descriptions
         addDotDotDot();
     });   
+    
     // Clicks a hidden commmand button which pre populates the back end
     // with filtered pin data. Makes it so the menu displays filtered pins
     // by popularity by default.
     $("#filterForm\\:pre-populate-btn").click();
 });
 
-// Fired when window is resized by the user
+/*
+ * Fires when window is resized by the user.
+ */ 
 $(window).resize(function () {
+    // Resize the UI to the new window size
     resizeMapComponents($(window).width(), $(window).height() - 130, 100);
 });
 
-// Adjust the heights and width to be window dependent
+/*
+ * Adjust the heights and widths of UI components to be window dependent.
+ */ 
 function resizeMapComponents(width, height, delay) {
     setTimeout(function () {
         // Resize height, width will always be 100%
@@ -161,7 +183,7 @@ function resizeMapComponents(width, height, delay) {
         }
         $("#map-menu-pins-list").height(height - pinsListHeight);
         
-        // Reposition dialogs
+        // Reposition dialogs to center
         $("#enter-loc-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
         $("#create-pin-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
         $("#photo-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
@@ -169,10 +191,14 @@ function resizeMapComponents(width, height, delay) {
     }, delay);
 }
 
+/*
+ * Adds "..." to overflow on pins list description.
+ */
 function addDotDotDot() {
+    // Slight delay to allow the list to load
     setTimeout(function() {
         $(".pins-list-pin-desc").each(function (i, obj) {
             $(this).dotdotdot();
         });
-    }, 500);
+    }, 600);
 }

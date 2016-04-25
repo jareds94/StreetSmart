@@ -1,5 +1,13 @@
+/*
+ * Created by Jared Schwalbe on 2016.04.11  * 
+ * Copyright © 2016 Jared Schwalbe. All rights reserved. * 
+ */
+
+/*
+ * Fires when the DOM is finished loading.
+ */
 $(document).ready(function () {
-    // Hide last two rows
+    // Hide last two rows in table (password and confirm password)
     $("#account-details-table tr:last td").hide();
     $("#account-details-table tr:last").prev().find("td").hide();
     // Hide save and cancel buttons
@@ -17,6 +25,7 @@ $(document).ready(function () {
         $("#pins-list-wrapper").append(div);
     }
     
+    // Edit account button click
     $("#account-form\\:edit-account-btn").bind("click", function(e) {
         // Enable fields
         $("#account-form\\:first-name").prop("disabled", false);
@@ -32,7 +41,13 @@ $(document).ready(function () {
         $("#account-form\\:edit-account-cancel-btn").show();
     });
     
+    // Open photo edit dialog
     $("#account-photo-edit-btn").bind("click", function(e) {
         $("#photo-dialog").dialog("open");
+    });
+    
+    // Open delete dialog
+    $("#account-form\\:delete-account-btn").on("click", function () {
+        $("#delete-dialog").dialog("open");
     });
 });
