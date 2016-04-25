@@ -525,7 +525,7 @@ public class PinManager implements Serializable {
             }
             
             for (int i = 0; i < distancePins.size(); i++) {
-                double max = Double.MIN_VALUE;
+                double max = -Double.MAX_VALUE;
                 int maxIndex = -1;
                 for (int j = i; j < distancePins.size(); j++) {
                     Pin pin = distancePins.get(j);
