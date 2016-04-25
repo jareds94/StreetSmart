@@ -68,6 +68,12 @@ function initialize() {
         }
     }
     
+    // Cheap fix for distances not rendering correctly initially
+    $("#selectfilterForm\\:map-menu-sort-select").val("dist").change();
+    setTimeout(function() {
+        $("#selectfilterForm\\:map-menu-sort-select").val("pop").change();
+    }, 100);
+    
     
     //#region CustomMarker
 

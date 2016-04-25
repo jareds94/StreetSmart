@@ -115,7 +115,6 @@ $(document).ready(function () {
     // with filtered pin data. Makes it so the menu displays filtered pins
     // by popularity by default.
     $("#filterForm\\:pre-populate-btn").click();
-    
 });
 
 // Fired when window is resized by the user
