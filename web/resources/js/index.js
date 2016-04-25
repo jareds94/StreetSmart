@@ -97,18 +97,18 @@ $(document).ready(function () {
      * keyword */
     $(document.body).on('keyup paste','#map-menu-filter-keyword-form\\:map-menu-filter-keyword-input',function() {
         $("#map-menu-filter-keyword-form\\:filter-keyword-btn").click();        
-        $("#map-menu-pins-list-form\\:filterPinsByKeyword").click();
+        $("#keyword-form\\:filterPinsByKeyword").click();
         addDotDotDot();
     });
     
     /* Fired when input text field is changed corresponding to the filter
      * by distance */
-    $(document.body).on('change keyup paste','#filterForm\\:map-menu-distance-input',function() {       
+    $(document.body).on('keyup paste','#filterForm\\:map-menu-distance-input',function() {       
         /* Send the updated input text field's property to the backend. */
         $("#filterForm\\:filterBtn").click(); 
         /* Click the hidden command button to populate menuPinsListHidden's
          * value field. */  
-        $("#map-menu-pins-list-form\\:filterPinsByDistance").click();
+        $("#distance-form\\:filterPinsByDistance").click();
         addDotDotDot();
     });   
     // Clicks a hidden commmand button which pre populates the back end

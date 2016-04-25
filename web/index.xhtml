@@ -117,17 +117,21 @@
                                     </div>
                                     <hr class="pins-list-pin-divider" style="#{status.last?'display: none':''}"/>
                                 </ui:repeat>
-                                <h:commandButton id="filterPinsByDistance" style="display: none" action="#{pinManager.filterByDistance()}">
-                                    <f:ajax execute="@form" render="@form"/>
-                                </h:commandButton>
-                                <h:commandButton id="filterPinsByKeyword" style="display: none" action="#{pinManager.filterByKeyword()}">
-                                    <f:ajax execute="@form" render="@form"/>
-                                </h:commandButton>
                                 </c:when>
                                 <c:when test="#{empty pinManager.mapMenuPins}">
                                     <h:outputText value="No pins to display."/>
                                 </c:when>
                             </c:choose>
+                        </h:form>
+                        <h:form id="distance-form">
+                            <h:commandButton id="filterPinsByDistance" style="display: none" action="#{pinManager.filterByDistance()}">
+                                <f:ajax execute="@form" render="@form"/>
+                            </h:commandButton>
+                        </h:form>
+                        <h:form id="keyword-form">
+                            <h:commandButton id="filterPinsByKeyword" style="display: none" action="#{pinManager.filterByKeyword()}">
+                                <f:ajax execute="@form" render="@form"/>
+                            </h:commandButton>
                         </h:form>
                     </div>
                     <!-- End of listed pins area -->

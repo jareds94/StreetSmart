@@ -26,6 +26,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.faces.application.FacesMessage;
@@ -510,14 +511,38 @@ public class PinManager implements Serializable {
             List<Pin> distancePins;
             distancePins = pinFacade.findAll();
             
+            ArrayList<Double> distances = new ArrayList<Double>();
+            
             for (int i = 0; i < distancePins.size(); i++) {
                 Pin pin = distancePins.get(i);
                 double distanceInMiles = this.getDistanceFromLatLongInMiles(userLat, userLong,
                         pin.getLatitude(), pin.getLongitude());
                 if (!(distanceInMiles <= filterDist)) {
                     distancePins.remove(i);
+                    i--;
+                } else {
+                    distances.add(distanceInMiles);
                 }
             }
+            
+            for (int i = 0; i < distancePins.size(); i++) {
+                double max = Double.MIN_VALUE;
+                int maxIndex = -1;
+                for (int j = i; j < distancePins.size(); j++) {
+                    Pin pin = distancePins.get(j);
+                    if (distances.get(j) >= max) {
+                        max = distances.get(j);
+                        maxIndex = j;
+                    }
+                }
+                if (maxIndex != -1) {
+                    Pin pin = distancePins.remove(maxIndex);
+                    distancePins.add(0, pin);
+                    Double dist = distances.remove(maxIndex);
+                    distances.add(0, dist);
+                }
+            }
+            
             this.setMapMenuPins(distancePins);
         }
     }
