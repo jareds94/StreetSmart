@@ -77,6 +77,8 @@ public class Comment implements Serializable {
         this.timePosted = timePosted;
         this.comment = comment;
     }
+    
+    //=================GETTERS AND SETTERS ARE LISTED HERE=====================
 
     public Integer getId() {
         return id;

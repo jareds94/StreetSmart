@@ -68,6 +68,8 @@ public class Photo implements Serializable {
         this.extension = extension;
         userId = id;
     }
+    
+    //=================GETTERS AND SETTERS ARE LISTED HERE=====================
 
     public Integer getId() {
         return id;
@@ -121,11 +123,20 @@ public class Photo implements Serializable {
       //-----------------------------------------------------
     //The following methods are added to the generated code
     //-----------------------------------------------------
-    
+
+    /**
+     * Gets the filepath of the photo.
+     * @return
+     */
+
     public String getFilePath() {
         return Constants.ROOT_DIRECTORY + getFilename();
     }
 
+    /**
+     * Gets the filename of the photo.
+     * @return
+     */
     public String getFilename() {
         
         int user_id = (int) FacesContext.getCurrentInstance()
@@ -136,10 +147,18 @@ public class Photo implements Serializable {
         return newName + "." + getExtension();
     }
     
+    /**
+     * Gets the photo's thumbnail filename.s
+     * @return
+     */
     public String getThumbnailName() {
         return getId() + "_thumbnail." + getExtension();
     }
     
+    /**
+     * Gets the photo's thumbnail filepath.
+     * @return
+     */
     public String getThumbnailFilePath() {
         return Constants.ROOT_DIRECTORY + getThumbnailName();
     }

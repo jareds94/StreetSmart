@@ -102,6 +102,8 @@ public class User implements Serializable {
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
     }
+    
+    //=================GETTERS AND SETTERS ARE LISTED HERE=====================
 
     public Integer getId() {
         return id;
