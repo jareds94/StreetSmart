@@ -56,6 +56,7 @@ function initialize() {
                 };
                 $("#hidden-loc-form\\:user-loc-hidden").val("(" + userLoc.lat + ", " + userLoc.lng + ")");
                 $("#hidden-loc-form\\:user-loc-submit").click();
+                
                 map.setCenter(userLoc);
                 drawUserLocMarker();
             }, function() {
@@ -67,13 +68,6 @@ function initialize() {
             });
         }
     }
-    
-    // Cheap fix for distances not rendering correctly initially
-    $("#selectfilterForm\\:map-menu-sort-select").val("dist").change();
-    setTimeout(function() {
-        $("#selectfilterForm\\:map-menu-sort-select").val("pop").change();
-    }, 200);
-    
     
     //#region CustomMarker
 
