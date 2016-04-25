@@ -443,7 +443,7 @@ public class PinManager implements Serializable {
                 this.setKeywordFilterInput("");
                 break;
             case "key":
-                //this.filterByKeyword();
+                this.filterByKeyword();
                 this.setDistanceFilterStyle(NOT_DISPLAYED);
                 this.setKeywordFilterStyle("");
             default:
@@ -478,20 +478,19 @@ public class PinManager implements Serializable {
      */
     public void filterByKeyword() {
 
-        List<Pin> keywordPins;
+        List<Pin> keywordPins = pinFacade.findAll();
         if (keywordFilterInput == null || keywordFilterInput.isEmpty()) {
-            mapMenuPins = pinFacade.findAll();
+            this.setMapMenuPins(keywordPins);
             return;
-        } else {
-            keywordPins = mapMenuPins;
         }
 
         // We want to find all pins in MapMenuPins matching the keyword so:
         for (int i = 0; i < keywordPins.size(); i++) {
             Pin pin = keywordPins.get(i);
-            if (!pin.getTitle().toLowerCase().contains(keywordFilterInput.toLowerCase())
-                    && !pin.getDescription().toLowerCase().contains(keywordFilterInput.toLowerCase())) {
+            if (!(pin.getTitle().toLowerCase().contains(keywordFilterInput.toLowerCase())
+                    || pin.getDescription().toLowerCase().contains(keywordFilterInput.toLowerCase()))) {
                 keywordPins.remove(pin);
+                i--;
             }
         }      
         this.setMapMenuPins(keywordPins);
