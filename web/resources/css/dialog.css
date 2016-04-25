@@ -1,3 +1,13 @@
+/*
+ * Created by Jared Schwalbe on 2016.04.12  * 
+ * Copyright © 2016 Jared Schwalbe. All rights reserved. * 
+ */
+
+/*
+ * These styles are applied to dialog windows. Fixes most of the default stuff
+ * from the jquery ui lightness css class.
+ */
+
 .ui-widget,
 .ui-dialog {
     font-family: 'Franklin Gothic Book' !important;
