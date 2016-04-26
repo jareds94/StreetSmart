@@ -637,7 +637,7 @@ public class PinManager implements Serializable {
      */
     public String getFormattedDate(Pin pin) {
         // Set the formatting for the date
-        SimpleDateFormat format = new SimpleDateFormat("M/d");
+        SimpleDateFormat format = new SimpleDateFormat("MMM d");
         // Convert the database Integer to a Date object and return it
         return format.format(new Date(((long) pin.getTimePosted()) * 1000L));
     }
