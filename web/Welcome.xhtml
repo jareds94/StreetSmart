@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Created by Hung Vu on 2016.04.07 
-Copyright Â© 2016 Hung Vu. All rights reserved.
+Created by Jared Schwalbe on 2016.04.20
+Copyright © 2016 Jared Schwalbe. All rights reserved.
 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:body>
         <ui:composition template="template/siteTemplate.xhtml">
             <!-- Page title -->
@@ -26,6 +23,7 @@ Copyright Â© 2016 Hung Vu. All rights reserved.
             
             <!-- Page content -->
             <ui:define name="editableContent">
+                <!-- Title, tagline, description -->
                 <div id="welcome-wrapper">
                     <img id="welcome-title" src="resources/images/welcome-title.png" alt="StreetSmart" />
                     <br/>
@@ -33,7 +31,9 @@ Copyright Â© 2016 Hung Vu. All rights reserved.
                     <br/><br/><br/>
                     <h:link id="get-started" outcome="index">Get Started</h:link>
                 </div>
+                <!-- Map centered over Blacksburg -->
                 <div id="welcome-map"></div>
+                <!-- Create map JS -->
                 <script type="text/javascript">
                     function initialize() {
                         // Create map
@@ -44,6 +44,7 @@ Copyright Â© 2016 Hung Vu. All rights reserved.
                         });
                     }
                 </script>
+                <!-- Maps API -->
                 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUFqUfsRLDfd4kVe4wYkACPu9Aswm0AT0&amp;callback=initialize" async="async" defer="defer"></script>
             </ui:define>
         </ui:composition>

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created by Kevin Vu on 2016.04.06 
+Copyright © 2016 Kevin Vu. All rights reserved.
+-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -104,6 +108,7 @@
                             <h:button id="edit-account-cancel-btn" class="btn noupdate" value="Cancel" outcome="MyAccount.xhtml" />
                         </h:form>
                     </div>
+                    <!-- Account photo -->
                     <div id="account-photo-wrapper">
                         <div id="account-photo-pic-wrapper">
                             <h:graphicImage id="account-photo-pic" class=""
@@ -120,14 +125,18 @@
                     <div class="title">My Pins</div>
                     <h:form id="pins-list-form">
                         <ui:repeat value="#{accountManager.postedPins}" var="pin">
+                            <!-- Wrapper for each pin -->
                             <div class="pin-wrapper">
+                                <!-- Pin image -->
                                 <div class="pin-photo-wrapper">
                                     <h:graphicImage class="pin-photo" value="StreetSmartPhotoStorage/#{pinManager.getImageFromPin(pin)}" />
                                 </div>
+                                <!-- Pin title and description -->
                                 <div class="pin-text-wrapper">
                                     <div class="pin-title"><h:outputText value="#{pin.title}"/></div>
                                     <div class="pin-desc"><h:outputText value="#{pin.description}"/></div>
                                 </div>
+                                <!-- Pin details -->
                                 <div class="pin-details">
                                     <h:commandLink class="pin-delete" action="#{pinManager.deletePin(pin)}">Delete pin</h:commandLink>
                                     &nbsp;&bull;&nbsp;
