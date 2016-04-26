@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+Created by Jared Schwalbe on 2016.04.04 
+Copyright © 2016 Jared Schwalbe. All rights reserved.
+-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -86,43 +90,51 @@
                     <div id="map-menu-pins-list">
                         <h:form id="map-menu-pins-list-form">
                             <c:choose>
+                                <!-- Display pins list if it's not empty -->
                                 <c:when test="#{!empty pinManager.mapMenuPins}">
-                                <ui:repeat value="#{pinManager.mapMenuPins}" var="pin" varStatus="status">
-                                    <div class="pins-list-pin-wrapper">                              
-                                        <div class="pins-list-pin-text-wrapper">
-                                            <div class="pins-list-pin-title">
-                                                <h:outputText value="#{pin.title}"/>
+                                    <ui:repeat value="#{pinManager.mapMenuPins}" var="pin" varStatus="status">
+                                        <!-- Individual pin wrappers -->
+                                        <div class="pins-list-pin-wrapper">
+                                            <!-- Pin text -->
+                                            <div class="pins-list-pin-text-wrapper">
+                                                <div class="pins-list-pin-title">
+                                                    <h:outputText value="#{pin.title}"/>
+                                                </div>
+                                                <div class="pins-list-pin-desc">
+                                                    <h:outputText value="#{pin.description}"/>                 
+                                                </div>
                                             </div>
-                                            <div class="pins-list-pin-desc">
-                                                <h:outputText value="#{pin.description}"/>                 
+                                            <!-- Pin image -->
+                                            <div class="pins-list-pin-img-wrapper">
+                                                <h:graphicImage class="pins-list-pin-img" value="StreetSmartPhotoStorage/#{pinManager.getImageFromPin(pin)}" alt="" />
+                                            </div>
+                                            <!-- Pin details -->
+                                            <div class="pins-list-pin-view" onclick="window.location='index.xhtml?id=' + #{pin.id}">View pin</div>
+                                            <div class="pins-list-pin-date">
+                                                &nbsp;&bull;&nbsp;<h:outputText value="#{pinManager.getFormattedDate(pin)}"/>&nbsp;&bull;&nbsp;
+                                            </div>
+                                            <div class="pins-list-pin-votes">
+                                                <h:outputText value="#{pin.upvotes - pin.downvotes} points"/>
+                                            </div>
+                                            <div class="pins-list-pin-distance-desc">
+                                                &nbsp;&bull;
+                                                <h:outputText value="#{pinManager.getDistanceFromLatLongInMiles(accountManager.userLat, accountManager.userLong, pin.latitude, pin.longitude)}">
+                                                    <f:convertNumber type="number" minFractionDigits="2" pattern="#0.00"/>
+                                                </h:outputText>
+                                                <h:outputText value=" mi"/>
                                             </div>
                                         </div>
-                                        <div class="pins-list-pin-img-wrapper">
-                                            <h:graphicImage class="pins-list-pin-img" value="StreetSmartPhotoStorage/#{pinManager.getImageFromPin(pin)}" alt="" />
-                                        </div>
-                                        <div class="pins-list-pin-view" onclick="window.location='index.xhtml?id=' + #{pin.id}">View pin</div>
-                                        <div class="pins-list-pin-date">
-                                            &nbsp;&bull;&nbsp;<h:outputText value="#{pinManager.getFormattedDate(pin)}"/>&nbsp;&bull;&nbsp;
-                                        </div>
-                                        <div class="pins-list-pin-votes">
-                                            <h:outputText value="#{pin.upvotes - pin.downvotes} points"/>
-                                        </div>
-                                        <div class="pins-list-pin-distance-desc">
-                                            &nbsp;&bull;
-                                            <h:outputText value="#{pinManager.getDistanceFromLatLongInMiles(accountManager.userLat, accountManager.userLong, pin.latitude, pin.longitude)}">
-                                                <f:convertNumber type="number" minFractionDigits="2" pattern="#0.00"/>
-                                            </h:outputText>
-                                            <h:outputText value=" mi"/>
-                                        </div>
-                                    </div>
-                                    <hr class="pins-list-pin-divider" style="#{status.last?'display: none':''}"/>
-                                </ui:repeat>
+                                        <!-- Divider -->
+                                        <hr class="pins-list-pin-divider" style="#{status.last?'display: none':''}"/>
+                                    </ui:repeat>
                                 </c:when>
+                                <!-- Display message if pins list is empty -->
                                 <c:when test="#{empty pinManager.mapMenuPins}">
                                     <h:outputText value="No pins to display."/>
                                 </c:when>
                             </c:choose>
                         </h:form>
+                        <!-- Hidden forms to submit to backend -->
                         <h:form id="distance-form">
                             <h:commandButton id="filterPinsByDistance" style="display: none" action="#{pinManager.filterByDistance()}">
                                 <f:ajax execute="@form" render=":map-menu-pins-list-form"/>
@@ -138,11 +150,12 @@
                         
                     <!-- Pin details goes over the other menu items when displayed -->
                     <div id="map-menu-full-pin">
+                        <!-- Close button -->
                         <img id="full-pin-close" src="resources/images/close.png" alt="Close Menu"/>
                         <h:panelGroup id="render-full-pin" layout="block">
                             <div id="full-pin-top-wrapper">
+                                <!-- Upvote/downvote and score -->
                                 <div id="full-pin-vote-wrapper">
-                                    <!--<img id="full-pin-upvote" src="resources/images/upvote.png" alt="Upvote" />-->
                                     <h:commandButton id="full-pin-upvote" rendered="#{accountManager.isLoggedIn() == true}" onclick="this.disabled=true" image="resources/images/upvote.png" action="#{pinManager.upvotePin()}">
                                         <f:ajax execute="@form" render=":render-full-pin-votes @form" />
                                     </h:commandButton>
@@ -152,44 +165,50 @@
                                     <h:commandButton id="full-pin-downvote" rendered="#{accountManager.isLoggedIn() == true}" onclick="this.disabled=true" image="resources/images/downvote.png" action="#{pinManager.downvotePin()}">
                                         <f:ajax execute="@form" render=":render-full-pin-votes @form" />
                                     </h:commandButton>
-                                    <!--<img id="full-pin-downvote" src="resources/images/downvote.png" alt="Downvote" />-->
                                 </div>
+                                <!-- Pin image -->
                                 <div id="full-pin-pic-wrapper">
                                     <h:graphicImage id="full-pin-pic" value="StreetSmartPhotoStorage/#{pinManager.getImageFromPin()}" alt="Pin Picture"/>
                                 </div>
                             </div>
+                            <!-- Pin text & details -->
                             <div id="full-pin-title"><h:outputText value="#{pinManager.selectedPin.title}" /></div>
                             <div id="full-pin-desc"><h:outputText value="#{pinManager.selectedPin.description}" /></div>
                             <div id="full-pin-details">By <h:outputText value="#{pinManager.getUsernameFromPin(pinManager.selectedPin)}" /> on <h:outputText value="#{pinManager.getFullFormattedDate(pinManager.selectedPin)}" /></div>
                         </h:panelGroup>
+                        <!-- Divider -->
                         <hr class="full-pin-divider" />
                         <!-- Comments -->
                         <div id="full-pin-comments-wrapper">
                             <!-- Post a comment (only show if signed in) -->
-                                <h:form id="comment" rendered="#{accountManager.isLoggedIn() == true}">
-                                    <h:inputTextarea id="full-pin-post-comment" 
-                                                     class="input-control #{component.valid?'':'validation-failed'}"
-                                                     a:placeholder="Write your comment..." required="true" 
-                                                     value="#{commentsManager.comment}"/>
-                                    <h:commandButton id="full-pin-post-comment-btn" class="btn" value="Post Comment"
-                                                     action="#{commentsManager.createComment()}">
-                                        <f:ajax execute="@form" render=":render-comments @form"/>
-                                    </h:commandButton>
-                                </h:form>
+                            <h:form id="comment" rendered="#{accountManager.isLoggedIn() == true}">
+                                <h:inputTextarea id="full-pin-post-comment" 
+                                                 class="input-control #{component.valid?'':'validation-failed'}"
+                                                 a:placeholder="Write your comment..." required="true" 
+                                                 value="#{commentsManager.comment}"/>
+                                <h:commandButton id="full-pin-post-comment-btn" class="btn" value="Post Comment"
+                                                 action="#{commentsManager.createComment()}">
+                                    <f:ajax execute="@form" render=":render-comments @form"/>
+                                </h:commandButton>
+                            </h:form>
                             <!-- Comments list -->
                             <h:panelGroup id="render-comments" layout="block">
                                 <div id="full-pin-comments-list">
                                     <c:choose>
+                                        <!-- Display comments list if it's not empty -->
                                         <c:when test="#{!empty commentsManager.commentsList}">
                                             <ui:repeat value="#{commentsManager.getCommentsList()}" var="comment" varStatus="status">
+                                                <!-- Individual pin wrapper -->
                                                 <div id="full-pin-comment">
                                                     <div id="full-pin-comment-user"><h:outputText value="#{comment.username}"/></div>
                                                     <div id="full-pin-comment-msg"><h:outputText value="#{comment.comment}"/></div>
                                                     <div id="full-pin-comment-date"><h:outputText value="#{commentsManager.getFormattedDate(comment)}"/></div>
                                                 </div>
+                                                <!-- Divider -->
                                                 <hr class="full-pin-comment-divider" style="#{status.last?'display: none':''}" />
                                             </ui:repeat>
                                         </c:when>
+                                        <!-- Display message if comments list is empty -->
                                         <c:when test="#{empty commentsManager.commentsList}">
                                            <h:outputText value="No comments to display."/>
                                         </c:when>
@@ -198,6 +217,7 @@
                             </h:panelGroup>
                         </div>
                     </div>
+                    <!-- End of full pin wrapper -->
                 </div>
                 <!-- End of map menu -->
 
@@ -212,8 +232,7 @@
 
                 <!-- Contains the user's current location as "([lat], [long])" -->
                 <h:form id="hidden-loc-form">
-                    <h:inputHidden id="user-loc-hidden"                                   
-                                   value="#{accountManager.userLoc}" />
+                    <h:inputHidden id="user-loc-hidden" value="#{accountManager.userLoc}" />
                     <h:commandButton id="user-loc-submit" style="display: none">
                         <f:ajax execute="@form" render="@form"/>
                     </h:commandButton>
@@ -230,7 +249,7 @@
                 <!-- Map -->
                 <div id="map"></div>
 
-                <!-- Map js -->
+                <!-- Map JS -->
                 <script type="text/javascript" src="resources/js/map.js"></script>
                 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUFqUfsRLDfd4kVe4wYkACPu9Aswm0AT0&amp;callback=initialize" async="async" defer="defer"></script>
 
