@@ -31,7 +31,8 @@ import org.primefaces.model.UploadedFile;
 @ManagedBean(name = "fileManager")
 @SessionScoped
 /**
- *
+ * ManagedBean that handles any file uploaded to this application.
+ * 
  * @author Kevin
  */
 public class FileManager {
@@ -81,7 +82,6 @@ public class FileManager {
      * Profile.xhtml page and update the URL corresponding to that page.
      * @return Profile.xhtml or nothing
      */
-
     public String upload() 
     {    
         boolean hasBeenUploaded = false;
@@ -101,6 +101,11 @@ public class FileManager {
         }
     }
     
+    /**
+     * Redirects the user to the previous page (MyAccount.xhtml).
+     * 
+     * @return a String representation of the redirection
+     */
     public String cancel() {
         message = "";
         return "MyAccount?faces-redirect=true";
@@ -183,6 +188,14 @@ public class FileManager {
         return false;
     }
 
+    /**
+     * Finds the photo file and streams it.
+     * 
+     * @param inputStream
+     * @param childName
+     * @return
+     * @throws IOException 
+     */
     private File inputStreamToFile(InputStream inputStream, String childName)
             throws IOException {
         // Read in the series of bytes from the input stream
@@ -212,18 +225,25 @@ public class FileManager {
 //        }
 //    }
 
+    /**
+     * Deletes the photo for the currently logged in User.
+     */
     public void deletePhoto() {
         FacesMessage resultMsg;
+        // Acquire the username from the session map
         String user_name = (String) FacesContext.getCurrentInstance()
                 .getExternalContext().getSessionMap().get("username");
 
+        // Find the user from the User's table in the StreetSmart database
         User user = userFacade.findByUsername(user_name);
 
+        // Find all photos associated with this user
         List<Photo> photoList = photoFacade.findPhotosByUserID(user.getId());
         if (photoList.isEmpty()) {
             resultMsg = new FacesMessage("Error", "You do not have a photo to delete.");
         } else {
             Photo photo = photoList.get(0);
+            // Attempt deletion
             try {
                 Files.deleteIfExists(Paths.get(photo.getFilePath()));
                 Files.deleteIfExists(Paths.get(photo.getThumbnailFilePath()));
@@ -234,9 +254,12 @@ public class FileManager {
             } catch (IOException ex) {
                 Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
+            // Displayed if the photo was successfully deleted
             resultMsg = new FacesMessage("Success", "Photo successfully deleted!");
         }
+        // Output the result message, contents depending on success or failure
+        // to delete the photo
         FacesContext.getCurrentInstance().addMessage(null, resultMsg);
     }
     

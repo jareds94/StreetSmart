@@ -15,7 +15,8 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name = "loginManager")
 @SessionScoped
 /**
- *
+ *  ManagedBean that handles logging in the User.
+ * 
  * @author Kevin
  */
 public class LoginManager implements Serializable {
@@ -52,10 +53,19 @@ public class LoginManager implements Serializable {
     this.username = username;
   }
 
+  /**
+   * @return a String representation of the xhtml file to be redirected to
+   *         (CreateAccount.xhtml) 
+   */
   public String createUser() {
     return "CreateAccount";
   }
   
+  /**
+   * 
+   * @return a String representation of the xhtml file to be redirected to
+   *         (EnterUsername.xhtml)
+   */
   public String resetPassword() {
       return "EnterUsername?faces-redirect=true";
   }
@@ -88,6 +98,12 @@ public class LoginManager implements Serializable {
     this.errorMessage = errorMessage;
   }
 
+  /**
+   * Logs in the specified User.
+   * 
+   * @return a String redirection based on whether or not the user was logged
+   *         in
+   */
   public String loginUser() {
     User user = userFacade.findByUsername(getUsername());
     if (user == null) {
@@ -104,6 +120,14 @@ public class LoginManager implements Serializable {
     }
   }
 
+  /**
+     * Initializes the session map according to which Customer logged into
+     * which account under a username. These properties are used within
+     * PinManager and CommentManager to retrieve the currently logged in
+     * user's information.
+     * 
+     * @param user, the currently logged in Customer
+     */
   public void initializeSessionMap(User user) {
     FacesContext.getCurrentInstance().getExternalContext().
             getSessionMap().put("first_name", user.getFirstName());

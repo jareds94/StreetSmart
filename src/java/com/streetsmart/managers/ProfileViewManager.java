@@ -34,6 +34,11 @@ public class ProfileViewManager implements Serializable {
 
   }
 
+  /**
+   * Retrieves the xhtml file that contains profile information
+   * 
+   * @return a String representation of the name of the profile xhtml file
+   */
   public String viewProfile() {
     return "Profile";
   }

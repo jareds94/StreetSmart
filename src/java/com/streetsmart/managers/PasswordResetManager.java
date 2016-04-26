@@ -20,7 +20,7 @@ import javax.inject.Named;
 @SessionScoped
 /**
  *
- * @author Balci
+ * @author Kevin
  */
 public class PasswordResetManager implements Serializable{
     
