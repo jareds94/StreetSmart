@@ -346,6 +346,7 @@
 #full-pin-comment-user {
     font-size: 14px;
     color: #e35353;
+    clear: both;
 }
 
 #full-pin-comment-msg {
@@ -361,7 +362,7 @@
 .full-pin-comment-divider {
     display: block;
     float: left;
-    clear: left;
+    clear: both;
     width: 230px;
     height: 1px;
     margin: 10px 0 10px 0;

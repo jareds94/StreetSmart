@@ -183,6 +183,14 @@ function resizeMapComponents(width, height, delay) {
         }
         $("#map-menu-pins-list").height(height - pinsListHeight);
         
+        // Resize comments list height
+        var commentsListHeight = $("#render-full-pin").height() + 10;
+        if ($("#comment\\:full-pin-post-comment").css("display") !== "none") {
+            commentsListHeight += 80;
+        }
+        $("#full-pin-comments-wrapper").height(height - commentsListHeight);
+        
+        
         // Reposition dialogs to center
         $("#enter-loc-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
         $("#create-pin-dialog").dialog("option", "position", {my: "center", at: "center", of: window});
