@@ -1,6 +1,6 @@
 /*
- * Created by Mukund Katti on 2016.04.21  * 
- * Copyright © 2016 Mukund Katti. All rights reserved. * 
+ * Created by Mykhaylo Bulgakov, Mukund Katti, Jared Schwalbe, Tim Street, and Hung Vu on 2016.04.21  * 
+ * Copyright © 2016 Mykhaylo Bulgakov, Mukund Katti, Jared Schwalbe, Tim Street, and Hung Vu. All rights reserved. * 
  */
 package com.streetsmart.entitypackage;
 

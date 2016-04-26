@@ -1,7 +1,7 @@
 
 /*
- * Created by Hung Vu on 2016.04.07  * 
- * Copyright Â© 2016 Hung Vu. All rights reserved. * 
+ * Created by Mykhaylo Bulgakov, Mukund Katti, Jared Schwalbe, Tim Street, and Hung Vu on 2016.04.07  * 
+ * Copyright © 2016 Mykhaylo Bulgakov, Mukund Katti, Jared Schwalbe, Tim Street, and Hung Vu. All rights reserved. * 
  */
 package com.streetsmart.sessionbeanpackage;
 
@@ -37,6 +37,11 @@ public class UserFacade extends AbstractFacade<User> {
         return em.find(User.class, id);
     }
 
+    /**
+     * Finds the user by its username.
+     * @param username
+     * @return the user
+     */
     public User findByUsername(String username) {
         if (em.createQuery("SELECT u FROM User u WHERE u.username = :username")
                 .setParameter("username", username)
@@ -50,6 +55,11 @@ public class UserFacade extends AbstractFacade<User> {
         }
     }
     
+    /**
+     * Finds the user by the user ID.
+     * @param id
+     * @return the user
+     */
     public User findByUserId(int id) {
         if (em.createQuery("SELECT u FROM User u WHERE u.id = :id")
                 .setParameter("id", id)
@@ -63,6 +73,10 @@ public class UserFacade extends AbstractFacade<User> {
         }
     }
     
+    /**
+     * Deletes the user using its id.
+     * @param id
+     */
     public void deleteUser(int id){
         
         User user = em.find(User.class, id);
