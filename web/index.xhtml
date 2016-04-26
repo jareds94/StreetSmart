@@ -28,6 +28,14 @@ Copyright © 2016 Jared Schwalbe. All rights reserved.
                 <script type="text/javascript" src="resources/js/index.js"></script>
                 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
                 <script type="text/javascript" src="resources/js/dialog.js"></script>
+                <script type="text/javascript">
+                    function listChanged(data) {
+                        if (data.status == "success") {
+                            resizeMapComponents($(window).width(), $(window).height() - 130, 0);
+                            addDotDotDot();
+                        }
+                   }
+                </script>
             </ui:define>
 
             <!-- Page content -->
@@ -54,7 +62,8 @@ Copyright © 2016 Jared Schwalbe. All rights reserved.
                                 <f:selectItem itemValue="new" itemLabel="Newest" />
                                 <f:selectItem itemValue="dist" itemLabel="Distance" /> 
                                 <f:selectItem itemValue="key" itemLabel="Keyword" />
-                                <f:ajax render=":filterForm :map-menu-pins-list-form :map-menu-filter-keyword-form"/>
+                                <f:ajax render=":filterForm :map-menu-pins-list-form :map-menu-filter-keyword-form"
+                                        onevent="listChanged"/>
                             </h:selectOneMenu>             
                         </h:form>
                         <!-- Filter by keyword -->
