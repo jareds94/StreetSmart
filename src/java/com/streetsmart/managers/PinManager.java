@@ -651,7 +651,7 @@ public class PinManager implements Serializable {
      *         "MM/dd/yyyy HH:mm"
      */
     public String getFullFormattedDate(Pin pin) {
-        SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy 'at' h:mm a");
         return format.format(new Date(((long) pin.getTimePosted()) * 1000L));
     }
 

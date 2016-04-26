@@ -237,7 +237,7 @@ public class CommentManager implements Serializable {
      * @return
      */
     public String getFormattedDate(Comment comment) {
-        SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy 'at' h:mm a");
         return format.format(new Date(((long) comment.getTimePosted()) * 1000L));
     }
 
