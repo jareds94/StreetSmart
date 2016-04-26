@@ -42,7 +42,10 @@ import org.primefaces.model.UploadedFile;
 @Named(value = "accountManager")
 @SessionScoped
 /**
- *
+ *  Session-scoped bean that allows the application to retrieve and store
+ *  user information for view on the front-end. Also stores currently
+ *  logged in User information, such as his/her current location.
+ * 
  * @author Hung
  */
 public class AccountManager implements Serializable {
@@ -168,22 +171,46 @@ public class AccountManager implements Serializable {
         this.email = email;
     }
 
+    /**
+     * Gets the customer's security question
+     * 
+     * @return the security question
+     */
     public int getSecurity_question() {
         return security_question;
     }
 
+    /**
+     * Sets the customer's security question
+     * 
+     * @param security_question, the security question to set 
+     */
     public void setSecurity_question(int security_question) {
         this.security_question = security_question;
     }
 
+    /**
+     * Gets the customer's security answer
+     * 
+     * @return the security answer
+     */
     public String getSecurity_answer() {
         return security_answer;
     }
 
+    /**
+     * Sets the user's security answer.
+     * @param security_answer the security answer to be set
+     */
     public void setSecurity_answer(String security_answer) {
         this.security_answer = security_answer;
     }
 
+    /**
+     * Retrieves a LinkedHashMap representation of all security questions.
+     * 
+     * @return the security questions in a HashMap
+     */
     public Map<String, Object> getSecurity_questions() {
         if (security_questions == null) {
             security_questions = new LinkedHashMap<>();
@@ -208,6 +235,11 @@ public class AccountManager implements Serializable {
         this.statusMessage = statusMessage;
     }
 
+    /**
+     * Retrieves the currently selected user from the session map.
+     * 
+     * @return the currently selected user, if exists
+     */
     public User getSelected() {
         if (selected == null) {
             selected = userFacade.find(FacesContext.getCurrentInstance().
@@ -217,28 +249,50 @@ public class AccountManager implements Serializable {
         return selected;
     }
 
+    /**
+     * Sets the currently selected User.
+     * 
+     * @param selected, the user to be set 
+     */
     public void setSelected(User selected) {
         this.selected = selected;
     }
     
+    /**
+     * Gets a String representation of the user's current location.
+     * 
+     * @return the user's current location as a String
+     */
     public String getUserLoc() {
         return this.userLoc;
     }
     
+    /**
+     * Sets the user's current location.
+     * 
+     * @param userLoc, the user location to be set
+     */
     public void setUserLoc(String userLoc) {
         this.userLoc = userLoc;
         FacesContext.getCurrentInstance().getExternalContext().
                 getSessionMap().put("userLoc", this.userLoc);
         
+        // Parse out the User's location and set the associated instance
+        // fields (userLat, userLong)
         String location;
         String[] temp;
         location = userLoc.replace("(", "");
         location = location.replace(")", "");
-        temp = location.split(", ");               
+        temp = location.split(", ");    
         this.setUserLat(Float.parseFloat(temp[0]));
         this.setUserLong(Float.parseFloat(temp[1]));
     }
     
+    /**
+     * Retrieves all pins post by the currently selected user.
+     * 
+     * @return a list of pins previously posted by the user
+     */
     public List<Pin> getPostedPins() {
         if (this.isLoggedIn()) {
             return pinFacade.findAllPinsWithUserId(this.getSelected().getId());
@@ -246,6 +300,13 @@ public class AccountManager implements Serializable {
         return null;
     }
 
+    /**
+     * Handles Customer account creation. Sets all Customer fields in the
+     * CustomerDB depending on what the user entered.
+     * 
+     * @return either an empty String or a redirection to the Profile xhtml
+     *         page
+     */
     public String createAccount() {
         
         // Check to see if a user already exists with the username given.
@@ -327,6 +388,12 @@ public class AccountManager implements Serializable {
         return ret;
     }
 
+    /**
+     * Handles updating an already created Customer account.
+     * 
+     * @return either an empty String or a redirection to the Profile xhtml
+     *         page
+     */
     public String updateAccount() {
         if (statusMessage.isEmpty()) {
             int user_id = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id");
@@ -347,6 +414,12 @@ public class AccountManager implements Serializable {
         return "MyAccount";
     }
     
+    /**
+     * Handles Customer account deletion. Redirects to the application homepage
+     * if the deletion is successful.
+     * 
+     * @return a redirection to the homepage, if successful
+     */
     public String deleteAccount() {
         if (statusMessage.isEmpty()) {
             int user_id = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id");
@@ -363,6 +436,13 @@ public class AccountManager implements Serializable {
         return "";
     }
     
+    /**
+     * Validates customer information by confirming a user's password entered
+     * twice.
+     * 
+     * @param event, an event representing the validation of the user's
+     *               credentials
+     */
     public void validateInformation(ComponentSystemEvent event) {
         FacesContext fc = FacesContext.getCurrentInstance();
 
@@ -390,6 +470,10 @@ public class AccountManager implements Serializable {
         }   
     }
 
+    /**
+     * Initializes the session according to which Customer logged into
+     * which account under a username.
+     */
     public void initializeSessionMap() {
         User user = userFacade.findByUsername(getUsername());
         FacesContext.getCurrentInstance().getExternalContext().
@@ -400,6 +484,14 @@ public class AccountManager implements Serializable {
         postedPins = this.getPostedPins();
     }
 
+    /**
+     * Handles notification of the user on entering an incorrect password.
+     * If an incorrect password is entered, the user is re-prompted to enter
+     * the password.
+     * 
+     * @param components, components of the user interface
+     * @return true if the password is correct, false otherwise
+     */
     private boolean correctPasswordEntered(UIComponent components) {
         UIInput uiInputVerifyPassword = (UIInput) components.findComponent("verifyPassword");
         String verifyPassword = uiInputVerifyPassword.getLocalValue() == null ? ""
@@ -417,6 +509,12 @@ public class AccountManager implements Serializable {
         }
     }
 
+    /**
+     * Handles logging the Customer out of his or her account.
+     * 
+     * @return a String represnetation of a redirection to the homepage, 
+     *         if successful
+     */
     public String logout() {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
         username = firstName = lastName = password = email = statusMessage = "";
@@ -447,18 +545,38 @@ public class AccountManager implements Serializable {
         return photoList.get(0).getFilename();
     }
 
+    /**
+     * Retrieves the user's latitude.
+     * 
+     * @return the latitude as a double
+     */
     public double getUserLat() {
         return userLat;
     }
 
+    /**
+     * Sets the user's latitude.
+     * 
+     * @param userLat the latitude to be set 
+     */
     public void setUserLat(float userLat) {
         this.userLat = userLat;
     }
 
+    /**
+     * Retrieves the user's longitude
+     * 
+     * @return the user longitude
+     */
     public double getUserLong() {
         return userLong;
     }
 
+    /**
+     * Sets the user's current longitude
+     * 
+     * @param userLong, the longitude to be set
+     */
     public void setUserLong(float userLong) {
         this.userLong = userLong;
     }
@@ -496,6 +614,12 @@ public class AccountManager implements Serializable {
 
     }
    
+   /**
+    * Builds the email String to be sent upon account creation to the User's
+    * email.
+    * 
+    * @return a String representation of the email
+    */
    public String emailToString(){
        
        StringBuilder sb = new StringBuilder();
