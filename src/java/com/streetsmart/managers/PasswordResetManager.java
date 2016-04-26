@@ -38,22 +38,50 @@ public class PasswordResetManager implements Serializable{
     @EJB
     private UserFacade userFacade;
 
+    /**
+     * Retrieves the username.
+     * 
+     * @return a String representation of the username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Sets the username.
+     * 
+     * @param username, the username to set
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Retrieves the message.
+     * 
+     * @return a String representation of the message.
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Sets the message String.
+     * 
+     * @param message, the message to set
+     */
     public void setMessage(String message) {
         this.message = message;
     }
-        
+     
+    /**
+     * Redirects to ask the user to answer a security question to reset his
+     * or her password depending on whether or not the entered username
+     * exists in the Customer table in the OrderPizzaDB.
+     * 
+     * @return a String representation of a redirection to an xhtml page,
+     *         depending on success or not
+     */
     public String usernameSubmit() {
         User user = userFacade.findByUsername(username);
         if (user == null) {
@@ -66,6 +94,10 @@ public class PasswordResetManager implements Serializable{
         }
     }
     
+    /**
+     * 
+     * @return 
+     */
     public String securityquestionSubmit() {
         User user = userFacade.findByUsername(username);
         if (user.getSecurityAnswer().equals(answer)) {
@@ -78,19 +110,39 @@ public class PasswordResetManager implements Serializable{
         }
     }
     
+    /**
+     * Gets the user's security question.
+     * 
+     * @return a String representation of the user's security question
+     */
     public String getSecurityQuestion() {
         int question = userFacade.findByUsername(username).getSecurityQuestion();
         return Constants.QUESTIONS[question];
     }
 
+    /**
+     * Gets the user's security answer.
+     * 
+     * @return a String representation of the security answer 
+     */
     public String getAnswer() {
         return answer;
     }
 
+    /**
+     * Sets the security question answer.
+     * 
+     * @param answer, the answer to set
+     */
     public void setAnswer(String answer) {
         this.answer = answer;
     }
 
+    /**
+     * Validates the current user's information to allow for a password change.
+     * 
+     * @param event, the ComponentSystemEvent
+     */
     public void validateInformation(ComponentSystemEvent event) {
         FacesContext fc = FacesContext.getCurrentInstance();
 
@@ -123,14 +175,31 @@ public class PasswordResetManager implements Serializable{
         }
     }   
 
+    /**
+     * Retrieves the user's password.
+     * 
+     * @return a String representation of the password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Sets the user's password.
+     * 
+     * @param password, the password to set
+     */
     public void setPassword(String password) {
         this.password = password;
     }
     
+    /**
+     * Handles reseting the user's password.
+     * 
+     * @return a String representation of the homepage's xhtml name (index) on 
+     *           success, a String representation of the ResetPassword xhtml
+     *           page
+     */
     public String resetPassword() {
         if (message.equals("")) {
             message = "";
