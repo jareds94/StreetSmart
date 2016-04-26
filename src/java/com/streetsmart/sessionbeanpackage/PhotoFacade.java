@@ -1,6 +1,6 @@
 /*
- * Created by Hung Vu on 2016.04.19  * 
- * Copyright Â© 2016 Hung Vu. All rights reserved. * 
+ * Created by Mykhaylo Bulgakov, Mukund Katti, Jared Schwalbe, Tim Street, and Hung Vu on 2016.04.19  * 
+ * Copyright © 2016 Mykhaylo Bulgakov, Mukund Katti, Jared Schwalbe, Tim Street, and Hung Vu. All rights reserved. * 
  */
 package com.streetsmart.sessionbeanpackage;
 
@@ -29,8 +29,13 @@ public class PhotoFacade extends AbstractFacade<Photo> {
         super(Photo.class);
     }
     
-        // The following findPhotosByUserID method is added to the generated code.
+    // The following findPhotosByUserID method is added to the generated code.
     
+    /**
+     * Finds the photos attached to the UserID.
+     * @param userID
+     * @return a list of the photos
+     */
     public List<Photo> findPhotosByUserID(Integer userID) {
         return (List<Photo>) em.createNamedQuery("Photo.findPhotosByUserId")
                 .setParameter("userId", userID)

@@ -12,6 +12,7 @@ public class Constants {
     public static final String TEMP_FILE = "tmp_file";
 //    public static final String ROOT_DIRECTORY = "/Users/mybu/StreetSmartPhotoStorage/";
     public static final String ROOT_DIRECTORY = "/home/cs4704/StreetSmart/StreetSmartPhotoStorage";
+    //public static final String ROOT_DIRECTORY = "/home/cs4984/StreetSmart/StreetSmartPhotoStorage";
 
     public static final Integer THUMBNAIL_SZ = 200;
 

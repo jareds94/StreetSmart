@@ -95,6 +95,13 @@ public class Pin implements Serializable {
         photo = false;
     }
 
+    
+    public Pin(Integer id) {
+        this.id = id;
+    }
+    
+    //=================GETTERS AND SETTERS ARE LISTED HERE=====================
+    
     public int getScore() {
         score = (upvotes - downvotes);
         return score;
@@ -111,10 +118,6 @@ public class Pin implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-    
-    public Pin(Integer id) {
-        this.id = id;
     }
 
     public Integer getId() {

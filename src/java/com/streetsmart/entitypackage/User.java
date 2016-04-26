@@ -1,6 +1,6 @@
 /*
- * Created by Hung Vu on 2016.04.07  * 
- * Copyright Â© 2016 Hung Vu. All rights reserved. * 
+ * Created by Mykhaylo Bulgakov, Mukund Katti, Jared Schwalbe, Tim Street, and Hung Vu on 2016.04.07  * 
+ * Copyright © 2016 Mykhaylo Bulgakov, Mukund Katti, Jared Schwalbe, Tim Street, and Hung Vu. All rights reserved. * 
  */
 package com.streetsmart.entitypackage;
 
@@ -102,6 +102,8 @@ public class User implements Serializable {
         this.securityQuestion = securityQuestion;
         this.securityAnswer = securityAnswer;
     }
+    
+    //=================GETTERS AND SETTERS ARE LISTED HERE=====================
 
     public Integer getId() {
         return id;
