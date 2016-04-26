@@ -181,7 +181,7 @@ function initialize() {
                 $("#hidden-pin-form\\:pin-id-submit").click();
                 
                 // Force a resize of UI to get new comments list height
-                resizeMapComponents($(window).width(), $(window).height() - 130, 0);
+                resizeMapComponents($(window).width(), $(window).height() - 130, 300);
                 
                 // Show pin details
                 if (!$("#map-menu-full-pin").hasClass("open")) {

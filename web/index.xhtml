@@ -174,7 +174,7 @@ Copyright © 2016 Jared Schwalbe. All rights reserved.
                             <!-- Pin text & details -->
                             <div id="full-pin-title"><h:outputText value="#{pinManager.selectedPin.title}" /></div>
                             <div id="full-pin-desc"><h:outputText value="#{pinManager.selectedPin.description}" /></div>
-                            <div id="full-pin-details">By <h:outputText value="#{pinManager.getUsernameFromPin(pinManager.selectedPin)}" /> on <h:outputText value="#{pinManager.getFullFormattedDate(pinManager.selectedPin)}" /></div>
+                            <div id="full-pin-details">By <h:outputText value="#{pinManager.getUsernameFromPin(pinManager.selectedPin)}" /><br/>On <h:outputText value="#{pinManager.getFullFormattedDate(pinManager.selectedPin)}" /></div>
                         </h:panelGroup>
                         <!-- Divider -->
                         <hr class="full-pin-divider" />
