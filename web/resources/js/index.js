@@ -102,13 +102,6 @@ $(document).ready(function () {
     // Add "..." to overflow on pins list descriptions
     addDotDotDot();
     
-    $(document.body).on('change', "#selectfilterForm\\:map-menu-sort-select", function() {
-        // Force a UI resize to account for new list height
-        resizeMapComponents($(window).width(), $(window).height() - 130, 0);
-        // Add "..." to overflow on pins list descriptions
-        addDotDotDot();
-    });
-    
     // Fires when input text field is changed corresponding to the filter by keyword
     $(document.body).on('keyup paste','#map-menu-filter-keyword-form\\:map-menu-filter-keyword-input',function() {
         // Send inputted string to the backend
