@@ -230,48 +230,60 @@ public class PinManager implements Serializable {
     }
 
     /**
+     * Retrieves whether or not the pin should be posted as anonymous 
+     * for the pin to be posted.
      * 
-     * @return 
+     * @return whether or not the pin should be posted as anonymous 
      */
     public boolean isNewPinAnonymous() {
         return newPinAnonymous;
     }
 
     /**
+     * Sets whether or not the pin should be posted as anonymous for the pin
+     * to be posted.
      * 
-     * @param newPinAnonymous 
+     * @param newPinAnonymous, the anonymity setting to be set
      */
     public void setNewPinAnonymous(boolean newPinAnonymous) {
         this.newPinAnonymous = newPinAnonymous;
     }
 
     /**
+     * Returns whether or not a pin was uploaded to the current pin to be
+     * created.
      * 
-     * @return 
+     * @return true if there was a photo uploaded, false otherwise
      */
     public boolean isNewPinPhotoExists() {
         return newPinPhotoExists;
     }
 
     /**
+     * Sets whether or not a pin was uploaded to the current pin to be created.
      * 
-     * @param newPinPhotoExists 
+     * @param newPinPhotoExists, the parameter to be set depending on whether
+     *                           the photo was uploaded
      */
     public void setNewPinPhotoExists(boolean newPinPhotoExists) {
         this.newPinPhotoExists = newPinPhotoExists;
     }
 
     /**
+     * Retrieves the filter distance mapped to the input distance field
+     * when filtering by distance in index.xhtml.
      * 
-     * @return 
+     * @return the filter distance represented as a String
      */
     public String getFilterDistance() {
         return filterDistance;
     }
 
     /**
+     * Sets the filter distance mapped to the input distance field
+     * when filtering by distance in index.xhtml.
      * 
-     * @param filterDistance 
+     * @param filterDistance, the filter distance to be set by the user
      */
     public void setFilterDistance(String filterDistance) {
 
@@ -292,16 +304,18 @@ public class PinManager implements Serializable {
     }
 
     /**
+     * Retrieves the selected pin's id.
      * 
-     * @return 
+     * @return the pin id represented as an int
      */
     public int getSelectedPinId() {
         return selectedPinId;
     }
 
     /**
+     * Sets the selected pin's id.
      * 
-     * @param selectedPinId 
+     * @param selectedPinId, the int Id to be set on the selected pin
      */
     public void setSelectedPinId(int selectedPinId) {
         this.selectedPinId = selectedPinId;
@@ -309,62 +323,74 @@ public class PinManager implements Serializable {
     }
 
     /**
+     * Retrieves the input from the keyword filter input field.
      * 
-     * @return 
+     * @return the keywordFilterInput
      */
     public String getKeywordFilterInput() {
         return keywordFilterInput;
     }
 
     /**
+     * Sets the input from the keyword filter input field.
      * 
-     * @param keywordFilterInput 
+     * @param keywordFilterInput, the keywordFilterInput to be set
      */
     public void setKeywordFilterInput(String keywordFilterInput) {
         this.keywordFilterInput = keywordFilterInput;
     }
 
     /**
+     * Retrieves the currently selected pin.
      * 
-     * @return 
+     * @return the selected Pin object
      */
     public Pin getSelectedPin() {
         return selectedPin;
     }
 
     /**
+     * Sets the currently selected pin.
      * 
-     * @param selectedPin 
+     * @param selectedPin, the pin to be set as the selected pin
      */
     public void setSelectedPin(Pin selectedPin) {
         this.selectedPin = selectedPin;
     }
 
     /**
+     * Retrieves the filter style on the keyword filter input field. Alternates
+     * between "DISPLAY: NONE" and "" to hide and show the input field.
      * 
-     * @return 
+     * @return the keywordFilterStyle as a String
      */
     public String getKeywordFilterStyle() {
         return keywordFilterStyle;
     }
 
     /**
+     * Sets the filter style on the keyword filter input field.
      * 
-     * @param keywordFilterStyle 
+     * @param keywordFilterStyle, the filter style to be set
      */
     public void setKeywordFilterStyle(String keywordFilterStyle) {
         this.keywordFilterStyle = keywordFilterStyle;
     }
     
     /**
+     * Handles pin creation. Called when "Create Pin" is clicked in the create
+     * pin dialogue menu.
      * 
      * @return 
      */
     public String createPin() {
         
+        // Retrieve the current user from the session map by user id
         User user = userFacade.find(FacesContext.getCurrentInstance().
                         getExternalContext().getSessionMap().get("user_id"));
 
+        // Parse the user's current location from the xhtml element containing
+        // the information 
         String[] latAndLong = this.getParsedUserLoc();
 
         // Generate timestamp for pin posting time
@@ -372,6 +398,7 @@ public class PinManager implements Serializable {
 
         try {
             
+            // Initialize a new pin and set the associated properties
             pin = new Pin();
             pin.setAnonymous(this.newPinAnonymous);
             pin.setUserId(user.getId());
@@ -380,17 +407,24 @@ public class PinManager implements Serializable {
             pin.setUpvotes(0);
             //pin.setId(1); // no need for this if pin id is auto increment
             pin.setTitle(this.newPinTitle);
+            // Parse the user's location as a float before setting
             pin.setLatitude(Float.parseFloat(latAndLong[0]));
             pin.setLongitude(Float.parseFloat(latAndLong[1]));
             pin.setTimePosted(timestamp);
-            pin.setType("Some_pin_type");
-            pin.setReports(0);
-            pinFacade.create(pin);
+            pin.setType("Some_pin_type"); //remove this after db updated
+            pin.setReports(0);              // remove this after db updated
+            // Insert the pin entry into the Pin table in StreetSmartDB
+            pinFacade.create(pin); 
+            
+            // If a file was uploaded, map the photo to the previously
+            // inserted pin
             if (file.getSize() != 0) {
                 pin.setPhoto(true);
                 pinFacade.edit(pin);
                 copyPhotoFile(file);
             } else {
+                // Otherwise, depending on anonymity, mao the created pin to
+                // a default user profile picture from resources
                 if (pin.getAnonymous()){
                     pin.setPhoto(true);
                     pinFacade.edit(pin);
