@@ -21,8 +21,11 @@ import javax.faces.context.FacesContext;
  */
 public class LoginManager implements Serializable {
 
+  // The input username
   private String username;
+  // The input password
   private String password;
+  // The error message displayed upon unsuccessful login
   private String errorMessage;
   
   /**
@@ -105,16 +108,25 @@ public class LoginManager implements Serializable {
    *         in
    */
   public String loginUser() {
+    // Get the user object associated with the input username from the User
+    // table
     User user = userFacade.findByUsername(getUsername());
+    // If the User does not exist in the database, output the proper error msg
     if (user == null) {
       errorMessage = "Invalid username or password!";
       return "";
     } else {
+      // Otherwise proceed with making a comparison between the input username
+      // and password and then login if they match the table entry
       if (user.getUsername().equals(getUsername()) && user.getPassword().equals(getPassword())) {
         errorMessage = "";
+        // Initialize the session map with the current user's information
         initializeSessionMap(user);
+        // Redirect to the index upon successful login
         return "index?faces-redirect=true";
       }
+      // If invalid username/password, display the proper error message
+      // and stay on the current page
       errorMessage = "Invalid username or password!";
       return "";
     }
