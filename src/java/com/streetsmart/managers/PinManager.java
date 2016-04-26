@@ -4,7 +4,6 @@
  */
 package com.streetsmart.managers;
 
-
 import com.streetsmart.entitypackage.Pin;
 import com.streetsmart.entitypackage.User;
 import com.streetsmart.sessionbeanpackage.PhotoFacade;
@@ -39,10 +38,10 @@ import org.primefaces.model.UploadedFile;
 @Named(value = "pinManager")
 @SessionScoped
 /**
- * This class handles all interactions between the frontend and backend with
- * pin objects. Primarily handles pin creation and what is displayed on the
- * side menu depending on what filter type is selected.
- * 
+ * This class handles all interactions between the frontend and backend with pin
+ * objects. Primarily handles pin creation and what is displayed on the side
+ * menu depending on what filter type is selected.
+ *
  * @author Tim
  */
 public class PinManager implements Serializable {
@@ -51,7 +50,7 @@ public class PinManager implements Serializable {
     // displaying. Component does not retain display width/height with this
     // style
     private static final String NOT_DISPLAYED = "display: none";
-    
+
     // Instance Variables (Properties) for Pins 
     private UploadedFile file;
     // Pin title to be set when creating a pin (referenced in index.xhtml)
@@ -104,25 +103,25 @@ public class PinManager implements Serializable {
      * The instance variable 'pinFacade' is annotated with the @EJB annotation.
      * This means that the GlassFish application server, at runtime, will inject
      * in this instance variable a reference to the @Stateless session bean
-     * PinFacade. Handles all interactions with the Pin table in the 
-     * StreetSmart database.
+     * PinFacade. Handles all interactions with the Pin table in the StreetSmart
+     * database.
      */
     @EJB
     private PinFacade pinFacade;
-    
-     /**
-     * The instance variable 'photoFacade' is annotated with the @EJB annotation.
-     * This means that the GlassFish application server, at runtime, will inject
-     * in this instance variable a reference to the @Stateless session bean
-     * PhotoFacade.
+
+    /**
+     * The instance variable 'photoFacade' is annotated with the @EJB
+     * annotation. This means that the GlassFish application server, at runtime,
+     * will inject in this instance variable a reference to the @Stateless
+     * session bean PhotoFacade.
      */
     @EJB
     private PhotoFacade photoFacade;
 
     /**
      * Returns the current instance of PhotoFacade.
-     * 
-     * @return photoFacade, the PhotoFacade instance to be returned. 
+     *
+     * @return photoFacade, the PhotoFacade instance to be returned.
      */
     public PhotoFacade getPhotoFacade() {
         return photoFacade;
@@ -130,7 +129,7 @@ public class PinManager implements Serializable {
 
     /**
      * Sets the current instance of PhotoFacade.
-     * 
+     *
      * @param photoFacade, the PhotoFacade instance to be set.
      */
     public void setPhotoFacade(PhotoFacade photoFacade) {
@@ -153,13 +152,13 @@ public class PinManager implements Serializable {
         filterOption = "pop";
         // Initialized to prevent nullpointer exceptions
         selectedPin = new Pin();
-        selectedPin.setTimePosted(0); 
+        selectedPin.setTimePosted(0);
     }
 
     /**
      * Returns the current instance of PinFacade.
-     * 
-     * @return the PinFacade instance to be returned. 
+     *
+     * @return the PinFacade instance to be returned.
      */
     public PinFacade getPinFacade() {
         return pinFacade;
@@ -167,7 +166,7 @@ public class PinManager implements Serializable {
 
     /**
      * Sets the current instance of PinFacade.
-     * 
+     *
      * @param pinFacade, the PinFacade instance to be set.
      */
     public void setPinFacade(PinFacade pinFacade) {
@@ -176,7 +175,7 @@ public class PinManager implements Serializable {
 
     /**
      * Returns the uploaded file.
-     * 
+     *
      * @return the UploadedFile object.
      */
     public UploadedFile getFile() {
@@ -185,7 +184,7 @@ public class PinManager implements Serializable {
 
     /**
      * Obtains the uploaded file.
-     * 
+     *
      * @param file, the UploadedFile object to be set.
      */
     public void setFile(UploadedFile file) {
@@ -194,7 +193,7 @@ public class PinManager implements Serializable {
 
     /**
      * Retrieves the title for the pin to be posted. Called in pinCreate().
-     * 
+     *
      * @return the new pin title to set.
      */
     public String getNewPinTitle() {
@@ -203,7 +202,7 @@ public class PinManager implements Serializable {
 
     /**
      * Sets the title for the pin to be posted. Called in pinCreate().
-     * 
+     *
      * @param newPinTitle, the new pin title to be set.
      */
     public void setNewPinTitle(String newPinTitle) {
@@ -211,9 +210,9 @@ public class PinManager implements Serializable {
     }
 
     /**
-     * Retrieves the description for the pin to be posted. Called in 
+     * Retrieves the description for the pin to be posted. Called in
      * pinCreate().
-     * 
+     *
      * @return the new pin title to set.
      */
     public String getNewPinDescription() {
@@ -222,7 +221,7 @@ public class PinManager implements Serializable {
 
     /**
      * Sets the description for the pin to be posted. Called in pinCreate().
-     * 
+     *
      * @param newPinDescription, the new pin title to be set.
      */
     public void setNewPinDescription(String newPinDescription) {
@@ -230,19 +229,19 @@ public class PinManager implements Serializable {
     }
 
     /**
-     * Retrieves whether or not the pin should be posted as anonymous 
-     * for the pin to be posted.
-     * 
-     * @return whether or not the pin should be posted as anonymous 
+     * Retrieves whether or not the pin should be posted as anonymous for the
+     * pin to be posted.
+     *
+     * @return whether or not the pin should be posted as anonymous
      */
     public boolean isNewPinAnonymous() {
         return newPinAnonymous;
     }
 
     /**
-     * Sets whether or not the pin should be posted as anonymous for the pin
-     * to be posted.
-     * 
+     * Sets whether or not the pin should be posted as anonymous for the pin to
+     * be posted.
+     *
      * @param newPinAnonymous, the anonymity setting to be set
      */
     public void setNewPinAnonymous(boolean newPinAnonymous) {
@@ -252,7 +251,7 @@ public class PinManager implements Serializable {
     /**
      * Returns whether or not a pin was uploaded to the current pin to be
      * created.
-     * 
+     *
      * @return true if there was a photo uploaded, false otherwise
      */
     public boolean isNewPinPhotoExists() {
@@ -261,18 +260,18 @@ public class PinManager implements Serializable {
 
     /**
      * Sets whether or not a pin was uploaded to the current pin to be created.
-     * 
+     *
      * @param newPinPhotoExists, the parameter to be set depending on whether
-     *                           the photo was uploaded
+     * the photo was uploaded
      */
     public void setNewPinPhotoExists(boolean newPinPhotoExists) {
         this.newPinPhotoExists = newPinPhotoExists;
     }
 
     /**
-     * Retrieves the filter distance mapped to the input distance field
-     * when filtering by distance in index.xhtml.
-     * 
+     * Retrieves the filter distance mapped to the input distance field when
+     * filtering by distance in index.xhtml.
+     *
      * @return the filter distance represented as a String
      */
     public String getFilterDistance() {
@@ -280,9 +279,9 @@ public class PinManager implements Serializable {
     }
 
     /**
-     * Sets the filter distance mapped to the input distance field
-     * when filtering by distance in index.xhtml.
-     * 
+     * Sets the filter distance mapped to the input distance field when
+     * filtering by distance in index.xhtml.
+     *
      * @param filterDistance, the filter distance to be set by the user
      */
     public void setFilterDistance(String filterDistance) {
@@ -305,7 +304,7 @@ public class PinManager implements Serializable {
 
     /**
      * Retrieves the selected pin's id.
-     * 
+     *
      * @return the pin id represented as an int
      */
     public int getSelectedPinId() {
@@ -314,7 +313,7 @@ public class PinManager implements Serializable {
 
     /**
      * Sets the selected pin's id.
-     * 
+     *
      * @param selectedPinId, the int Id to be set on the selected pin
      */
     public void setSelectedPinId(int selectedPinId) {
@@ -324,7 +323,7 @@ public class PinManager implements Serializable {
 
     /**
      * Retrieves the input from the keyword filter input field.
-     * 
+     *
      * @return the keywordFilterInput
      */
     public String getKeywordFilterInput() {
@@ -333,7 +332,7 @@ public class PinManager implements Serializable {
 
     /**
      * Sets the input from the keyword filter input field.
-     * 
+     *
      * @param keywordFilterInput, the keywordFilterInput to be set
      */
     public void setKeywordFilterInput(String keywordFilterInput) {
@@ -342,7 +341,7 @@ public class PinManager implements Serializable {
 
     /**
      * Retrieves the currently selected pin.
-     * 
+     *
      * @return the selected Pin object
      */
     public Pin getSelectedPin() {
@@ -351,7 +350,7 @@ public class PinManager implements Serializable {
 
     /**
      * Sets the currently selected pin.
-     * 
+     *
      * @param selectedPin, the pin to be set as the selected pin
      */
     public void setSelectedPin(Pin selectedPin) {
@@ -361,7 +360,7 @@ public class PinManager implements Serializable {
     /**
      * Retrieves the filter style on the keyword filter input field. Alternates
      * between "DISPLAY: NONE" and "" to hide and show the input field.
-     * 
+     *
      * @return the keywordFilterStyle as a String
      */
     public String getKeywordFilterStyle() {
@@ -370,24 +369,24 @@ public class PinManager implements Serializable {
 
     /**
      * Sets the filter style on the keyword filter input field.
-     * 
+     *
      * @param keywordFilterStyle, the filter style to be set
      */
     public void setKeywordFilterStyle(String keywordFilterStyle) {
         this.keywordFilterStyle = keywordFilterStyle;
     }
-    
+
     /**
      * Handles pin creation. Called when "Create Pin" is clicked in the create
      * pin dialogue menu.
-     * 
-     * @return 
+     *
+     * @return
      */
     public String createPin() {
-        
+
         // Retrieve the current user from the session map by user id
         User user = userFacade.find(FacesContext.getCurrentInstance().
-                        getExternalContext().getSessionMap().get("user_id"));
+                getExternalContext().getSessionMap().get("user_id"));
 
         // Parse the user's current location from the xhtml element containing
         // the information 
@@ -397,7 +396,7 @@ public class PinManager implements Serializable {
         int timestamp = (int) (new Date().getTime() / 1000);
 
         try {
-            
+
             // Initialize a new pin and set the associated properties
             pin = new Pin();
             pin.setAnonymous(this.newPinAnonymous);
@@ -414,105 +413,114 @@ public class PinManager implements Serializable {
             pin.setType("Some_pin_type"); //remove this after db updated
             pin.setReports(0);              // remove this after db updated
             // Insert the pin entry into the Pin table in StreetSmartDB
-            pinFacade.create(pin); 
-            
+            pinFacade.create(pin);
+
             // If a file was uploaded, map the photo to the previously
             // inserted pin
             if (file.getSize() != 0) {
                 pin.setPhoto(true);
                 pinFacade.edit(pin);
                 copyPhotoFile(file);
+            } else // Otherwise, depending on anonymity, set the created pin to
+            // a default user profile picture from resources
+            if (pin.getAnonymous()) {
+                pin.setPhoto(true);
+                pinFacade.edit(pin);
+                assignPinDefaultPhoto();
             } else {
-                // Otherwise, depending on anonymity, mao the created pin to
-                // a default user profile picture from resources
-                if (pin.getAnonymous()){
-                    pin.setPhoto(true);
-                    pinFacade.edit(pin);
-                    assignPinDefaultPhoto();
-                }
-                else {
-                    pin.setPhoto(false);
-                    pinFacade.edit(pin);
-                }
+                pin.setPhoto(false);
+                pinFacade.edit(pin);
             }
+            // Reset all globals for the next pin posting
             this.newPinTitle = "";
             this.newPinDescription = "";
             this.newPinPhotoExists = false;
             this.newPinAnonymous = false;
+            // Redirect to the index
             return "index?faces-redirect=true&id=" + pin.getId();
         } catch (EJBException e) {
-            //TODO: Print useful error message somehow
+            return "";
         }
-        return "";
     }
-    
+
     /**
-     * 
-     * @param pin 
+     * Deletes a pin from the Pin table in the StreetSmartDB.
+     *
+     * @param pin, the Pin to be removed.
      */
     public void deletePin(Pin pin) {
         try {
+            // Call to PinFacade which calls SQL DELETE statement.
             pinFacade.remove(pin);
         } catch (EJBException e) {
-            // TODO: do something
+            return;
         }
     }
-    
+
     /**
+     * Retrieves the username for an associated pin posting.
      *
-     * @param pin
-     * @return
+     * @param pin, the pin of interest
+     * @return the username associated with the pin
      */
     public String getUsernameFromPin(Pin pin) {
-        if (pin == null) return "";
-        if (pin.getAnonymous()) return "Anonymous";
+        // If the pin DNE, do nothing
+        if (pin == null) {
+            return "";
+        }
+        // If the pin is anonymous, dont return a username
+        if (pin.getAnonymous()) {
+            return "Anonymous";
+        }
+        // Use UserFacade to query the Pin table and find the associated user
         User user = userFacade.findByUserId(pin.getUserId());
-        if (user == null) return "";
+        if (user == null) {
+            return "";
+        }
+        // Format the user's first name and last name into one String 
+        // and return it
         String username = user.getFirstName() + " " + user.getLastName();
+        // Set the pin's username
         pin.setUsername(username);
         return username;
     }
-    
+
     /**
-     * Grabs the file name for the pin associated image.
-     * @return 
+     * Grabs the file name for the pin's associated image.
+     *
+     * @return the filename of the image, including type
      */
-    public String getImageFromPin()
-    {
-        if (Files.exists(Paths.get(Constants.ROOT_DIRECTORY + "/p_" + selectedPin.getId() + ".png")))
-        {
+    public String getImageFromPin() {
+        if (Files.exists(Paths.get(Constants.ROOT_DIRECTORY + "/p_" + selectedPin.getId() + ".png"))) {
             return "p_" + selectedPin.getId() + ".png";
-        }
-        else
-        {
+        } else {
             return "u_" + selectedPin.getUserId() + ".png";
         }
     }
-    
+
     /**
-     *
-     * @param pin
-     * @return
+     * Retrieves the image associated with a pin.
+     * 
+     * @param pin, the Pin to retrieve the image from
+     * @return the filename of the image, including type
      */
-    public String getImageFromPin(Pin pin)
-    {
-        if (Files.exists(Paths.get(Constants.ROOT_DIRECTORY + "/p_" + pin.getId() + ".png")))
-        {
+    public String getImageFromPin(Pin pin) {
+        if (Files.exists(Paths.get(Constants.ROOT_DIRECTORY + "/p_" + pin.getId() + ".png"))) {
             return "p_" + pin.getId() + ".png";
-        }
-        else
-        {
+        } else {
             return "u_" + pin.getUserId() + ".png";
         }
     }
 
     /**
-     *
-     * @param file
+     * Handles uploading a photo from a pin posting.
+     * 
+     * @param file, the file to be uploaded to the the StreetSmartDB
      * @return
      */
     public FacesMessage copyPhotoFile(UploadedFile file) {
         try {
+            // Initialize the input stream
             InputStream in = file.getInputstream();
 
             File tempFile = inputStreamToFile(in, Constants.TEMP_FILE);
@@ -520,10 +528,13 @@ public class PinManager implements Serializable {
 
             FacesMessage resultMsg;
 
+            // Retrieves the Id of the most recently added pin
             int pinID = pinFacade.findLastID();
 
+            // Finds the pin with the associated pin Id
             Pin pin = pinFacade.findPinWithId(pinID);
 
+            // Find the image based on extension
             String extension = file.getContentType();
             extension = extension.startsWith("image/") ? extension.subSequence(6, extension.length()).toString() : "png";
 
@@ -538,88 +549,106 @@ public class PinManager implements Serializable {
         return new FacesMessage("Upload failure!",
                 "There was a problem reading the image file. Please try again with a new photo file.");
     }
-    
+
     /**
-     *
-     * @return
+     * Assigns a default photo to a Pin if the user did not upload one.
+     * 
+     * @return the filename represented as a String.
      */
-    public String assignPinDefaultPhoto()
-    {
+    public String assignPinDefaultPhoto() {
         String ret = "";
-        
+
         try {
             // Assigns the new name for the user's default photo
-            String newNameForPhoto = "p_" +  pinFacade.findLastID() + ".png";
+            String newNameForPhoto = "p_" + pinFacade.findLastID() + ".png";
 
             // Initialize the String array of directory path with picture names
-            String[] defaultDirectoryNames = {Constants.ROOT_DIRECTORY + "/default-1.png", 
-            Constants.ROOT_DIRECTORY + "/default-2.png", Constants.ROOT_DIRECTORY + "/default-3.png",
-            Constants.ROOT_DIRECTORY + "/default-4.png", Constants.ROOT_DIRECTORY + "/default-5.png"};
-            
+            String[] defaultDirectoryNames = {Constants.ROOT_DIRECTORY + "/default-1.png",
+                Constants.ROOT_DIRECTORY + "/default-2.png", Constants.ROOT_DIRECTORY + "/default-3.png",
+                Constants.ROOT_DIRECTORY + "/default-4.png", Constants.ROOT_DIRECTORY + "/default-5.png"};
+
             Random randomProfileDefaultPicture = new Random();
-            
+
             // Grabs the random index of the photo
             int index = randomProfileDefaultPicture.nextInt(defaultDirectoryNames.length);
-            
+
             // Grabs the source of the path file
             Path source = Paths.get(defaultDirectoryNames[index]);
-            
+
             // If the files exist inside the directory
-            if (Files.exists(source))
-            {
+            if (Files.exists(source)) {
                 // Creates a new source path for the file to be created in. 
                 // Since we are not using a new directory, we will use the same
                 // Root Directory with a new photo name.
                 Path newSource = Paths.get(Constants.ROOT_DIRECTORY + "/" + newNameForPhoto);
                 ret = newSource.getFileName().toString();
-                
+
                 // Copies the photo with the new file name
                 Files.copy(source, newSource);
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         return ret;
     }
-    
+
     /**
-     *
-     * @return
+     * Handles upvoting the currently selected Pin. Increments the score in
+     * the Pin table accordingly.
+     * 
+     * @return the navigation outcome
      */
-    public String upvotePin(){
+    public String upvotePin() {
+        // Retrieve the currently selected pin
         Pin pinToUpdate = this.getSelectedPin();
-        pinToUpdate.setUpvotes(pinToUpdate.getUpvotes()+1);
+        // Set the upvotes on the current pin
+        pinToUpdate.setUpvotes(pinToUpdate.getUpvotes() + 1);
+        // Edit the table entry accordingly in the database
         pinFacade.edit(pinToUpdate);
-        return "";
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public String downvotePin(){
-        Pin pinToUpdate = this.getSelectedPin();
-        pinToUpdate.setDownvotes(pinToUpdate.getDownvotes()+1);
-        pinFacade.edit(pinToUpdate);
+        // No navigation on action
         return "";
     }
 
     /**
-     *
-     * @param pin
-     * @return
+     * Handles downvoting the currently selected Pin. Decrements the score in
+     * the Pin table accordingly.
+     * 
+     * @return the navigation outcome
+     */
+    public String downvotePin() {
+        // Retrieve the currently selected Pin
+        Pin pinToUpdate = this.getSelectedPin();
+        // Set the downvotes on the current Pin
+        pinToUpdate.setDownvotes(pinToUpdate.getDownvotes() + 1);
+        // Edit the table entry accordingly in the database
+        pinFacade.edit(pinToUpdate);
+        // No navigation on action
+        return "";
+    }
+
+    /**
+     * Retrieves the date in a formatted manner from the database for the
+     * associated pin. Used for dating pin postings.
+     * 
+     * @param pin, the pin to retrieve the date from
+     * @return a String representation of the date, delimited as 
+     *           "MM/dd"
      */
     public String getFormattedDate(Pin pin) {
+        // Set the formatting for the date
         SimpleDateFormat format = new SimpleDateFormat("M/d");
+        // Convert the database Integer to a Date object and return it
         return format.format(new Date(((long) pin.getTimePosted()) * 1000L));
     }
-    
+
     /**
-     *
+     * Retrieves the date in a formatted manner from the database for the
+     * associated pin. Used for dating comments and various other things.
+     * 
      * @param pin
-     * @return
+     * @return a String representation of the date, delimited as
+     *         "MM/dd/yyyy HH:mm"
      */
     public String getFullFormattedDate(Pin pin) {
         SimpleDateFormat format = new SimpleDateFormat("MMMM dd, yyyy h:mm a");
@@ -627,24 +656,28 @@ public class PinManager implements Serializable {
     }
 
     /**
-     *
-     * @return
+     * Retrieves the list of Pins that are displayed on the side menu bar.
+     * 
+     * @return a list of pins
      */
     public List<Pin> getMapMenuPins() {
         return mapMenuPins;
     }
 
     /**
-     *
-     * @param mapMenuPins
+     * Sets the list of pins that are displayed on the side menu bar.
+     * 
+     * @param mapMenuPins, the list of pins to be set
      */
     public void setMapMenuPins(List<Pin> mapMenuPins) {
         this.mapMenuPins = mapMenuPins;
     }
 
     /**
-     *
-     * @return
+     * Gets the current filter option. Determined by which dropdown selection
+     * item is selected on the side menu (keyword, distance, popularity, new)
+     * 
+     * @return the filter option formatted as a String
      */
     public String getFilterOption() {
         return filterOption;
@@ -652,13 +685,22 @@ public class PinManager implements Serializable {
 
     /**
      *
-     * @param filterOption
+     * Sets the current filter option and updates the display of index.xhtml
+     * accordingly.
+     * 
+     * @param filterOption, the filter option depending on which dropdown
+     *                      menu item is selected
      */
     public void setFilterOption(String filterOption) {
+        
+        // If the filter option is empty or nonexistant, do nothing
         if (filterOption == null || filterOption.isEmpty()) {
             return;
         }
-        
+
+        // Depending on the filter option, hide or display the keyword input
+        // field, distance input field. Also sort the mapMenuList depending
+        // on which filter type is selected.
         switch (filterOption) {
             case "dist":
                 this.filterByDistance();
@@ -685,28 +727,34 @@ public class PinManager implements Serializable {
             default:
                 break;
         }
+        // Lastly, set the current filter option for later use
         this.filterOption = filterOption;
     }
 
     /**
-     *
-     * @return
+     * Retrieves the filter style for the distance form element.
+     * 
+     * @return a String representation of the filter style
      */
     public String getDistanceFilterStyle() {
         return distanceFilterStyle;
     }
 
     /**
-     *
-     * @param distanceFilterStyle
+     * Sets the filter style for the distance form element.
+     * 
+     * @param distanceFilterStyle, the filter style String to be set
      */
     public void setDistanceFilterStyle(String distanceFilterStyle) {
         this.distanceFilterStyle = distanceFilterStyle;
     }
 
     /**
-     *
-     * @return
+     * Retrieve the user location from the hidden xhtml element "userLoc",
+     * parse it, and then return it.
+     * 
+     * @return a String array where the first index is the user's latitude
+     *         and the second index is the user's longitude
      */
     public String[] getParsedUserLoc() {
         // Parse out latitiude and longitude from container
@@ -716,65 +764,99 @@ public class PinManager implements Serializable {
         if (locData == null) {
             return null;
         }
+        // Parse out extra characters to retrieve a clean representation
+        // of the user's location
         locData = locData.replace("(", "");
         locData = locData.replace(")", "");
         return locData.split(", ");
     }
 
     /**
-     *
+     * Handles filtering the mapMenuList by keyword. The keyword comes as 
+     * input from the keyword input field and is stored in the instance field
+     * "keywordFilterInput".
      */
     public void filterByKeyword() {
-
+        
+        // Retrieve all pins from the database
         List<Pin> keywordPins = pinFacade.findAll();
+        // If no keyword is entered, set the mapMenuList as an unfiltered
+        // list of pins from the database
         if (keywordFilterInput == null || keywordFilterInput.isEmpty()) {
             this.setMapMenuPins(keywordPins);
             return;
         }
 
         // We want to find all pins in MapMenuPins matching the keyword so:
+        // Iterate over the list removing any pins that do not contain the
+        // keyword in either the title of description of the pin.
         for (int i = 0; i < keywordPins.size(); i++) {
             Pin pin = keywordPins.get(i);
             if (!(pin.getTitle().toLowerCase().contains(keywordFilterInput.toLowerCase())
                     || pin.getDescription().toLowerCase().contains(keywordFilterInput.toLowerCase()))) {
                 keywordPins.remove(pin);
+                // Decrement the counter after removing an element from the list
+                // to retain the proper list index
                 i--;
             }
-        }      
+        }
+        // Lastly, set the mapManuPins to the filtered list keywordPins
         this.setMapMenuPins(keywordPins);
     }
 
     /**
-     *
+     * Handles filtering the mapMenuList by distance. The filter distance
+     * depends on what the user inputs into the distance input text in the
+     * side menu.
      */
     public void filterByDistance() {
+        // Retrieve the parsed user location
         String[] currentUserLoc = this.getParsedUserLoc();
+        // Parse the input filter distance as a double
         Double filterDist = Double.parseDouble(this.filterDistance);
 
+        // If the user's current location is not null, proceed
         if (currentUserLoc != null) {
+            // Extract the latitude and longitude of the user's location
+            // from the currentUserLoc String array
             float userLat = Float.valueOf(currentUserLoc[0]);
             float userLong = Float.valueOf(currentUserLoc[1]);
-            
+
+            // Query the Pin table and retrieve all pins
             List<Pin> distancePins;
             distancePins = pinFacade.findAll();
-            
+
+            // Initialize a new arrayList of doubles which will hold the
+            // distances of select pins
             ArrayList<Double> distances = new ArrayList<Double>();
-            
+
+            // Iterate over the distancePins list and remove any pin that 
+            // exceeds the filter distance's distance
             for (int i = 0; i < distancePins.size(); i++) {
                 Pin pin = distancePins.get(i);
+                // Calculate the distance from the user's current location
+                // to the current pin in the list
                 double distanceInMiles = this.getDistanceFromLatLongInMiles(userLat, userLong,
                         pin.getLatitude(), pin.getLongitude());
+                // If the pin's distance from the user's location exceeds the
+                // the filter, remove it from the list
                 if (!(distanceInMiles <= filterDist)) {
                     distancePins.remove(i);
                     i--;
                 } else {
+                    // Otherwise, add the distance to the distances array list
                     distances.add(distanceInMiles);
                 }
             }
-            
+
+            // Selection sort implementation to sort the list by distance
+            // The outer for-loop keeps track of the current element. Each
+            // iteration potentially swaps the current element with another
+            // element in the list of lesser value.
             for (int i = 0; i < distancePins.size(); i++) {
                 double max = -Double.MAX_VALUE;
                 int maxIndex = -1;
+                // The inner for loop handles finding the minimal value 
                 for (int j = i; j < distancePins.size(); j++) {
                     Pin pin = distancePins.get(j);
                     if (distances.get(j) >= max) {
@@ -782,6 +864,8 @@ public class PinManager implements Serializable {
                         maxIndex = j;
                     }
                 }
+                
+                // Swap the elements if a max index was found
                 if (maxIndex != -1) {
                     Pin pin = distancePins.remove(maxIndex);
                     distancePins.add(0, pin);
@@ -790,41 +874,46 @@ public class PinManager implements Serializable {
                 }
             }
             
+            // Lastly set the mapMenuPins to the distancePin list
             this.setMapMenuPins(distancePins);
         }
     }
 
     /**
-     *
+     * Filters the mapMenuList by newest (lowest integer values from the
+     * date column in the Pin table first). Calls an implementation of
+     * quicksort to handle the sorting.
      */
-    public void filterByNewest() {  
-        
+    public void filterByNewest() {
+
         this.sortPins(pinFacade.findAll(), "time");
         this.setMapMenuPins(this.pinValues);
     }
 
     /**
-     *
+     * Filters the mapMenuList by popularity (i.e. highest score, which is
+     * upvotes - downvotes). Calls an implementation of quicksort to handle
+     * the sorting.
      */
-    public void filterByPopularity() {       
+    public void filterByPopularity() {
 
         this.sortPins(pinFacade.findAll(), "popularity");
         this.setMapMenuPins(this.pinValues);
     }
-    
+
     /**
      * Pre populates variables for faster filtering and sets the initial state
      * of the side menu to filter all pins by popularity.
      */
     public void prePopulateMenu() {
-        this.filterByPopularity();       
+        this.filterByPopularity();
     }
 
     /**
      * Determines the distance between two geographical coordinates. Heavily
      * based upon the Haversine formula, which accounts for the earth's shape,
      * curvature, average radius etc. Calculated in miles.
-     * 
+     *
      * @param lat1, latitude from the first point
      * @param long1, longitude from the first point
      * @param lat2, latitude from the second point
@@ -845,9 +934,9 @@ public class PinManager implements Serializable {
     }
 
     /**
-     * Converts degrees to radians. Helper method for 
+     * Converts degrees to radians. Helper method for
      * getDistanceFromLatLongInMiles().
-     * 
+     *
      * @param deg, the 0-360 degree angle
      * @return the degree in radians
      */
@@ -859,9 +948,8 @@ public class PinManager implements Serializable {
      * Quicksort implementation for sorting pins depending on the sort type.
      *
      * @param pins, the list of pins to be sorted
-     * @param sortType, a String representation which determines what
-     *                  quicksort implementation should be called based on
-     *                  the filter
+     * @param sortType, a String representation which determines what quicksort
+     * implementation should be called based on the filter
      */
     private void sortPins(List<Pin> pins, String sortType) {
         // check for empty or null array
@@ -870,6 +958,8 @@ public class PinManager implements Serializable {
             return;
         }
 
+        // Call the associated quicksort implementation depending on the input
+        // sortType
         this.pinValues = pins;
         if (sortType.equals("time")) {
             quicksortByTimePosted(0, (pinValues.size()) - 1);
@@ -882,7 +972,7 @@ public class PinManager implements Serializable {
      * Quicksort implementation that handles sorting by pin posting time. Pin
      * times are represented as an integer, so sorting orders the lin of pins
      * from lowest to highest integer values.
-     * 
+     *
      * @param low, low index for sorting
      * @param high, high index for sorting
      */
@@ -917,10 +1007,10 @@ public class PinManager implements Serializable {
     }
 
     /**
-     * Quicksort implementation that handles sorting by pin popularity. 
+     * Quicksort implementation that handles sorting by pin popularity.
      * Popularity is determined by subtracting the downvote count from the
      * upvote count
-     * 
+     *
      * @param low, low index for sorting
      * @param high, high index for sorting
      */
@@ -968,11 +1058,12 @@ public class PinManager implements Serializable {
     }
 
     /**
+     * Reads in an image to be uploaded.
      * 
-     * @param inputStream
-     * @param childName
-     * @return
-     * @throws IOException 
+     * @param inputStream, the input stream
+     * @param childName, the childName
+     * @return the File
+     * @throws IOException
      */
     private File inputStreamToFile(InputStream inputStream, String childName)
             throws IOException {
